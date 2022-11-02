@@ -15,7 +15,7 @@ local active_color_1 = {
     type = 'linear',
     from = {0, 0},
     to = {300},
-    stops = {{0, x.color5}, {0.50, x.color4}}
+    stops = {{0, x.color6}, {0.50, x.color4}}
 }
 
 local volume_icon = wibox.widget {
@@ -24,7 +24,7 @@ local volume_icon = wibox.widget {
         --       image = gears.surface(beautiful.theme_assets.awesome_icon(512,
         --                                                                 x.color8,
         --                                                                x.background)),
-        image = icons.getIcon("beautyline/devices/scalable/headphone.svg"),
+        image = icons.getIcon("beautyline/devices/scalable/audio-headphones-symbolic.svg"),
         resize = true
     },
     margins = dpi(13),

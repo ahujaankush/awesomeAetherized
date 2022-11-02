@@ -5,7 +5,7 @@ local dpi = beautiful.xresources.apply_dpi
 local icons = require('icons')
 
 local empty_notifbox = require('ui.components.notif-center.build-notifbox.empty-notifbox').create(
-    icons.getIcon("elenaLinebit/calendar/google_calendar_"..os.date("%d")..".png"), "NO NOTIFS!", "You have no notifs!")
+    icons.getIcon("elenaLinebit/calendar/google_calendar_"..tonumber(os.date("%d"))..".png"), "NO NOTIFS!", "You have no notifs!")
 local box = require("ui.components.notif-center.build-notifbox.notifbox")
 
 local width = dpi(380)

@@ -219,7 +219,7 @@ function apps.screenshot(action, delay)
     local timestamp = os.date("%Y.%m.%d-%H.%M.%S")
     local filename = user.dirs.screenshots .. "/" .. timestamp .. ".screenshot.png"
     local maim_args = "-u -b 3 -m 5"
-    local icon = icons.getIcon("linex/screenshot_capture.png")
+    local icon = icons.getIcon("beautyline/apps/scalable/accessories-screenshot.svg")
 
     local prefix
     if delay then
