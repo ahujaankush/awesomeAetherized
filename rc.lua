@@ -17,9 +17,9 @@ user = {
   -- Check apps.lua for more
   terminal = "kitty",
   floating_terminal = "kitty",
-  browser = "firefox",
+  browser = "brave",
   file_manager = "dolphin",
-  image_viewer = "gwenview",
+  image_viewer = "lximage-qt",
   editor = "code",
   code = "code",
   nvim = "kitty --class nvim -e lvim",
@@ -57,7 +57,7 @@ user = {
   -- as described in the README instructions
   -- Leave it empty in order to unlock with just the Enter key.
   -- lock_screen_custom_password = "",
-  lock_screen_custom_password = "",
+  lock_screen_custom_password = "123",
 
   -- >> Battery <<
   -- You will receive notifications when your battery reaches these

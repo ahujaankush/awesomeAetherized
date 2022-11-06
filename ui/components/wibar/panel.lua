@@ -31,11 +31,11 @@ local awesome_icon = wibox.widget {
         -- image = gears.surface(beautiful.theme_assets.awesome_icon(512,
         --                                                           x.color6,
         --                                                          x.background)),
-        image = icons.getIcon("Miya-icon-theme/src/apps/scalable/microsoft-edge-dev.svg"),
+        image = icons.getIcon("beautyline/apps/scalable/distributor-logo-arch.svg"),
         -- image = icons.getIcon("candy-icons/apps/scalable/playonlinux.svg"),
         resize = true
     },
-    margins = dpi(6),
+    margins = dpi(10),
     widget = wibox.container.margin
 }
 
@@ -47,15 +47,15 @@ local awesome_icon_container = wibox.widget {
 
 awesome_icon_container:connect_signal("button::press", function()
     awesome_icon_container.bg = x.color0
-    awesome_icon.top = dpi(9)
-    awesome_icon.left = dpi(9)
-    awesome_icon.right = dpi(7)
-    awesome_icon.bottom = dpi(7)
+    awesome_icon.top = dpi(11)
+    awesome_icon.left = dpi(11)
+    awesome_icon.right = dpi(9)
+    awesome_icon.bottom = dpi(9)
     dashboard_show()
 end)
 
 awesome_icon_container:connect_signal("button::release", function()
-    awesome_icon.margins = dpi(8)
+    awesome_icon.margins = dpi(10)
     awesome_icon_container.bg = x.background
 end)
 
