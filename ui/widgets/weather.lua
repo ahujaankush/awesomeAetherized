@@ -14,13 +14,13 @@ end
 
 local weather_text = wibox.widget{
     text = "Weather unavailable",
-    -- align  = 'center',
+    align  = 'center',
     valign = 'center',
-    -- font = "sans 14",
+    font = beautiful.font_name.." 14",
     widget = wibox.widget.textbox
 }
 
-local weather_icon = wibox.widget.imagebox(icons.getIcon("linebit/yahoo_weather.png"))
+local weather_icon = wibox.widget.imagebox(icons.getIcon("beautyline/apps/scalable/indicator-weather.svg"))
 weather_icon.resize = true
 weather_icon.forced_width = 40
 weather_icon.forced_height = 40

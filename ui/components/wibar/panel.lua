@@ -380,6 +380,27 @@ local mysystray = wibox.widget.systray()
 mysystray.base_size = beautiful.systray_icon_size
 
 screen.connect_signal("request::desktop_decoration", function(s)
+    -- bling: task preview
+    bling.widget.tag_preview.enable {
+        show_client_content = true,
+        placement_fn = function(c)
+            awful.placement.top(c, {
+                margins = {
+                    top = beautiful.wibar_height + beautiful.useless_gap
+                }
+            })
+        end,
+        scale = 0.5,
+        honor_padding = true,
+        honor_workarea = true,
+        background_widget = wibox.widget {    -- Set a background image (like a wallpaper) for the widget 
+            image = beautiful.wallpaper,
+            horizontal_fit_policy = "fit",
+            vertical_fit_policy   = "fit",
+            widget = wibox.widget.imagebox
+        }
+    }
+
     -- battery popup
     s.battery_popup = awful.popup {
         screen = s,
@@ -562,19 +583,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
     -- client.connect_signal("request::unmanage", add_wibar)
 
-    bling.widget.tag_preview.enable {
-        show_client_content = true,
-        placement_fn = function(c)
-            awful.placement.top(c, {
-                margins = {
-                    top = beautiful.wibar_height + beautiful.useless_gap
-                }
-            })
-        end,
-        scale = 0.5,
-        honor_padding = true,
-        honor_workarea = true
-    }
 
     -- Create the taglist widget
     s.mytaglist = require("ui.widgets.tagsklist")(s)

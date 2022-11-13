@@ -35,9 +35,9 @@ weather_widget_icon.valign = "center"
 -- So that content does not get cropped
 -- weather_widget_icon.forced_width = dpi(50)
 local weather_widget_description = weather_widget:get_all_children()[2]
-weather_widget_description.font = "sans medium 14"
+weather_widget_description.font = beautiful.font_name.." 14"
 local weather_widget_temperature = weather_widget:get_all_children()[3]
-weather_widget_temperature.font = "sans medium 14"
+weather_widget_temperature.font = beautiful.font_name.." 14"
 
 local weather = wibox.widget{
     {
@@ -184,7 +184,7 @@ local search_text = wibox.widget {
     -- markup = helpers.colorize_text("Search", x.color8),
     align = "center",
     valign = "center",
-    font = "sans 9",
+    font = beautiful.font_name.." 9",
     widget = wibox.widget.textbox()
 }
 
@@ -290,7 +290,7 @@ local adaptive_tooltip = wibox.widget {
 local tooltip_counter = 0
 local create_tooltip = function(w)
     local tooltip = wibox.widget {
-        font = "sans medium 10",
+        font = beautiful.font_name.." 10",
         align = "center",
         valign = "center",
         widget = wibox.widget.textbox

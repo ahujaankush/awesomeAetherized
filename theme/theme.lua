@@ -19,10 +19,10 @@ local theme = {}
 
 -- Set theme wallpaper.
 -- It won't change anything if you are using feh to set the wallpaper like I do.
-theme.wallpaper = os.getenv("HOME") .. "/Pictures/lambda-wallpapers/aerial/out2.png"
+theme.wallpaper = os.getenv("HOME") .. "/Pictures/lambda-wallpapers/artwork_gracile.jpg"
 
 -- Set the theme font. This is the font that will be used by default in menus, bars, titlebars etc.
-theme.font_name = "JetBrainsMono Nerd Font Mono"
+theme.font_name = "CaskaydiaCove Nerd Font Mono"
 theme.font      = theme.font_name .. " 11"
 -- theme.font          = "monospace 11"
 

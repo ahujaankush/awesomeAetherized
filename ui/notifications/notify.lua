@@ -17,6 +17,9 @@ local app_config = {
   ['NetworkManager'] = {
     icon = icons.getIcon("beautyline/devices/scalable/network-wireless.svg")
   },
+  ['NetworkManager Applet'] = {
+    icon = icons.getIcon("beautyline/devices/scalable/network-wireless.svg")
+  },
   ['blueman'] = {
     icon = icons.getIcon("beautyline/apps/scalable/bluetooth.svg")
   }

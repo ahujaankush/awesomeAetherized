@@ -8,15 +8,6 @@ local dpi = xresources.apply_dpi
 
 local playerctl = require("modules.bling").signal.playerctl.lib()
 
-local art = wibox.widget {
-    forced_height = dpi(50),
-    image = gears.filesystem.get_configuration_dir() .. "icons/music.png",
-    align = 'center',
-    valign = 'center',
-    resize = true,
-    widget = wibox.widget.imagebox
-}
-
 local create_button = function(symbol, color, command, playpause)
 
     local icon = wibox.widget {
@@ -59,7 +50,7 @@ end
 
 local title_widget = wibox.widget {
     markup = 'No Title',
-    font = "sans medium 12",
+    font = beautiful.font_name.." 12",
     align = 'center',
     valign = 'center',
     ellipsize = 'middle',
@@ -68,7 +59,7 @@ local title_widget = wibox.widget {
 
 local artist_widget = wibox.widget {
     markup = 'No Artist',
-    font = "sans medium 11",
+    font = beautiful.font_name.." 11",
     align = 'center',
     valign = 'center',
     ellipsize = 'middle',

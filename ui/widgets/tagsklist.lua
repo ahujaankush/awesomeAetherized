@@ -53,7 +53,7 @@ local update_tags = function(self, c3)
 end
 
 local function get_taglist(s)
-    local screen_for_taglist = s or awful.screen.focused()
+    local screen_for_taglist = s
 
     local tagsklist = awful.widget.taglist {
         screen = screen_for_taglist,

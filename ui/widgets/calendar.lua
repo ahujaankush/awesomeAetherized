@@ -1,6 +1,7 @@
 local awful = require("awful")
 local gears = require("gears")
 local wibox = require("wibox")
+local beautiful = require("beautiful")
 
 local styles = {}
 styles.month   = { padding      = 20,
@@ -16,7 +17,7 @@ styles.focus   = { fg_color = x.color2,
 styles.header  = { fg_color = x.color4,
     bg_color = x.color1.."00",
     -- markup   = function(t) return '<b>' .. t .. '</b>' end,
-    markup   = function(t) return '<span font_desc="sans bold 22">' .. t .. '</span>' end,
+    markup   = function(t) return '<span font_desc="'..beautiful.font_name..' 22">' .. t .. '</span>' end,
 }
 styles.weekday = { fg_color = x.color5,
     bg_color = x.color1.."00",
@@ -55,7 +56,7 @@ end
 
 calendar_widget = wibox.widget {
     date     = os.date('*t'),
-    font     = "sans medium 13",
+    font     = beautiful.font_name.." 13",
     long_weekdays = false,
     spacing  = dpi(3),
     fn_embed = decorate_cell,
