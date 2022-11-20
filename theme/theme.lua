@@ -59,8 +59,8 @@ theme.border_radius = dpi(5)
 -- (Titlebar items can be customized in titlebars.lua)
 theme.titlebars_enabled = true
 theme.titlebar_size = dpi(35)
-theme.titlebar_title_enabled = false
-theme.titlebar_font = "sans bold 9"
+theme.titlebar_title_enabled = true
+theme.titlebar_font = theme_name.." bold 9"
 -- Window title alignment: left, right, center
 theme.titlebar_title_align = "center"
 -- Titlebar position: top, bottom, left, right
@@ -68,9 +68,9 @@ theme.titlebar_position = "left"
 theme.titlebar_bg = x.background .. "aa"
 -- theme.titlebar_bg_focus = x.color12
 -- theme.titlebar_bg_normal = x.color8
-theme.titlebar_fg_focus = x.background
+theme.titlebar_fg_focus = x.color7
 theme.titlebar_fg_normal = x.color7
---theme.titlebar_fg = x.color7
+theme.titlebar_fg = x.color7
 
 -- Notifications
 -- ============================
@@ -93,7 +93,7 @@ theme.notification_icon_size = dpi(60)
 -- theme.notification_width = dpi(300)
 theme.notification_margin = dpi(16)
 theme.notification_opacity = 1
-theme.notification_font = "sans 11"
+theme.notification_font = theme.font_name.." 11"
 theme.notification_padding = theme.screen_margin * 2
 theme.notification_spacing = theme.screen_margin * 4
 

@@ -588,6 +588,10 @@ awful.key({superkey}, "e", apps.file_manager, {
 awful.key({superkey}, "p", apps.process_monitor, {
     description = "process monitor",
     group = "launcher"
+}), -- switch to next keyboard layout
+awful.key({superkey, altkey}, "Tab", helpers.nextKeyboardLayout, {
+    description = "switch to next keyboard layout",
+    group = "keyboard"
 }))
 
 keys.clientkeys = gears.table.join( -- Move to edge or swap by direction

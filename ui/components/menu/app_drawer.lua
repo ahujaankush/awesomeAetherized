@@ -67,24 +67,24 @@ local function create_button(symbol, color, hover_color, cmd, key)
 end
 
 -- Create app buttons
-local terminal = create_button("", x.color1, x.color9, function() awful.spawn.with_shell(user.terminal) end, "t")
+local terminal = create_button("", x.color1, x.color9, function() awful.spawn.with_shell(user.terminal) end, "Enter")
 local editor = create_button("﬏", x.color4, x.color12, apps.editor, "e")
-local vim = create_button("", x.color2, x.color10, apps.nvim, "e")
+local vim = create_button("", x.color2, x.color10, apps.nvim, "v")
 local browser = create_button("爵", x.color5, x.color13, apps.browser, "w")
 local mail = create_button("", x.color3, x.color11, apps.mail, "m")
 
 local files = create_button("", x.color3, x.color11, apps.file_manager, "f")
-local office = create_button("", x.color5, x.color13, apps.office, "g")
-local okular = create_button("", x.color6, x.color14, apps.okular, "y")
-local schedule = create_button("", x.color2, x.color10, apps.networks, "n")
-local pyroWrite = create_button("", x.color1, x.color9, apps.editor, "e")
+local office = create_button("", x.color5, x.color13, apps.office, "o")
+local okular = create_button("", x.color6, x.color14, apps.okular, "u")
+local schedule = create_button("", x.color2, x.color10, apps.networks, "s")
+local pyroWrite = create_button("", x.color1, x.color9, apps.editor, "p")
 
 
-local resources = create_button("", x.color2, x.color10, apps.passwords, "p")
+local resources = create_button("", x.color2, x.color10, apps.passwords, "r")
 local workspace = create_button("", x.color1, x.color9, apps.night_mode, "x")
 local student = create_button("拾", x.color5, x.color13, apps.record, "r")
 local books = create_button("", x.color3, x.color11, apps.lutris, "l")
-local pyroWriteLibMode = create_button("", x.color6, x.color14, apps.editor, "e")
+local toDO = create_button("", x.color6, x.color14, apps.editor, "e")
 
 local night_mode = create_button("望", x.color4, x.color12, apps.night_mode, "s")
 local keys = create_button("", x.color2, x.color10, apps.passwords, "o")
@@ -202,7 +202,7 @@ app_drawer:setup {
         -- Stripes
         create_stripe({terminal, editor, vim, browser, mail}, "#00000000"),
         create_stripe({files, office, okular, schedule, pyroWrite}, x.color8.."20"),
-        create_stripe({resources, workspace, student, books, pyroWriteLibMode}, x.color8.."40"),
+        create_stripe({resources, workspace, student, books, toDO}, x.color8.."40"),
         create_stripe({night_mode, keys, compositor, restart_awesome, quit_awesome}, x.color8.."60"),
         layout = wibox.layout.flex.vertical
     },

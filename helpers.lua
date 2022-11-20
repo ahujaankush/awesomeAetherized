@@ -12,6 +12,17 @@ local naughty = require("naughty")
 
 local helpers = {}
 
+-- Switch to next keyboard layout
+local layoutIndex = 1
+
+helpers.nextKeyboardLayout = function()
+    layoutIndex = layoutIndex + 1
+    if layoutIndex > #user.keyboardLayouts then
+        layoutIndex = 1
+    end
+    awful.spawn.with_shell("setxkbmap "..user.keyboardLayouts[layoutIndex])
+end
+
 -- Create rounded rectangle shape (in one line)
 helpers.rrect = function(radius)
     return function(cr, width, height)

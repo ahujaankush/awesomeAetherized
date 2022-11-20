@@ -33,6 +33,12 @@ user = {
   -- >> User profile <<
   profile_picture = os.getenv("HOME") .. "/.face",
 
+  -- Keyboard layouts
+  keyboardLayouts = {
+    "us",
+    "at"
+  },
+
   -- Directories with fallback values
   dirs = {
     downloads = os.getenv("XDG_DOWNLOAD_DIR") or "~/Downloads",

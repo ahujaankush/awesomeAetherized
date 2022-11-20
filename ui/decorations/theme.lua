@@ -25,7 +25,15 @@ client.connect_signal("request::titlebars", function(c)
 			widget = wibox.container.margin
 		},
 		{
-			layout = wibox.layout.flex.vertical
+			--{
+			--	{ -- Title
+			--	align  = 'center',
+			--	widget = awful.titlebar.widget.titlewidget(c)
+			--	},
+			--	layout = wibox.layout.flex.vertical
+			--},
+			widget = wibox.container.rotate,
+			--direction = "east",
 		},
 		{
 			{
