@@ -65,7 +65,7 @@ theme.titlebar_font = theme_name.." bold 9"
 theme.titlebar_title_align = "center"
 -- Titlebar position: top, bottom, left, right
 theme.titlebar_position = "left"
-theme.titlebar_bg = x.background .. "aa"
+theme.titlebar_bg = x.background.. "CC"
 -- theme.titlebar_bg_focus = x.color12
 -- theme.titlebar_bg_normal = x.color8
 theme.titlebar_fg_focus = x.color7
@@ -112,6 +112,7 @@ theme.snap_border_width = dpi(3)
 
 -- Tag names
 theme.tagnames = {
+    "0",
     "1",
     "2",
     "3",
@@ -121,7 +122,6 @@ theme.tagnames = {
     "7",
     "8",
     "9",
-    "0",
 }
 
 -- Widget separator
@@ -137,7 +137,7 @@ theme.wibar_position = "top"
 theme.wibar_height = dpi(45)
 theme.wibar_fg = x.foreground
 theme.wibar_bg = x.background
---theme.wibar_opacity = 0.7
+theme.wibar_opacity = 1
 theme.wibar_border_color = x.color0
 theme.wibar_border_width = dpi(0)
 theme.wibar_border_radius = dpi(0)
@@ -207,9 +207,8 @@ theme.sidebar_position = "left" -- left or right
 theme.sidebar_width = dpi(300)
 theme.sidebar_x = 0
 theme.sidebar_y = 0
-theme.sidebar_border_radius = dpi(12)
-theme.sidebar_height_multip = 1 -- this value is multiplied with the screen height
-theme.sidebar_border_radius = dpi(0) --theme.border_radius
+theme.sidebar_height_multip = 0.65 -- this value is multiplied with the screen height
+theme.sidebar_border_radius = dpi(10) --theme.border_radius
 
 -- Dashboard
 theme.dashboard_bg = x.color0 .. "44"
@@ -225,69 +224,22 @@ theme.exit_screen_icon_size = dpi(180)
 theme.lock_screen_bg = x.color0 .. "44"
 theme.lock_screen_fg = x.color7
 
--- Icon taglist
-local ntags = 10
-theme.taglist_icons_empty = {}
-theme.taglist_icons_occupied = {}
-theme.taglist_icons_focused = {}
-theme.taglist_icons_urgent = {}
--- table.insert(tag_icons, tag)
-for i = 1, ntags do
-    theme.taglist_icons_empty[i] = taglist_icon_path .. tostring(i) .. "_empty.png"
-    theme.taglist_icons_occupied[i] = taglist_icon_path .. tostring(i) .. "_occupied.png"
-    theme.taglist_icons_focused[i] = taglist_icon_path .. tostring(i) .. "_focused.png"
-    theme.taglist_icons_urgent[i] = taglist_icon_path .. tostring(i) .. "_urgent.png"
-end
-
--- Noodle Text Taglist
-theme.taglist_text_font     = "monospace 25"
--- theme.taglist_text_font = "sans bold 15"
-theme.taglist_text_empty    = { "", "", "", "", "", "", "", "", "", "" }
-theme.taglist_text_occupied = { "", "", "", "", "", "", "", "", "", "" }
-theme.taglist_text_focused  = { "o", "o", "o", "o", "o", "o", "o", "o", "o", "o" }
--- theme.taglist_text_focused  = {"","","","","","","","","",""}
-theme.taglist_text_urgent   = { "+", "+", "+", "+", "+", "+", "+", "+", "+", "+" }
--- theme.taglist_text_urgent   = {"","","","","","","","","",""}
--- theme.taglist_text_urgent   = {"","","","","","","","","",""}
-
-theme.taglist_text_color_empty = { x.background .. "22", x.background .. "22", x.background .. "22", x.background .. "22",
-    x.background .. "22", x.background .. "22", x.background .. "22", x.background .. "22", x.background .. "22",
-    x.background .. "22" }
--- theme.taglist_text_color_occupied  = { x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0" }
--- theme.taglist_text_color_focused  = { x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0", x.foreground.."F0" }
--- theme.taglist_text_color_urgent  = { x.foreground, x.foreground, x.foreground, x.foreground, x.foreground, x.foreground, x.foreground, x.foreground, x.foreground, x.foreground }
-
-theme.taglist_text_color_occupied = { x.color1 .. "99", x.color2 .. "99", x.color3 .. "99", x.color4 .. "99",
-    x.color5 .. "99", x.color6 .. "99", x.color1 .. "99", x.color2 .. "99", x.color3 .. "99", x.color4 .. "99" }
-theme.taglist_text_color_focused  = { x.color9, x.color10, x.color11, x.color12, x.color13, x.color14, x.color9,
-    x.color10, x.color11, x.color12 }
-theme.taglist_text_color_urgent   = { x.background, x.background, x.background, x.background, x.background, x.background,
-    x.background, x.background, x.background, x.background }
--- theme.taglist_text_color_urgent   = { x.color9, x.color10, x.color11, x.color12, x.color13, x.color14, x.color9, x.color10, x.color11, x.color12 }
-
 -- Prompt
 theme.prompt_fg = x.color12
 
 -- Text Taglist (default)
 theme.taglist_font = "monospace bold 9"
-theme.taglist_bg_focus = x.background
-theme.taglist_fg_focus = x.color12
-theme.taglist_bg_occupied = x.background
+theme.taglist_bg_focus = colors.transparent
+theme.taglist_fg_focus = x.foreground
+theme.taglist_bg_occupied = colors.transparent
 theme.taglist_fg_occupied = x.color8
-theme.taglist_bg_empty = x.background
+theme.taglist_bg_empty = colors.transparent
 theme.taglist_fg_empty = x.background
-theme.taglist_bg_urgent = x.background
+theme.taglist_bg_urgent = colors.transparent
 theme.taglist_fg_urgent = x.color3
 theme.taglist_disable_icon = true
 theme.taglist_spacing = dpi(0)
--- Generate taglist squares:
-local taglist_square_size = dpi(0)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-    taglist_square_size, theme.fg_focus
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, theme.fg_normal
-)
+
 
 -- Variables set for theming the menu:
 theme.menu_height       = dpi(40)
@@ -452,7 +404,7 @@ theme.tag_preview_widget_border_width = theme.border_width * 0
 theme.tag_preview_widget_margin = dpi(10)
 
 -- window switcher
-theme.window_switcher_widget_bg = x.background .. "22" -- The bg color of the widget
+theme.window_switcher_widget_bg = x.background .. "CC" -- The bg color of the widget
 theme.window_switcher_widget_border_width = theme.border_width -- The border width of the widget
 theme.window_switcher_widget_border_radius = theme.border_radius -- The border radius of the widget
 theme.window_switcher_widget_border_color = x.background -- The border color of the widget
@@ -476,7 +428,7 @@ theme.window_switcher_icon_width = 40 -- Thw width of one icon
 theme.tabbed_spawn_in_tab = false -- whether a new client should spawn into the focused tabbing container
 
 -- tabbar general
-theme.tabbar_ontop              = false
+theme.tabbar_ontop              = true
 theme.tabbar_radius             = 0 -- border radius of the tabbar
 theme.tabbar_style              = "default" -- style of the tabbar ("default", "boxes" or "modern")
 theme.tabbar_font               = theme.font -- font of the tabbar

@@ -28,35 +28,35 @@ local clicked = gears.color.recolor_image(
 local awesome_icon = wibox.widget {
     {
         widget = wibox.widget.imagebox,
-        -- image = gears.surface(beautiful.theme_assets.awesome_icon(512,
-        --                                                           x.color6,
-        --                                                          x.background)),
-        image = icons.getIcon("beautyline/apps/scalable/distributor-logo-arch.svg"),
+        image = gears.surface(beautiful.theme_assets.awesome_icon(256,
+            x.color4,
+            x.background)),
+        --image = icons.getIcon("beautyline/apps/scalable/distributor-logo-arch.svg"),
         -- image = icons.getIcon("candy-icons/apps/scalable/playonlinux.svg"),
         resize = true
     },
-    margins = dpi(10),
+    margins = dpi(11),
     widget = wibox.container.margin
 }
 
 local awesome_icon_container = wibox.widget {
     awesome_icon,
-    bg = x.background,
+    bg = colors.transparent,
     widget = wibox.container.background
 }
 
 awesome_icon_container:connect_signal("button::press", function()
-    awesome_icon_container.bg = x.color0
-    awesome_icon.top = dpi(11)
-    awesome_icon.left = dpi(11)
-    awesome_icon.right = dpi(9)
-    awesome_icon.bottom = dpi(9)
+    awesome_icon_container.bg = x.color0 .. "CC"
+    awesome_icon.top = dpi(12)
+    awesome_icon.left = dpi(12)
+    awesome_icon.right = dpi(10)
+    awesome_icon.bottom = dpi(10)
     dashboard_show()
 end)
 
 awesome_icon_container:connect_signal("button::release", function()
-    awesome_icon.margins = dpi(10)
-    awesome_icon_container.bg = x.background
+    awesome_icon.margins = dpi(11)
+    awesome_icon_container.bg = colors.transparent
 end)
 
 -- Change cursor
@@ -98,7 +98,7 @@ local battery_bar_container = wibox.widget {
         },
         widget = wibox.container.margin
     },
-    bg = x.background,
+    bg = colors.transparent,
     widget = wibox.container.background
 }
 
@@ -181,12 +181,12 @@ local a = wibox.widget {
 }
 
 battery_bar_container:connect_signal("button::press", function()
-    battery_bar_container.bg = x.color0
+    battery_bar_container.bg = x.color0 .. "CC"
 end)
 
 battery_bar_container:connect_signal("button::release", function()
     battery_popup_toggle(mouse.screen)
-    battery_bar_container.bg = x.background
+    battery_bar_container.bg = colors.transparent
 end)
 
 -- Change cursor
@@ -334,8 +334,22 @@ secondtextbox:connect_signal("widget::redraw_needed", function()
     secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
 end)
 
-local clock_container = wibox.widget {
-    {
+
+-- Create the Wibar -----------------------------------------------------------
+local datetooltip = awful.tooltip {};
+datetooltip.preferred_alignments = { "middle", "front", "back" }
+datetooltip.mode = "outside"
+datetooltip.markup = helpers.colorize_text(os.date("%d"), x.color13) .. "/" ..
+helpers.colorize_text(os.date("%m"), x.color12) .. "/" ..
+helpers.colorize_text(os.date("%y"), x.color10)
+
+local mysystray = wibox.widget.systray()
+mysystray.base_size = beautiful.systray_icon_size
+
+screen.connect_signal("request::desktop_decoration", function(s)
+
+    s.clock = wibox.widget {
+        screen = s,
         {
             hourtextbox,
             minutetextbox,
@@ -343,43 +357,38 @@ local clock_container = wibox.widget {
             spacing = dpi(5),
             layout = wibox.layout.fixed.horizontal
         },
-        margins = {
-            top = dpi(9),
-            bottom = dpi(9),
-            left = dpi(11),
-            right = dpi(11)
-        },
+        margins = dpi(11),
         widget = wibox.container.margin
-    },
-    bg = x.background,
-    widget = wibox.container.background
-}
+    
+    }
+    
+    s.clock_container = wibox.widget {
+        screen = s,
+        s.clock,
+        bg = colors.transparent,
+        widget = wibox.container.background
+    }
+    
 
-local datetooltip = awful.tooltip {};
-datetooltip.preferred_alignments = { "middle", "front", "back" }
-datetooltip.mode = "outside"
-datetooltip:add_to_object(clock_container)
-datetooltip.markup = helpers.colorize_text(os.date("%d"), x.color13) .. "/" ..
-    helpers.colorize_text(os.date("%m"), x.color12) .. "/" ..
-    helpers.colorize_text(os.date("%y"), x.color10)
-
-clock_container:connect_signal("button::press", function()
-    control_center_toggle(mouse.screen)
-    clock_container.bg = x.color0
-end)
-
-clock_container:connect_signal("button::release", function()
-    clock_container.bg = x.background
-end)
-
--- Change cursor
-helpers.add_hover_cursor(clock_container, "hand2")
--- Create the Wibar -----------------------------------------------------------
-
-local mysystray = wibox.widget.systray()
-mysystray.base_size = beautiful.systray_icon_size
-
-screen.connect_signal("request::desktop_decoration", function(s)
+    datetooltip:add_to_object(s.clock_container)
+    -- Change cursor
+    helpers.add_hover_cursor(s.clock_container, "hand2")
+    
+    
+    s.clock_container:connect_signal("button::press", function()
+        control_center_toggle(mouse.screen)
+        s.clock_container.bg = x.color0 .. "CC"
+        s.clock.top = dpi(12)
+        s.clock.left = dpi(12)
+        s.clock.right = dpi(10)
+        s.clock.bottom = dpi(10)
+    end)
+    
+    s.clock_container:connect_signal("button::release", function()
+        s.clock_container.bg = colors.transparent
+        s.clock.margins = dpi(11)
+    end)
+    
     -- bling: task preview
     bling.widget.tag_preview.enable {
         show_client_content = true,
@@ -393,11 +402,11 @@ screen.connect_signal("request::desktop_decoration", function(s)
         scale = 0.5,
         honor_padding = true,
         honor_workarea = true,
-        background_widget = wibox.widget {    -- Set a background image (like a wallpaper) for the widget 
-            image = beautiful.wallpaper,
+        background_widget = wibox.widget { -- Set a background image (like a wallpaper) for the widget
+            image                 = beautiful.wallpaper,
             horizontal_fit_policy = "fit",
             vertical_fit_policy   = "fit",
-            widget = wibox.widget.imagebox
+            widget                = wibox.widget.imagebox
         }
     }
 
@@ -522,7 +531,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mylayoutboxContainer = wibox.widget {
         screen = s,
         s.mylayoutbox,
-        bg = x.background,
+        bg = colors.transparent,
         widget = wibox.container.background
     }
 
@@ -540,11 +549,11 @@ screen.connect_signal("request::desktop_decoration", function(s)
         s.mylayoutbox.right = dpi(9)
         s.mylayoutbox.bottom = dpi(9)
         layoutPopup_toggle(s)
-        s.mylayoutboxContainer.bg = x.color0
+        s.mylayoutboxContainer.bg = x.color0 .. "CC"
     end)
 
     s.mylayoutboxContainer:connect_signal("button::release", function()
-        s.mylayoutboxContainer.bg = x.background
+        s.mylayoutboxContainer.bg = colors.transparent
         s.mylayoutbox.margins = dpi(10)
     end)
 
@@ -597,7 +606,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             s.mytaglist,
             s.mypromptbox
         },
-        clock_container,
+        s.clock_container,
         {
             {
                 mysystray,
@@ -620,7 +629,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             layout = wibox.layout.fixed.horizontal
         }
     }
-    awesome.connect_signal("elemental::dismiss", function ()
+    awesome.connect_signal("elemental::dismiss", function()
         control_center_hide(s)
         battery_popup_hide(s)
         layoutPopup_hide(s)

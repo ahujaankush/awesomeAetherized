@@ -97,8 +97,11 @@ local beautiful = require("beautiful")
 local xrdb = beautiful.xresources.get_current_theme()
 -- Make dpi function global
 dpi = beautiful.xresources.apply_dpi
--- Make xresources colors global
-
+-- global variable, transparent background
+colors= {
+  transparent = "00000000"
+}
+  -- Make xresources colors global
 x = {
   --           xrdb variable
   background = xrdb.background,
