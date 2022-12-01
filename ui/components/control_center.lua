@@ -3,6 +3,7 @@ local beautiful = require("beautiful")
 local wibox = require("wibox")
 local helpers = require("helpers")
 local gears = require("gears")
+local rubato = require("modules.rubato")
 
 local notify_cont = wibox.widget {
     screen = s,
@@ -80,11 +81,30 @@ screen.connect_signal("request::desktop_decoration", function(s)
         fg        = x.foreground,
     }
 
-    local control_center_grabber
-    function control_center_hide(s)
-        s.control_center.visible = false
-        awful.keygrabber.stop(control_center_grabber)
+    s.control_center_slide = rubato.timed {
+        pos = s.geometry.y - s.control_center.height,
+        rate = 45,
+        intro = 0.1,
+        duration = 0.4,
+        easing = rubato.easing.quadratic,
+        subscribed = function(pos)
+            s.control_center.y = s.geometry.y + pos
+        end
+    }
 
+    s.control_center_timer = gears.timer {
+        timeout = 0.5,
+        single_shot = true,
+        callback = function()
+            s.control_center.visible = not s.control_center.visible
+        end
+    }
+
+    s.control_center_grabber = nil
+    function control_center_hide(s)
+        s.control_center_slide.target = s.geometry.y - s.control_center.height
+        s.control_center_timer:start()
+        awful.keygrabber.stop(s.control_center_grabber)
     end
 
     if s.control_center.visble then
@@ -94,7 +114,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     function control_center_show(s)
 
         -- naughty.notify({text = "starting the keygrabber"})
-        control_center_grabber = awful.keygrabber.run(function(_, key, event)
+        s.control_center_grabber = awful.keygrabber.run(function(_, key, event)
             if event == "release" then
                 return
             end
@@ -104,6 +124,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             end
         end)
         s.control_center.visible = true
+        s.control_center_slide.target = s.geometry.y + beautiful.wibar_height + dpi(10)
     end
 
     function control_center_toggle(s)

@@ -6,7 +6,9 @@ local apps = require("apps")
 
 local helpers = require("helpers")
 
+local rubato = require("modules.rubato")
 
+local sidebar_hidden = true
 
 -- Helper function that changes the appearance of progress bars and their icons
 local function format_progress_bar(bar)
@@ -222,7 +224,7 @@ local function generate_prompt_icon(icon, color)
 end
 
 function sidebar_activate_prompt(action)
-    sidebar.visible = true
+    sidebar_show()
     search_icon.visible = false
     local prompt
     if action == "run" then
@@ -233,7 +235,7 @@ function sidebar_activate_prompt(action)
     helpers.prompt(action, search_text, prompt, function()
         search_icon.visible = true
         if mouse.current_wibox ~= sidebar then
-            sidebar.visible = false
+            sidebar_hide()
         end
     end)
 end
@@ -375,6 +377,26 @@ else
 end
 --awful.placement.maximize_vertically(sidebar, { honor_workarea = true, margins = { top = beautiful.useless_gap * 2 } })
 
+-- rubato sidebar slide
+local slide = rubato.timed {
+    pos = screen.primary.geometry.x - sidebar.width,
+    rate = 45,
+	intro = 0.1,
+	duration = 0.4,
+    easing = rubato.easing.zero,
+    subscribed = function(pos) 
+		sidebar.x = screen.primary.geometry.x + pos
+	end
+}
+
+sidebar.timer= gears.timer {
+	timeout = 0.5,
+	single_shot = true,
+	callback = function()
+		sidebar.visible = not sidebar.visible
+	end
+}
+
 sidebar:buttons(gears.table.join(
     -- Middle click - Hide sidebar
     awful.button({ }, 2, function ()
@@ -384,12 +406,15 @@ sidebar:buttons(gears.table.join(
 
 sidebar_show = function()
     sidebar.visible = true
+    slide.target = screen.primary.geometry.x
+
 end
 
 sidebar_hide = function()
     -- Do not hide it if prompt is active
     if not prompt_is_active() then
-        sidebar.visible = false
+        slide.target = screen.primary.geometry.x - sidebar.width
+        sidebar.timer:start()
     end
 end
 
@@ -397,7 +422,7 @@ sidebar_toggle = function()
     if sidebar.visible then
         sidebar_hide()
     else
-        sidebar.visible = true
+        sidebar.timer:start()
     end
 end
 
@@ -412,7 +437,7 @@ if user.sidebar.show_on_mouse_screen_edge then
     local sidebar_activator = wibox({y = sidebar.y, width = 1, visible = true, ontop = false, opacity = 0, below = true, screen = screen.primary})
     sidebar_activator.height = sidebar.height
     sidebar_activator:connect_signal("mouse::enter", function ()
-        sidebar.visible = true
+        sidebar_show()
     end)
 
     if beautiful.sidebar_position == "right" then

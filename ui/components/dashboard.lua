@@ -18,7 +18,7 @@ local screen_width = awful.screen.focused().geometry.width
 local screen_height = awful.screen.focused().geometry.height
 
 -- Create the widget
-dashboard = wibox({ visible = false, ontop = true, type = "dock", screen = screen.primary })
+dashboard = wibox({ visible = false, ontop = true, type = "dock", screen = screen.primary, opacity = beautiful.dashboard_opacity })
 awful.placement.maximize(dashboard)
 
 dashboard.bg = beautiful.dashboard_bg or beautiful.exit_screen_bg or beautiful.wibar_bg or "#111111"

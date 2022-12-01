@@ -2,7 +2,6 @@ local wibox = require("wibox")
 local helpers = require("helpers")
 local beautiful = require("beautiful")
 local awful = require("awful")
-local apps = require("apps")
 local currentVol = 50
 local volume_icon_text_icon = helpers.colorize_text("墳", x.color6)
 local volume_icon = wibox.widget {
@@ -63,13 +62,13 @@ awesome.connect_signal("evil::volume", function(value, muted)
 end)
 
 volume_icon_container:connect_signal("button::press", function()
-    apps.volume()
-    volume_icon_container.bg = x.color0
+    helpers.volume_control(0)
+--    volume_icon_container.bg = x.color0
 end)
 
-volume_icon_container:connect_signal("button::release", function()
-    volume_icon_container.bg = x.background .. "00"
-end)
+-- volume_icon_container:connect_signal("button::release", function()
+--     volume_icon_container.bg = x.background .. "00"
+-- end)
 
 return volume_icon_container
 

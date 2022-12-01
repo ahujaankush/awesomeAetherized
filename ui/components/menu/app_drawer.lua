@@ -67,30 +67,29 @@ local function create_button(symbol, color, hover_color, cmd, key)
 end
 
 -- Create app buttons
-local terminal = create_button("", x.color1, x.color9, function() awful.spawn.with_shell(user.terminal) end, "Enter")
-local editor = create_button("﬏", x.color4, x.color12, apps.editor, "e")
-local vim = create_button("", x.color2, x.color10, apps.nvim, "v")
-local browser = create_button("爵", x.color5, x.color13, apps.browser, "w")
-local mail = create_button("", x.color3, x.color11, apps.mail, "m")
+local terminal = create_button("", x.color1, x.color9, function() awful.spawn.with_shell(user.terminal) end, "q")
+local editor = create_button("﬏", x.color4, x.color12, apps.editor, "w")
+local vim = create_button("", x.color2, x.color10, apps.nvim, "e")
+local browser = create_button("爵", x.color5, x.color13, apps.browser, "r")
+local mail = create_button("", x.color3, x.color11, apps.mail, "t")
 
-local files = create_button("", x.color3, x.color11, apps.file_manager, "f")
-local office = create_button("", x.color5, x.color13, apps.office, "o")
-local okular = create_button("", x.color6, x.color14, apps.okular, "u")
-local schedule = create_button("", x.color2, x.color10, apps.networks, "s")
-local pyroWrite = create_button("", x.color1, x.color9, apps.editor, "p")
+local files = create_button("", x.color3, x.color11, apps.file_manager, "a")
+local office = create_button("", x.color5, x.color13, apps.office, "s")
+local okular = create_button("", x.color6, x.color14, apps.okular, "d")
+local schedule = create_button("", x.color2, x.color10, apps.networks, "f")
+local pyroWrite = create_button("", x.color1, x.color9, apps.editor, "g")
 
+local resources = create_button("", x.color2, x.color10, function() awful.spawn.with_shell(user.file_manager.." "..user.dirs.resources) end, "z")
+local workspace = create_button("", x.color1, x.color9, function() awful.spawn.with_shell(user.file_manager.." "..user.dirs.workspace) end, "x")
+local student = create_button("拾", x.color5, x.color13, function() awful.spawn.with_shell(user.file_manager.." "..user.dirs.student) end, "c")
+local books = create_button("", x.color3, x.color11, function() awful.spawn.with_shell(user.file_manager.." "..user.dirs.books) end, "v")
+local toDO = create_button("", x.color6, x.color14, function() awful.spawn.with_shell(user.file_manager.." "..user.dirs.toDO) end, "b")
 
-local resources = create_button("", x.color2, x.color10, apps.passwords, "r")
-local workspace = create_button("", x.color1, x.color9, apps.night_mode, "x")
-local student = create_button("拾", x.color5, x.color13, apps.record, "r")
-local books = create_button("", x.color3, x.color11, apps.lutris, "l")
-local toDO = create_button("", x.color6, x.color14, apps.editor, "e")
-
-local night_mode = create_button("望", x.color4, x.color12, apps.night_mode, "s")
-local keys = create_button("", x.color2, x.color10, apps.passwords, "o")
-local compositor = create_button("", x.color3, x.color11, apps.compositor, "z")
-local restart_awesome = create_button("ﰇ", x.color1, x.color9, awesome.restart, "r")
-local quit_awesome = create_button("", x.color5, x.color13, awesome.quit, "q")
+local night_mode = create_button("望", x.color4, x.color12, apps.night_mode, "y")
+local keys = create_button("", x.color2, x.color10, apps.passwords, "u")
+local compositor = create_button("", x.color3, x.color11, apps.compositor, "i")
+local restart_awesome = create_button("ﰇ", x.color1, x.color9, awesome.restart, "o")
+local quit_awesome = create_button("", x.color5, x.color13, awesome.quit, "p")
 
 
 -- Create the widget
@@ -209,6 +208,7 @@ app_drawer:setup {
     bg = x.background.."FF",
     -- bg = x.background,
     -- bg = "#00000000",
+    opacity = beautiful.app_drawer_opacity,
     widget = wibox.container.background
 }
 

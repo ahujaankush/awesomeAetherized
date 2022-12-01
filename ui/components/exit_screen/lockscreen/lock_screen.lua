@@ -52,17 +52,11 @@ end
 
 -- Items
 local day_of_the_week = wibox.widget {
-    -- Fancy font
     font = "Scriptina Bold 80",
-    -- font = "Space Craft 50",
-    -- font = "Razed Galerie 70",
-    -- font = "A-15-BIT 70",
-    -- font = "Kill The Noise 90",
-    -- Set forced width in order to keep it from getting cut off
     forced_width = dpi(1000),
     align = "center",
     valign = "center",
-    widget = wibox.widget.textclock(helpers.colorize_text("%A", x.color3))
+    widget = wibox.widget.textclock(helpers.colorize_text("%A", x.color5))
 }
 
 local month = wibox.widget {
@@ -97,7 +91,7 @@ local time = {
             widget = wibox.widget.textclock("%H")
         },
         {
-            font = "sans 16",
+            font = "sans bold 16",
             widget = wibox.widget.textclock("%M")
         },
         spacing = dpi(2),
@@ -255,7 +249,7 @@ lock_screen_box:setup {
                                 forced_height = dpi(5),
                                 forced_width = dpi(5),
                                 shape = gears.shape.circle,
-                                bg = x.color3,
+                                bg = x.color2,
                                 widget = wibox.container.background
                             },
                             time,
@@ -264,7 +258,7 @@ lock_screen_box:setup {
                                 forced_height = dpi(5),
                                 forced_width = dpi(5),
                                 shape = gears.shape.circle,
-                                bg = x.color3,
+                                bg = x.color6,
                                 widget = wibox.container.background
                             },
                             spacing = dpi(4),

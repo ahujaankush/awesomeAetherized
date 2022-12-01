@@ -10,6 +10,7 @@
 -- >> The file that binds everything together.
 --]] -- bling
 local bling = require("modules.bling")
+local machi = require("modules.layout-machi")
 
 -- User variables and preferences
 user = {
@@ -25,7 +26,7 @@ user = {
   nvim = "kitty --class nvim -e lvim",
   email_client = "evolution",
   music_client = "kitty -o font_size=12 --class music -e ncmpcpp",
-  office = "onlyoffice-desktopeditors",
+  office = "libreoffice",
   -- >> Web Search <<
   -- web_search_cmd = "xdg-open https://google.com",
   web_search_cmd = "xdg-open https://www.google.com/search?q=",
@@ -48,7 +49,13 @@ user = {
     videos = os.getenv("XDG_VIDEOS_DIR") or "~/Videos",
     -- Make sure the directory exists so that your screenshots
     -- are not lost
-    screenshots = os.getenv("XDG_SCREENSHOTS_DIR") or "~/Pictures/Screenshots"
+    screenshots = os.getenv("XDG_SCREENSHOTS_DIR") or "~/Pictures/Screenshots",
+
+    resources = "~/Documents/resources",
+    workspace = "~/Documents/workspace",
+    student = "~/Documents/student",
+    books = "~/Documents/books",
+    toDO = "~/Documents/toDO",
   },
 
   -- >> Sidebar <<
@@ -191,8 +198,7 @@ require("ui.components.control_center")
 -- Lock screen
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above
-local lock_screen = require("ui.components.exit_screen.lockscreen")
-lock_screen.init()
+require("ui.components.exit_screen.lockscreen").init()
 -- App drawer
 require("ui.components.menu.app_drawer")
 -- Hotkeys overlay
@@ -245,6 +251,7 @@ awful.layout.layouts = { awful.layout.suit.floating, awful.layout.suit.tile, -- 
   --    awful.layout.suit.corner.ne,
   --    awful.layout.suit.corner.sw,
   --    awful.layout.suit.corner.se,
+  machi.default_layout,
 }
 
 -- Autostart

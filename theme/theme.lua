@@ -82,9 +82,8 @@ theme.titlebar_fg = x.color7
 theme.notification_position = "top_right"
 theme.notification_border_width = dpi(0)
 theme.notification_border_radius = theme.border_radius
-theme.notification_border_color = x.color10
+theme.notification_border_color = x.color8
 theme.notification_bg = x.background
--- theme.notification_bg = x.color8
 theme.notification_fg = x.foreground
 theme.notification_crit_bg = x.background
 theme.notification_crit_fg = x.color1
@@ -92,10 +91,16 @@ theme.notification_icon_size = dpi(60)
 -- theme.notification_height = dpi(80)
 -- theme.notification_width = dpi(300)
 theme.notification_margin = dpi(16)
-theme.notification_opacity = 1
+theme.notification_opacity = 0.75
 theme.notification_font = theme.font_name.." 11"
 theme.notification_padding = theme.screen_margin * 2
 theme.notification_spacing = theme.screen_margin * 4
+
+theme.notification_osd_bg = x.background
+theme.notification_osd_indicator_bg = x.color0
+theme.notification_osd_fg = x.foreground
+theme.notification_osd_opacity = 0.85
+
 
 -- Notification Center
 -- ============================
@@ -137,7 +142,7 @@ theme.wibar_position = "top"
 theme.wibar_height = dpi(45)
 theme.wibar_fg = x.foreground
 theme.wibar_bg = x.background
-theme.wibar_opacity = 1
+theme.wibar_opacity = 0.9
 theme.wibar_border_color = x.color0
 theme.wibar_border_width = dpi(0)
 theme.wibar_border_radius = dpi(0)
@@ -202,17 +207,30 @@ theme.tasklist_shape_border_color_urgent = x.color1 .. "80"
 -- (Sidebar items can be customized in sidebar.lua)
 theme.sidebar_bg = x.background
 theme.sidebar_fg = x.color15
-theme.sidebar_opacity = 1
+theme.sidebar_opacity = 0.9
 theme.sidebar_position = "left" -- left or right
 theme.sidebar_width = dpi(300)
 theme.sidebar_x = 0
 theme.sidebar_y = 0
-theme.sidebar_height_multip = 0.65 -- this value is multiplied with the screen height
-theme.sidebar_border_radius = dpi(10) --theme.border_radius
+theme.sidebar_height_multip = 1 -- this value is multiplied with the screen height
+theme.sidebar_border_radius = dpi(0) --theme.border_radius
 
 -- Dashboard
 theme.dashboard_bg = x.color0 .. "44"
 theme.dashboard_fg = x.color15
+theme.dashboard_opacity = 0.9
+
+-- control center
+theme.control_center_opacity = 0.9
+
+-- app drawer
+theme.app_drawer_opacity = 0.9
+
+-- battery popup (wibar)
+theme.battery_popup_opacity = 0.9
+
+-- layout list (popup)
+theme.layoutPopup_opacity = 0.9
 
 -- Exit screen
 theme.exit_screen_bg = x.color0 .. "44"
@@ -320,7 +338,7 @@ theme.layout_cornerse   = layout_icon_path .. "cornerse.png"
 theme.layout_mstab      = layout_icon_path .. "mstab.png"
 theme.layout_centered   = layout_icon_path .. "centered.png"
 theme.layout_equalarea   = layout_icon_path .. "equalarea.png"
-
+theme.layout_machi      =  layout_icon_path.."machi.png"
 
 -- Recolor layout icons
 -- theme = theme_assets.recolor_layout(theme, x.color1)

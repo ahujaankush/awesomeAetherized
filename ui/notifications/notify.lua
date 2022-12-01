@@ -83,6 +83,7 @@ naughty.connect_signal("request::display", function(n)
     border_width = beautiful.notification_border_width,
     border_color = beautiful.notification_border_color,
     position = beautiful.notification_position,
+    opacity = beautiful.notification_opacity,
     widget_template = {
       {
         {

@@ -29,7 +29,7 @@ local awesome_icon = wibox.widget {
     {
         widget = wibox.widget.imagebox,
         image = gears.surface(beautiful.theme_assets.awesome_icon(256,
-            x.color4,
+            x.color12,
             x.background)),
         --image = icons.getIcon("beautyline/apps/scalable/distributor-logo-arch.svg"),
         -- image = icons.getIcon("candy-icons/apps/scalable/playonlinux.svg"),
@@ -87,20 +87,7 @@ local chargingIcon = wibox.widget {
     widget = wibox.container.margin
 }
 
-local battery_bar_container = wibox.widget {
-    {
-        battery_bar,
-        margins = {
-            left = dpi(10),
-            right = dpi(10),
-            top = dpi(14),
-            bottom = dpi(14)
-        },
-        widget = wibox.container.margin
-    },
-    bg = colors.transparent,
-    widget = wibox.container.background
-}
+
 
 local pgcharg = wibox.widget.imagebox(icons.getIcon("elenaLinebit/battery_popup_charging.png"), true)
 
@@ -180,17 +167,7 @@ local a = wibox.widget {
     layout = wibox.layout.align.horizontal
 }
 
-battery_bar_container:connect_signal("button::press", function()
-    battery_bar_container.bg = x.color0 .. "CC"
-end)
 
-battery_bar_container:connect_signal("button::release", function()
-    battery_popup_toggle(mouse.screen)
-    battery_bar_container.bg = colors.transparent
-end)
-
--- Change cursor
-helpers.add_hover_cursor(battery_bar_container, "hand2")
 
 local batteryValue = 50
 local charging = false
@@ -347,6 +324,32 @@ local mysystray = wibox.widget.systray()
 mysystray.base_size = beautiful.systray_icon_size
 
 screen.connect_signal("request::desktop_decoration", function(s)
+    
+    s.battery_bar_container = wibox.widget {
+        {
+            battery_bar,
+            margins = {
+                left = dpi(10),
+                right = dpi(10),
+                top = dpi(14),
+                bottom = dpi(14)
+            },
+            widget = wibox.container.margin
+        },
+        bg = colors.transparent,
+        widget = wibox.container.background
+    }
+
+    s.battery_bar_container:connect_signal("button::press", function()
+        s.battery_bar_container.bg = x.color0 .. "CC"
+    end)
+    
+    s.battery_bar_container:connect_signal("button::release", function()
+        battery_popup_toggle(s)
+        s.battery_bar_container.bg = colors.transparent
+    end)
+    
+    helpers.add_hover_cursor(s.battery_bar_container, "hand2")
 
     s.clock = wibox.widget {
         screen = s,
@@ -376,7 +379,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     
     
     s.clock_container:connect_signal("button::press", function()
-        control_center_toggle(mouse.screen)
+        control_center_toggle(s)
         s.clock_container.bg = x.color0 .. "CC"
         s.clock.top = dpi(12)
         s.clock.left = dpi(12)
@@ -433,19 +436,20 @@ screen.connect_signal("request::desktop_decoration", function(s)
         end,
         border_color = beautiful.border_color,
         border_width = beautiful.border_width,
+        opacity = beautiful.battery_popup_opacity
     }
 
-    local battery_popup_grabber
+    s.battery_popup_grabber = nil
     function battery_popup_hide(s)
         s.battery_popup.visible = false
-        awful.keygrabber.stop(battery_popup_grabber)
+        awful.keygrabber.stop(s.battery_popup_grabber)
 
     end
 
     function battery_popup_show(s)
 
         -- naughty.notify({text = "starting the keygrabber"})
-        battery_popup_grabber = awful.keygrabber.run(function(_, key, event)
+        s.battery_popup_grabber = awful.keygrabber.run(function(_, key, event)
             if event == "release" then
                 return
             end
@@ -489,21 +493,22 @@ screen.connect_signal("request::desktop_decoration", function(s)
         end,
         visible = false,
         ontop = true,
+        opacity = beautiful.layoutPopup_opacity,
         bg = x.background,
         fg = x.foreground
     }
 
-    local layoutPopup_grabber
+    s.layoutPopup_grabber = nil
     function layoutPopup_hide(s)
         s.layoutPopup.visible = false
-        awful.keygrabber.stop(layoutPopup_grabber)
+        awful.keygrabber.stop(s.layoutPopup_grabber)
 
     end
 
     function layoutPopup_show(s)
 
         -- naughty.notify({text = "starting the keygrabber"})
-        layoutPopup_grabber = awful.keygrabber.run(function(_, key, event)
+        s.layoutPopup_grabber = awful.keygrabber.run(function(_, key, event)
             if event == "release" then
                 return
             end
@@ -617,7 +622,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             },
             require("ui.widgets.volume_icon"),
             chargingIcon,
-            battery_bar_container,
+            s.battery_bar_container,
             {
                 s.mylayoutboxContainer,
                 -- top = dpi(9),

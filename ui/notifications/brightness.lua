@@ -45,7 +45,7 @@ local bright_adjust = awful.popup({
 local bright_bar = wibox.widget {
     bar_shape = gears.shape.rounded_rect,
     shape = gears.shape.rounded_rect,
-    background_color = x.color0,
+    background_color = beautiful.notification_osd_indicator_bg,
     color = active_color_1,
     max_value = 100,
     value = 0,
@@ -72,7 +72,8 @@ bright_adjust.widget = wibox.widget {
     shape = helpers.rrect(beautiful.border_radius),
     border_width = beautiful.border_width * 0,
     border_color = beautiful.border_color,
-    bg = x.background,
+    bg = beautiful.notification_osd_bg,
+    opacity = beautiful.notification_osd_opacity,
     widget = wibox.container.background
 }
 

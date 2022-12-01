@@ -7,7 +7,7 @@ local decorations = require("ui.decorations")
 local menubar = require("menubar")
 
 local helpers = require("helpers")
-
+local machi = require("modules.layout-machi")
 local keys = {}
 
 -- Mod keys
@@ -503,7 +503,19 @@ awful.key({superkey, shiftkey}, "s", function()
 end, {
     description = "set floating layout",
     group = "tag"
-}), -- Dashboard
+}), -- machi interactive editor
+awful.key({superkey, altkey}, "m", function()
+    machi.default_editor.start_interactive()
+end, {
+    description = "layout machi interactive editor",
+    group = "tag"
+}), -- machi switch between windows
+awful.key({superkey, altkey, shiftkey}, "m", function()
+    machi.switcher.start(client.focus)
+end, {
+    description = "layout machi interactive editor",
+    group = "tag"
+}),-- Dashboard
 awful.key({superkey}, "F1", function()
     if dashboard_show then
         dashboard_show()
