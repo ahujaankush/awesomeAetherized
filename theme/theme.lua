@@ -19,8 +19,7 @@ local theme = {}
 
 -- Set theme wallpaper.
 -- It won't change anything if you are using feh to set the wallpaper like I do.
-theme.wallpaper = os.getenv("HOME") .. "/Pictures/lambda-wallpapers/artwork_gracile.jpg"
-
+theme.wallpaper = os.getenv("HOME") .. "/Pictures/Wallpaper/5bwdct0isf3a1.jpg"
 -- Set the theme font. This is the font that will be used by default in menus, bars, titlebars etc.
 theme.font_name = "CaskaydiaCove Nerd Font Mono"
 theme.font      = theme.font_name .. " 11"
@@ -65,7 +64,7 @@ theme.titlebar_font = theme_name.." bold 9"
 theme.titlebar_title_align = "center"
 -- Titlebar position: top, bottom, left, right
 theme.titlebar_position = "left"
-theme.titlebar_bg = x.background.. "CC"
+theme.titlebar_bg = x.background.. "BF"
 -- theme.titlebar_bg_focus = x.color12
 -- theme.titlebar_bg_normal = x.color8
 theme.titlebar_fg_focus = x.color7
@@ -402,7 +401,7 @@ theme.icon_theme = os.getenv("HOME").."/.icons/oomox-aesthetic-dark/"
 -- Task Preview
 theme.task_preview_widget_border_radius = 12 -- Border radius of the widget (With AA)
 theme.task_preview_widget_bg = x.background -- The bg color of the widget
-theme.task_preview_widget_border_color = x.color12 .. "70" -- The border color of the widget
+theme.task_preview_widget_border_color = x.color5 -- The border color of the widget
 theme.task_preview_widget_border_width = 1 -- The border width of the widget
 theme.task_preview_widget_margin = 20 -- The margin of the widget
 theme.bling_preview_bottom_margin = dpi(60)
@@ -423,65 +422,66 @@ theme.tag_preview_widget_margin = dpi(10)
 
 -- window switcher
 theme.window_switcher_widget_bg = x.background .. "CC" -- The bg color of the widget
-theme.window_switcher_widget_border_width = theme.border_width -- The border width of the widget
+theme.window_switcher_widget_border_width = dpi(5) -- The border width of the widget
 theme.window_switcher_widget_border_radius = theme.border_radius -- The border radius of the widget
 theme.window_switcher_widget_border_color = x.background -- The border color of the widget
-theme.window_switcher_clients_spacing = 15 -- The space between each client item
-theme.window_switcher_client_icon_horizontal_spacing = 5 -- The space between client icon and text
-theme.window_switcher_client_width = 150 -- The width of one client widget
-theme.window_switcher_client_height = 250 -- The height of one client widget
-theme.window_switcher_client_margins = 20 -- The margin between the content and the border of the widget
-theme.window_switcher_thumbnail_margins = 10 -- The margin between one client thumbnail and the rest of the widget
+theme.window_switcher_clients_spacing = dpi(15) -- The space between each client item
+theme.window_switcher_client_icon_horizontal_spacing = dpi(5) -- The space between client icon and text
+theme.window_switcher_client_width = dpi(250) -- The width of one client widget
+theme.window_switcher_client_height = dpi(350) -- The height of one client widget
+theme.window_switcher_client_margins = dpi(20) -- The margin between the content and the border of the widget
+theme.window_switcher_thumbnail_margins = dpi(10) -- The margin between one client thumbnail and the rest of the widget
 theme.thumbnail_scale = false -- If set to true, the thumbnails fit policy will be set to "fit" instead of "auto"
-theme.window_switcher_name_margins = 10 -- The margin of one clients title to the rest of the widget
+theme.window_switcher_name_margins = dpi(10) -- The margin of one clients title to the rest of the widget
 theme.window_switcher_name_valign = "center" -- How to vertically align one clients title
-theme.window_switcher_name_forced_width = 200 -- The width of one title
-theme.window_switcher_name_font = "Sans 11" -- The font of all titles
+theme.window_switcher_name_forced_width = dpi(200) -- The width of one title
+theme.window_switcher_name_font = theme.font_name.." 11" -- The font of all titles
 theme.window_switcher_name_normal_color = x.foreground -- The color of one title if the client is unfocused
 theme.window_switcher_name_focus_color = x.color5 -- The color of one title if the client is focused
 theme.window_switcher_icon_valign = "center" -- How to vertially align the one icon
-theme.window_switcher_icon_width = 40 -- Thw width of one icon
+theme.window_switcher_icon_width = dpi(50) -- Thw width of one icon
+
 
 -- tabbed
-theme.tabbed_spawn_in_tab = false -- whether a new client should spawn into the focused tabbing container
+theme.tabbed_spawn_in_tab = true           -- whether a new client should spawn into the focused tabbing container
 
 -- tabbar general
-theme.tabbar_ontop              = true
-theme.tabbar_radius             = 0 -- border radius of the tabbar
-theme.tabbar_style              = "default" -- style of the tabbar ("default", "boxes" or "modern")
-theme.tabbar_font               = theme.font -- font of the tabbar
-theme.tabbar_size               = 40 -- size of the tabbar
-theme.tabbar_position           = "top" -- position of the tabbar
-theme.tabbar_bg_normal          = x.color0 -- background color of the focused client on the tabbar
-theme.tabbar_fg_normal          = x.color7 -- foreground color of the focused client on the tabbar
-theme.tabbar_bg_focus           = x.background -- background color of unfocused clients on the tabbar
-theme.tabbar_fg_focus           = x.foreground -- foreground color of unfocused clients on the tabbar
-theme.tabbar_bg_focus_inactive  = nil -- background color of the focused client on the tabbar when inactive
-theme.tabbar_fg_focus_inactive  = nil -- foreground color of the focused client on the tabbar when inactive
-theme.tabbar_bg_normal_inactive = nil -- background color of unfocused clients on the tabbar when inactive
-theme.tabbar_fg_normal_inactive = nil -- foreground color of unfocused clients on the tabbar when inactive
-theme.tabbar_disable            = false -- disable the tab bar entirely
+theme.tabbar_ontop  = false
+theme.tabbar_radius = theme.border_radius                -- border radius of the tabbar
+theme.tabbar_style = "modern"         -- style of the tabbar ("default", "boxes" or "modern")
+theme.tabbar_font = theme.font          -- font of the tabbar
+theme.tabbar_size = dpi(35)                 -- size of the tabbar
+theme.tabbar_position = "bottom"          -- position of the tabbar
+theme.tabbar_bg_normal = x.background     -- background color of the focused client on the tabbar
+theme.tabbar_fg_normal = x.foreground   -- foreground color of the focused client on the tabbar
+theme.tabbar_bg_focus  = x.color0     -- background color of unfocused clients on the tabbar
+theme.tabbar_fg_focus  = x.foreground     -- foreground color of unfocused clients on the tabbar
+theme.tabbar_bg_focus_inactive = nil   -- background color of the focused client on the tabbar when inactive
+theme.tabbar_fg_focus_inactive = nil   -- foreground color of the focused client on the tabbar when inactive
+theme.tabbar_bg_normal_inactive = nil  -- background color of unfocused clients on the tabbar when inactive
+theme.tabbar_fg_normal_inactive = nil  -- foreground color of unfocused clients on the tabbar when inactive
+theme.tabbar_disable = false           -- disable the tab bar entirely
 
 -- mstab
-theme.mstab_bar_disable = false -- disable the tabbar
-theme.mstab_bar_ontop = false -- whether you want to allow the bar to be ontop of clients
-theme.mstab_dont_resize_slaves = false -- whether the tabbed stack windows should be smaller than the
--- currently focused stack window (set it to true if you use
--- transparent terminals. False if you use shadows on solid ones
-theme.mstab_bar_padding = "modern" -- how much padding there should be between clients and your tabbar
--- by default it will adjust based on your useless gaps.
--- If you want a custom value. Set it to the number of pixels (int)
-theme.mstab_border_radius = 0 -- border radius of the tabbar
-theme.mstab_bar_height = 40 -- height of the tabbar
-theme.mstab_tabbar_position = "top" -- position of the tabbar (mstab currently does not support left,right)
-theme.mstab_tabbar_style = "default" -- style of the tabbar ("default", "boxes" or "modern")
--- defaults to the tabbar_style so only change if you want a
--- different style for mstab and tabbed
+theme.mstab_bar_disable = false             -- disable the tabbar
+theme.mstab_bar_ontop = true               -- whether you want to allow the bar to be ontop of clients
+theme.mstab_dont_resize_slaves = false      -- whether the tabbed stack windows should be smaller than the
+                                            -- currently focused stack window (set it to true if you use
+                                            -- transparent terminals. False if you use shadows on solid ones
+theme.mstab_bar_padding = "default"         -- how much padding there should be between clients and your tabbar
+                                            -- by default it will adjust based on your useless gaps.
+                                            -- If you want a custom value. Set it to the number of pixels (int)
+theme.mstab_border_radius = theme.border_radius               -- border radius of the tabbar
+theme.mstab_bar_height = dpi(35)                 -- height of the tabbar
+theme.mstab_tabbar_position = "bottom"         -- position of the tabbar (mstab currently does not support left,right)
+theme.mstab_tabbar_style = "modern"        -- style of the tabbar ("default", "boxes" or "modern")
+                                            -- defaults to the tabbar_style so only change if you want a
+                                            -- different style for mstab and tabbed
 
 -- the following variables are currently only for the "modern" tabbar style
-theme.tabbar_color_close = x.color1 -- chnges the color of the close button
-theme.tabbar_color_min   = x.color3 -- chnges the color of the minimize button
-theme.tabbar_color_float = x.color5 -- chnges the color of the float button
+theme.tabbar_color_close = x.color1        -- chnges the color of the close button
+theme.tabbar_color_min   = x.color3        -- chnges the color of the minimize button
+theme.tabbar_color_float = x.color5        -- chnges the color of the float button
 
 
 return theme

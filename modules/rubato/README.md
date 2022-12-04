@@ -58,8 +58,9 @@ execute, and then run it by updating `target`! In practice it'd look like this:
 
 ```lua
 timed = rubato.timed {
-    intro = 0.1,
-    duration = 0.5,
+    duration = 1/2, --half a second
+    intro = 1/6, --one third of duration
+    override_dt = true, --better accuracy for testing
     subscribed = function(pos) print(pos) end
 }
 
@@ -68,11 +69,32 @@ timed = rubato.timed {
 
 --target is initially 0 (unless you set pos otherwise)
 timed.target = 1
---here it would print out a bunch of values (15 by default) which
---I would normally copy and paste here but my stdout is broken
---on awesome rn so just pretend there are a bunch of floats here
+-- Here it prints out this:
+-- 0
+-- 0
+-- 0.02
+-- 0.06
+-- 0.12
+-- 0.2
+-- 0.3
+-- 0.4
+-- 0.5
+-- 0.6
+-- 0.7
+-- 0.8
+-- 0.88
+-- 0.94
+-- 0.98
+-- 1
+-- 1
+-- First 0 is because when you initially subscribe a function
+-- it calls that function at the current position, which is 0
+-- Last zero is because it'll snap to the exact position in 
+-- case of minor error which can come about from floating point
+-- math or correcting for frameskips
 
---and this'll send it back from 1 to 0, printing out another 15 #s
+--When called after it finishes printing, this would print out
+--the same numbers but in reverse, sending it back from 1 to 0
 timed.target = 0
 ```
 
@@ -108,15 +130,11 @@ The first animation’s velocity graph looks like a trapezoid, while the second 
 
 <h1 id="why">But why though?</h1>
 
-Why go through all this hassle? Why not just use awestore? That's a good question and to be fair you
-can use whatever interpolator you so choose. That being said, rubato is solely focused on animation, has mathematically perfect interruptions and I’ve been told it also looks smoother.
+Why go through all this hassle? Why not just use awestore? That's a good question and to be fair you can use whatever interpolator you so choose. That being said, rubato is solely focused on animation, has mathematically perfect interruptions and I’ve been told it also looks smoother.
 
-Furthermore, if you use rubato, you get to brag about how annoying it was to set up a monstrous
-derivative just to write a custom easing function, like the one shown in [Custom Easing
-Function](#easing)'s example. That's a benefit, not a downside, I promise.
+Furthermore, if you use rubato, you get to brag about how annoying it was to set up a monstrous derivative just to write a custom easing function, like the one shown in [Custom Easing Function](#easing)'s example. That's a benefit, not a downside, I promise.
 
-Also maybe hopefully the code should be almost digestible kinda maybe. I tried my best to comment
-and documentate, but I actually have no idea how to do lua docs or anything.
+Also maybe hopefully the code should be almost digestible kinda maybe. I tried my best to comment and documentate, but I actually have no idea how to do lua docs or anything.
 
 Also it has a cooler name
 
@@ -126,52 +144,40 @@ Also it has a cooler name
 
 Arguments (in the form of a table):
  - `duration`: the total duration of the animation
- - `rate`: the number of times per second the timer executes. Higher rates mean
-   smoother animations and less error.
+ - `rate`: the number of times per second the timer executes. Higher rates mean smoother animations and less error.
+ - `prop_intro`: when `true`, `intro`, `outro` and `inter` represent proportional values; 0.5 would be half the duration. (def. `false`)
  - `pos`: the initial position of the animation (def. `0`)
  - `intro`: the duration of the intro
  - `outro`: the duration of the outro (def. same as `intro`\*)
- - `prop_intro`: when `true`, `intro`, `outro` and `inter` represent proportional
-   values; 0.5 would be half the duration. (def. `false`)
+ - inter: the duration of intermittent animations (def. same as `intro`\*)
  - `easing`: the easing table (def. `interpolate.linear`)
  - `easing_outro`: the outro easing table (def. as `easing`)
- - `easing_inter`: the "intermittent" easing function, which defines which
-   easing to use in the case of animation interruptions (def. same as
-   `easing`)
+ - `easing_inter`: the "intermittent" easing table, which defines which easing to use in the case of animation interruptions (def. same as `easing`)
  - `subscribed`: a function to subscribe at initialization (def. `nil`)
- - `override_simulate`: when `true`, will simulate everything instead of just
-   when `dx` and `b` have opposite signs at the cost of having to do a little
-   more work (and making my hard work on finding the formula for `m` worthless 
-   :slightly_frowning_face:) (def. `false`)
- - `override_dt`: will cap rate to the fastest that awesome can possibly handle.
-   This may result in frame-skipping. By setting it to false, it may make 
-   animations slower (def. `true`)
+ - `override_simulate`: when `true`, will simulate everything instead of just when `dx` and `b` have opposite signs at the cost of having to do a little more work (and making my hard work on finding the formula for `m` worthless :slightly_frowning_face:) (def. `false`)
+ - `rapid_set`: 
+ - `override_dt`: overrides the difference in time it takes to redraw the screen and just uses 1/rate no matter what. This results in slightly more accurate animations but they may take longer if awesome takes too long to redraw the screen. (def. `false`)
  - `awestore_compat`: make api even *more* similar to awestore's (def. `false`)
- - `log`: it would print additional logs, but there aren't any logs to print right
-   now so it kinda just sits there (def. `false`)
+ - `log`: it would print additional logs, but there aren't any logs to print right now so it kinda just sits there (def. `false`)
+ - `debug`: basically just tags the timed instance. I use it in tandem with `manager.timed.override.forall`
 
-All of these values (except awestore_compat and subscribed) are mutable and changing them will
-change how the animation looks. I do not suggest changing `pos`, however, unless you change the
-position of what's going to be animated in some other way
+All of these values (except awestore_compat and subscribed) are mutable and changing them will change how the animation looks. I do not suggest changing `pos`, however, unless you change the position of what's going to be animated in some other way
 
-\*with the caviat that if the outro being the same as the intro would result in an error, it would go
-for the largest allowable outro time. Ex: duration = 1, intro = 0.6, then outro will default to 0.4.
+\*unless `outro + intro > 1`, it will instead go for the largest allowable outro time. Ex: duration = 1, intro = 0.6, then outro will default to 0.4.
 
-Useful properties:
+Properties:
  - `target`: when set, sets the target and starts the animation, otherwise returns the target
- - `state`: immutable, returns true if an animation is in progress
+ - `pause`: if true, the timer will have its animation suspedned until set to false again
+ - `running`: immutable, returns true if an animation is in progress
 
 Methods are as follows:
  - `timed:subscribe(func)`: subscribe a function to be ran every refresh of the animation
  - `timed:unsubscribe(func)`: unsubscribe a function
- - `timed:fire()`: run all subscribed functions at current position
- - `timed:abort()`: stop the animation
- - `timed:restart()`: restart the animaiton from it's approximate initial state (if a value is 
- changed during the animation it will remain changed after calling restart)
+ - `timed:fire()`: run all subscribed functions at current position (you may provide it with arguments `pos`, `time` and `dx` manually if you wish, otherwise it'll use the values of the timed object) 
+ - `timed:abort()`: stop the animation at the current position
 
 Awestore compatibility functions (`awestore_compat` must be true):
- - `timed:set(target_new)`: sets the position the animation should go to, effectively the same 
- as setting target
+ - `timed:set(target_new)`: sets the position the animation should go to, effectively the same as setting target
  - `timed:initial()`: returns the intiial position
  - `timed:last()`: returns the target position, effectively the same as `timed.target`
 
@@ -192,9 +198,15 @@ Awestore compatibility properties:
  - `easing.bouncy`: the bouncy thing as shown in the example
 
 **functions for setting default values**
- - `rubato.set_def_rate(rate)`: set default rate for all interpolators, takes an `int`
- - `rubato.set_override_dt(value))`: set default for override_dt for all interpolators, takes a
- `bool`
+ - (DEPRECIATED) `rubato.set_def_rate(rate)`: set default rate for all interpolators, takes an `int`. Please use instead `manager.timed.default.rate = rate`
+ - (DEPRECIATED) `rubato.set_override_dt(value))`: set default for override_dt for all interpolators, takes a `bool`. Please use instead `manager.timed.default.override_dt = value`
+
+ **For rubato.manager**
+
+ - `manager.timed.default`: a table containing properties of timed objects as keys and their default values as values. Updating values in this table changes those defaults. Ex: `manager.timed.default.rate = 60` sets default rate to 60 fps
+ - `manager.timed.override`: a table with accessors which set properties of all tables. Updating values in this table changes the properties of all tables. Ex: `manager.timed.override.is_instant = true` makes all animations instantaneous globally
+ - `manager.timed.override.clear()`: resets all timeds to their initial values
+ - `manager.timed.override.forall(func)`: run some function for all timed objects. Parameter to function is a single timed object. Ex: `manager.timed.override.forall(function(timed) print(timed) end)` prints all timeds
 
 <h1 id="easing">Custom Easing Functions</h1>
 
@@ -204,14 +216,12 @@ To make a custom easing function, it's pretty easy. You just need a table with t
    you'd take the derivative, which would result in linear easing. **Important:** `f(0)=0` and
    `f(1)=1` must be true for it to look nice.
  - `F`, which is basically just the value of the antiderivative of the easing function at `x=1`.
-   This is the antiderivative of the scaled function (such that (0, 0) and (1, 1) are in the
-   function), however, so be wary of that.
+   This is the antiderivative of the scaled function (``(0,0) ⋃ (1,1) ∈ f``), however, so be wary of that.
 
 In practice, creating your own easing would look like this:
 
 1. Go to [easings.net](https://easings.net)
 
-For the sake of this tutorial, we'll do an extremely complex (hellish? easing, "ease in elastic"
 For the sake of this tutorial, we'll do both an easy easing and a complex one. The easy easing will
 be the beautifully simple and quite frankly obvious quadratic. The much worse easing will be "ease
 in elastic."
@@ -243,24 +253,26 @@ The derivative (via sagemath) is as follows:
 
 <img src="https://render.githubusercontent.com/render/math?math=\color{blue}f^\prime (x)=-\frac{20}{3} \, \pi 2^{10 \, x - 10} \cos\left(-\frac{43}{6} \, \pi %2B \frac{20}{3} \, \pi x\right) - 10 \cdot 2^{10 \, x - 10} \log\left(2\right) \sin\left(-\frac{43}{6} \, \pi %2B \frac{20}{3} \, \pi x\right)">
 
-4. Double check that `f'(0)=0`
+4. Ensure that `(0,0) ∈ f'`
 
 Quadratic: `2*0 = 0` so we're good
 
 Ease in elastic not so much, however:
 
 <img src="https://render.githubusercontent.com/render/math?math=\color{blue}f^\prime (0)=\frac{5}{1536} \, \sqrt{3} \pi - \frac{5}{1024} \, \log\left(2\right)">
-We'll subtract this value from `f(x)` so that our new `f(x)`, let's say `f_2(x)` has a point at 
-(0, 0).
 
-5. Double check that `f_2(1)=1`
+We'll subtract this value from `f(x)` so that our new `f(x)`, let's say `f_2(x)` is such that `(0,0) ∈ f_2`
 
-Quadratic: No, actually. This means we have to do a wee bit of work: `f(1)=2`, so to counteract this,
+5. Ensure that `(1,1) ∈ f_2`
+
+Quadratic:  This means we have to do a wee bit of work: `f(1)=2`, so to counteract this,
 we'll create a new (and final) function that we can call `f_e` (easing function) by dividing `f(x)`
-by `f(1)`. In practice this looks like this:
+by `f(1)` (scaling it down).
 
 ```
-f(1)=2, f(x)/f(1) = 2x / 2 = x, f_e(x)=x
+f(1)=2
+f(x)/f(1) = 2x / 2 = x,
+f_e(x)=x
 ```
 
 Easy as that!
@@ -273,13 +285,13 @@ Hence the need for sagemath. Once we divide the two we get our final easing func
 
 <img src="https://render.githubusercontent.com/render/math?math=\color{blue}f_e(x)=\frac{4096 \, \pi 2^{10 \, x - 10} \cos\left(-\frac{43}{6} \, \pi %2B \frac{20}{3} \, \pi x\right) %2B 6144 \cdot 2^{10 \, x - 10} \log\left(2\right) \sin\left(-\frac{43}{6} \, \pi %2B \frac{20}{3} \, \pi x\right) %2B 2 \, \sqrt{3} \pi - 3 \, \log\left(2\right)}{2 \, \sqrt{3} \pi - 6147 \, \log\left(2\right)}">
 
-What on god's green earth is that. Well whatever, at least it works (?).
+What on god's green earth is that. Well whatever, at least it works.
 
 6. Finally, we get the definite integral from 0 to 1 of our `f(x)`
 
 For `f(x)=x` we can do that in our heads, it's just `1/2`.
 
-For ease in elastic not so much. You can do this with sagemath and eventually get this:
+Ease in elastic is a bit trickier to do in your head. You can do this with sagemath and eventually get this:
 
 <img src="https://render.githubusercontent.com/render/math?math=\color{blue}\frac{20 \, \sqrt{3} \pi - 30 \, \log\left(2\right) - 6147}{10 \, {\left(2 \, \sqrt{3} \pi - 6147 \, \log\left(2\right)\right)}}">
 
@@ -305,13 +317,13 @@ bunch of 0.49999s which wouldn't round to .5, the result was straight up wrong. 
 it, and if you can't do the derivative then sucks to suck I guess (just lmk in an issue or
 something and I'll try my very best).
 
-4. Now we just have to translate this into an actual lua table. 
+7. Now we just have to translate this into an actual lua table. 
 
 Quadratic, as usual, is easy.
 ```lua
 local quadratic = {
-	F = 1/2 -- F = 1/2
-	easing = function(t) return t end -- f(x) = x
+	F = 1/2 -- F(1) = 1/2
+	easing = function(t) return t end -- f(x) = x, I just use t for "time"
 }
 ```
 
@@ -392,9 +404,12 @@ about in the first place. Plus, it'll be the first of my projects without garbag
  - [x] get a better name... (I have a cool name now!)
  - [x] make readme cooler
  - [x] have better documentation and add to luarocks
- - [ ] remove gears dependency 
+ - [x] remove gears dependency 
  - [ ] only apply corrective coefficient to plateau
- - [ ] Do `prop_intro` more intelligently so it doesn't have to do so many comparisons
- - [ ] Make things like `abort` more useful
- - [ ] Merge that pr by @Kasper so instant works
- - [ ] Add a manager (this proceeds the above todo thing)
+ - [x] Do `prop_intro` more intelligently so it doesn't have to do so many comparisons (done maybe kinda?)
+ - [x] Make things like `abort` more useful
+ - [x] Merge that pr by @Kasper so instant works
+ - [x] Add a manager (this proceeds the above todo thing)
+ - [ ] Make forall more useable and add tags and stuff
+ - [ ] Fix that bug where you could set stuff manually (this might already be fixed I just haven't tested it)
+ - [ ] Make is_instant even faster by just short circuiting `set`

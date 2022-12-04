@@ -5,7 +5,6 @@ local beautiful = require("beautiful")
 local apps = require("apps")
 local decorations = require("ui.decorations")
 local menubar = require("menubar")
-
 local helpers = require("helpers")
 local machi = require("modules.layout-machi")
 local keys = {}
@@ -72,7 +71,7 @@ end) -- Side buttons - Minimize and restore minimized client
 keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 -- Dropdown application
 awful.key({superkey}, "F11", function()
-    awful.screen.focused().quake:toggle()
+    mouse.screen.term_scratchpad:toggle()   -- toggles the scratchpads visibility
 end, {
     description = "dropdown application",
     group = "launcher"

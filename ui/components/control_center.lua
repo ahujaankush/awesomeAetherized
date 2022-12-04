@@ -79,16 +79,29 @@ screen.connect_signal("request::desktop_decoration", function(s)
         visible   = false,
         bg        = x.color0,
         fg        = x.foreground,
+        opacity   = beautiful.control_center_opacity 
     }
 
     s.control_center_slide = rubato.timed {
         pos = s.geometry.y - s.control_center.height,
-        rate = 45,
+        rate = 60,
         intro = 0.1,
-        duration = 0.4,
-        easing = rubato.easing.quadratic,
+        duration = 0.3,
+        easing = rubato.quadratic,
         subscribed = function(pos)
             s.control_center.y = s.geometry.y + pos
+        end
+    }
+
+
+    s.control_center_fade = rubato.timed {
+        pos = 0,
+        rate = 60,
+        intro = 0.1,
+        duration = 0.3,
+        easing = rubato.quadratic,
+        subscribed = function(pos)
+            s.control_center.opacity = pos
         end
     }
 
@@ -96,19 +109,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
         timeout = 0.5,
         single_shot = true,
         callback = function()
-            s.control_center.visible = not s.control_center.visible
+            s.control_center.visible = false
         end
     }
 
     s.control_center_grabber = nil
     function control_center_hide(s)
         s.control_center_slide.target = s.geometry.y - s.control_center.height
+        s.control_center_fade.target = 0
         s.control_center_timer:start()
         awful.keygrabber.stop(s.control_center_grabber)
-    end
-
-    if s.control_center.visble then
-        customCalendarWidget.date = os.date('*t')
     end
 
     function control_center_show(s)
@@ -125,6 +135,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
         end)
         s.control_center.visible = true
         s.control_center_slide.target = s.geometry.y + beautiful.wibar_height + dpi(10)
+        s.control_center_fade.target = beautiful.control_center_opacity
+        customCalendarWidget.date = os.date('*t')
     end
 
     function control_center_toggle(s)

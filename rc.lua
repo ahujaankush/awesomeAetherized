@@ -8,10 +8,7 @@
   \/__/     \/__/     \/__/     \/__/     \/__/     \/__/     \/__/
 
 -- >> The file that binds everything together.
---]] -- bling
-local bling = require("modules.bling")
-local machi = require("modules.layout-machi")
-
+--]] 
 -- User variables and preferences
 user = {
   -- >> Default applications <<
@@ -142,6 +139,11 @@ local naughty = require("naughty")
 local theme_dir = os.getenv("HOME") .. "/.config/awesome/theme/"
 beautiful.init(theme_dir .. "theme.lua")
 
+-- bling
+local bling = require("modules.bling")
+local machi = require("modules.layout-machi")
+
+
 -- Error handling
 -- ===================================================================
 naughty.connect_signal("request::display_error", function(message, startup)
@@ -207,20 +209,8 @@ require("awful.hotkeys_popup.keys")
 require("ui.components.window_switcher")
 -- notify center
 require("ui.components.notif-center")
--- Quake - Dropdown terminal
-quake = require("ui.widgets.quake")
-awful.screen.connect_for_each_screen(function(s)
-  -- Wallpaper
-  s.quake = quake({
-    app = "kitty",
-    argname = "--title %s",
-    extra = "--class QuakeDD ",
-    visible = false,
-    height = 0.4,
-    screen = s
-  })
-
-end)
+-- dropdown terminal
+require("ui.widgets.term_scratchpad")
 
 -- >> Daemons
 -- Most widgets that display system/external info depend on daemons.
@@ -399,7 +389,7 @@ awful.rules.rules = { {
       instance = { "install league of legends (riot client live).exe", "gw2-64.exe", "battle.net.exe",
         "riotclientservices.exe", "leagueclientux.exe", "riotclientux.exe", "leagueclient.exe", "^editor$",
         "markdown_input" },
-      class = { "qutebrowser", "Sublime_text", "Subl3", "QuakeDD", -- "discord",
+      class = { "qutebrowser", "Sublime_text", "Subl3", "spad", -- "discord",
         -- "TelegramDesktop",
         "Conky", "Nightly", "Steam", "Lutris", "Chromium", "^editor$", "markdown_input" -- "Thunderbird",
       },

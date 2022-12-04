@@ -84,12 +84,14 @@ local function draw_widget(
     name_focus_color,
     icon_valign,
     icon_width,
-    mouse_keys
+    mouse_keys,
+    filterClients
 )
+    filterClients = filterClients or awful.widget.tasklist.filter.currenttags
     local tasklist_widget = type == "thumbnail"
             and awful.widget.tasklist({
                 screen = awful.screen.focused(),
-                filter = awful.widget.tasklist.filter.currenttags,
+                filter = filterClients,
                 buttons = mouse_keys,
                 style = {
                     font = name_font,
@@ -167,7 +169,7 @@ local function draw_widget(
             })
         or awful.widget.tasklist({
             screen = awful.screen.focused(),
-            filter = awful.widget.tasklist.filter.currenttags,
+            filter = filterClients,
             buttons = mouse_keys,
             style = {
                 font = name_font,
@@ -274,12 +276,16 @@ local enable = function(opts)
     local scroll_previous_key = opts.scroll_previous_key or 4
     local scroll_next_key = opts.scroll_next_key or 5
 
+    local cycleClientsByIdx = opts.cycleClientsByIdx or awful.client.focus.byidx
+    local filterClients = opts.filterClients or awful.widget.tasklist.filter.currenttags
+
     local window_switcher_box = awful.popup({
         bg = "#00000000",
         visible = false,
         ontop = true,
         placement = awful.placement.centered,
         screen = awful.screen.focused(),
+        widget = wibox.container.background, -- A dummy widget to make awful.popup not scream
         widget = {
             {
                 draw_widget(),
@@ -307,7 +313,7 @@ local enable = function(opts)
             modifiers = { "Any" },
             button = scroll_previous_key,
             on_press = function()
-                awful.client.focus.byidx(-1)
+                cycleClientsByIdx(-1)
             end,
         }),
 
@@ -315,7 +321,7 @@ local enable = function(opts)
             modifiers = { "Any" },
             button = scroll_next_key,
             on_press = function()
-                awful.client.focus.byidx(1)
+                cycleClientsByIdx(1)
             end,
         })
     )
@@ -342,21 +348,21 @@ local enable = function(opts)
         end,
 
         [cycle_key] = function()
-            awful.client.focus.byidx(1)
+            cycleClientsByIdx(1)
         end,
 
         [previous_key] = function()
-            awful.client.focus.byidx(1)
+            cycleClientsByIdx(1)
         end,
         [next_key] = function()
-            awful.client.focus.byidx(-1)
+            cycleClientsByIdx(-1)
         end,
 
         [vim_previous_key] = function()
-            awful.client.focus.byidx(1)
+            cycleClientsByIdx(1)
         end,
         [vim_next_key] = function()
-            awful.client.focus.byidx(-1)
+            cycleClientsByIdx(-1)
         end,
     }
 
@@ -444,8 +450,10 @@ local enable = function(opts)
             name_focus_color,
             icon_valign,
             icon_width,
-            mouse_keys
+            mouse_keys,
+            filterClients
         )
+        window_switcher_box.screen = awful.screen.focused()
         window_switcher_box.visible = true
     end)
 end

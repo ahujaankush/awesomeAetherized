@@ -413,6 +413,47 @@ screen.connect_signal("request::desktop_decoration", function(s)
         }
     }
 
+    bling.widget.task_preview.enable {
+        x = 20,                    -- The x-coord of the popup
+        y = 20,                    -- The y-coord of the popup
+        height = dpi(550),              -- The height of the popup
+        width = dpi(450),               -- The width of the popup
+        placement_fn = function(c)
+            awful.placement.top_left(c, {
+                margins = {
+                    top = beautiful.wibar_height + beautiful.useless_gap,
+                    left = beautiful.wibar_height + beautiful.useless_gap
+                }
+            })
+        end,
+        -- Your widget will automatically conform to the given size due to a constraint container.
+        widget_structure = {
+            {
+                {
+                    {
+                        id = 'icon_role',
+                        widget = awful.widget.clienticon, -- The client icon
+                    },
+                    {
+                        id = 'name_role', -- The client name / title
+                        widget = wibox.widget.textbox,
+                    },
+                    layout = wibox.layout.flex.horizontal
+                },
+                widget = wibox.container.margin,
+                margins = 5
+            },
+            {
+                id = 'image_role', -- The client preview
+                resize = true,
+                valign = 'center',
+                halign = 'center',
+                widget = wibox.widget.imagebox,
+            },
+            layout = wibox.layout.fixed.vertical
+        }
+    }
+
     -- battery popup
     s.battery_popup = awful.popup {
         screen = s,
