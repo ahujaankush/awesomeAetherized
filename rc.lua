@@ -210,8 +210,9 @@ require("ui.components.window_switcher")
 -- notify center
 require("ui.components.notif-center")
 -- dropdown terminal
-require("ui.widgets.term_scratchpad")
-
+require("ui.components.term_scratchpad")
+-- app_launcher
+require("ui.components.app_launcher")
 -- >> Daemons
 -- Most widgets that display system/external info depend on daemons.
 -- Make sure to initialize it last in order to allow all widgets to connect to
