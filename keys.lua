@@ -297,8 +297,7 @@ end, {
     description = "dmenu launcher",
     group = "launcher"
 }), awful.key({superkey}, "d", function()
-    --awful.spawn.with_shell("rofi -show drun -config $HOME/.config/rofi/launcher.rasi")
-    app_launcher:toggle()
+    awful.spawn.with_shell("rofi -show drun -theme .config/rofi/launcher.rasi")
 end, {
     description = "rofi launcher",
     group = "launcher"

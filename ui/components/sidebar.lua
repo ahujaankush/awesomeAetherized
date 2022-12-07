@@ -381,7 +381,6 @@ end
 local slide = rubato.timed {
     pos = screen.primary.geometry.x - sidebar.width,
     rate = 60,
-    intro = 0.1,
     duration = 0.3,
     easing = rubato.quadratic,
     subscribed = function(pos) 
