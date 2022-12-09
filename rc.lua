@@ -20,7 +20,7 @@ user = {
   image_viewer = "lximage-qt",
   editor = "code",
   code = "code",
-  nvim = "kitty --class nvim -e lvim",
+  nvim = "neovide",
   email_client = "evolution",
   music_client = "kitty -o font_size=12 --class music -e ncmpcpp",
   office = "libreoffice",

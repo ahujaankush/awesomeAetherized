@@ -85,8 +85,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.control_center_slide = rubato.timed {
         pos = s.geometry.y - s.control_center.height,
         rate = 60,
-        duration = 0.3,
-        easing = rubato.quadratic,
+        duration = 0.4,
+        easing = rubato.linear,
         subscribed = function(pos)
             s.control_center.y = s.geometry.y + pos
         end
@@ -96,7 +96,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.control_center_fade = rubato.timed {
         pos = 0,
         rate = 60,
-        intro = 0.1,
+        intro = 0,
         duration = 0.3,
         easing = rubato.quadratic,
         subscribed = function(pos)
