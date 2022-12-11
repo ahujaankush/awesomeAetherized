@@ -201,6 +201,8 @@ require("ui.components.control_center")
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above
 require("ui.components.exit_screen.lockscreen").init()
+-- Menu
+require("ui.components.menu.menu")
 -- App drawer
 require("ui.components.menu.app_drawer")
 -- Hotkeys overlay

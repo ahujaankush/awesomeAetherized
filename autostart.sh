@@ -6,4 +6,3 @@ firewall-applet &
 picom &
 xfce4-power-manager -d &
 xsetroot -cursor_name left_ptr &
-sh .config/conky/Fornax/start.sh

@@ -41,11 +41,6 @@ awful.button({}, 2, function()
         dashboard_show()
     end
 end), -- Scrolling - Switch tags
-awful.button({}, 3, function()
-    if dashboard_show then
-        app_drawer_show()
-    end
-end),
 awful.button({}, 4, awful.tag.viewprev), awful.button({}, 5, awful.tag.viewnext), -- Side buttons - Control volume
 awful.button({}, 9, function()
     helpers.volume_control(5)
