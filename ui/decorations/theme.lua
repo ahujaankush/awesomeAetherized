@@ -37,14 +37,14 @@ client.connect_signal("request::titlebars", function(c)
 		},
 		{
 			{
-				awful.titlebar.widget.ontopbutton(c),
-				awful.titlebar.widget.floatingbutton(c),
-				spacing = dpi(1),
+      
+        awful.titlebar.widget.iconwidget(c),
+        spacing = dpi(1),
 				layout  = wibox.layout.fixed.vertical
 			},
-			--margins = dpi(10),
+			margins = dpi(6),
 			widget = wibox.container.margin
 		},
-        layout = wibox.layout.align.vertical
+      layout = wibox.layout.align.vertical
     }
 end)

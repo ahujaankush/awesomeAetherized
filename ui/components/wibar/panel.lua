@@ -355,7 +355,7 @@ local chargingIcon = wibox.widget {
 
     s.layoutPopup_grabber = nil
     s.layoutPopup_timer = gears.timer {
-      timeout = 0.25,
+      timeout = 0.15,
       single_shot = true,
       callback = function()
         s.layoutPopup.visible = false
@@ -366,9 +366,10 @@ local chargingIcon = wibox.widget {
     s.layoutPopup_fade_height = rubato.timed {
       pos = 0,
       rate = 60,
-      intro = 0.1,
-      duration = 0.2,
-      easing = rubato.quadratic,
+      intro = 0,
+      outro = 0.05,
+      duration = 0.15,
+      easing = rubato.easing.quadratic,
       subscribed = function(pos)
           s.layoutPopup.maximum_height = pos
       end
@@ -377,9 +378,10 @@ local chargingIcon = wibox.widget {
     s.layoutPopup_fade_width = rubato.timed {
       pos = 0,
       rate = 60,
-      intro = 0.1,
-      duration = 0.2,
-      easing = rubato.quadratic,
+      intro = 0,
+      outro = 0.05,
+      duration = 0.15,
+      easing = rubato.easing.quadratic,
       subscribed = function(pos)
           s.layoutPopup.maximum_width = pos
       end

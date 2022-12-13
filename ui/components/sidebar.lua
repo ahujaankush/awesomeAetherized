@@ -381,15 +381,17 @@ end
 local slide = rubato.timed {
     pos = screen.primary.geometry.x - sidebar.width,
     rate = 60,
-    duration = 0.5,
-    easing = rubato.linear,
+    intro = 0.1,
+    outro = 0,
+    duration = 0.4,
+    easing = rubato.easing.linear,
     subscribed = function(pos) 
 		sidebar.x = screen.primary.geometry.x + pos
 	end
 }
 
 sidebar.timer= gears.timer {
-	timeout = 0.5,
+	timeout = 0.45,
 	single_shot = true,
 	callback = function()
 		sidebar.visible = not sidebar.visible

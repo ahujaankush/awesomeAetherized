@@ -34,7 +34,7 @@ keys.desktopbuttons = gears.table.join(awful.button({}, 1, function()
     helpers.single_double_tap(function()
     end, double_tap)
 end), -- Right click - Show app drawer
--- awful.button({ }, 3, function () mymainmenu:toggle() end),
+awful.button({ }, 3, function () menu:toggle() end),
  -- Middle button - Toggle dashboard
 awful.button({}, 2, function()
     if dashboard_show then

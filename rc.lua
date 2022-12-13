@@ -1,4 +1,4 @@
---[[
+  --[[
    ___       ___       ___       ___       ___       ___       ___
   /\  \     /\__\     /\  \     /\  \     /\  \     /\__\     /\  \
  /::\  \   /:/\__\   /::\  \   /::\  \   /::\  \   /::L_L_   /::\  \
@@ -201,7 +201,7 @@ require("ui.components.control_center")
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above
 require("ui.components.exit_screen.lockscreen").init()
--- Menu
+-- Menu - Freedesktop
 require("ui.components.menu.menu")
 -- App drawer
 require("ui.components.menu.app_drawer")
