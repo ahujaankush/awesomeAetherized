@@ -6,7 +6,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
     -- The duration and easing is up to you. Please check out the rubato docs to learn more.
     s.term_scratchpad_anim_y = rubato.timed {
         pos = s.geometry.y - 900,
-        rate = 60,
         easing = rubato.quadratic,
         intro = 0.1,
         duration = 0.3,

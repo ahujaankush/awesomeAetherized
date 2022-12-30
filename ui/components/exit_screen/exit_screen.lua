@@ -3,7 +3,7 @@ local gears = require("gears")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- local naughty = require("naughty")
-
+local rubato = require("modules.rubato")
 local helpers = require("helpers")
 
 -- Appearance

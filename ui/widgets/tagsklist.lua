@@ -52,11 +52,9 @@ local update_tags = function(self, c3)
     end
 end
 
-local function get_taglist(s)
-    local screen_for_taglist = s
-
+local function get_tagsklist(s)
     local tagsklist = awful.widget.taglist {
-        screen = screen_for_taglist,
+        screen = s,
         filter = awful.widget.taglist.filter.all,
         layout = {
             spacing = 0,
@@ -68,39 +66,48 @@ local function get_taglist(s)
                     {
                         {
                             {
-                                id = 'text_role',
-                                widget = wibox.widget.textbox
+                                {
+                                    id = 'text_role',
+                                    widget = wibox.widget.textbox
+                                },
+                                halign = "center",
+                                valign = "center",
+                                widget = wibox.container.place
                             },
-                            halign = "center",
-                            valign = "center",
-                            widget = wibox.container.place
+                            margins = {
+                                right = dpi(8),
+                                left = dpi(8)
+                            },
+                            widget = wibox.container.margin
                         },
-                        margins = {
-                            right = dpi(12),
-                            left = dpi(12)
-                        },
-                        widget = wibox.container.margin
-                    },
-                    {
                         {
-                            id = "tasklist_role",
-                            layout = wibox.layout.fixed.horizontal
+                            {
+                                id = "tasklist_role",
+                                layout = wibox.layout.fixed.horizontal
+                            },
+                            id = "tasklist_margin_role",
+                            widget = wibox.container.margin
                         },
-                        id = "tasklist_margin_role",
-                        widget = wibox.container.margin
+                        layout = wibox.layout.fixed.horizontal
                     },
-                    spacing = dpi(0),
-                    layout = wibox.layout.fixed.horizontal
+                    bg = x.color0,
+                    widget = wibox.container.background,
+                    shape = helpers.rrect(beautiful.border_radius)
                 },
-                widget = wibox.container.background
+                margins = {
+                    left = dpi(5),
+                    top = dpi(5),
+                    bottom = dpi(5)
+                },
+                widget = wibox.container.margin,
             },
             id = "background_role",
             widget = wibox.container.background,
             create_callback = function(self, c3, index, _)
                 update_tags(self, c3)
-                local t = screen_for_taglist.tags[index]
+                local t = s.tags[index]
                 self:get_children_by_id("tasklist_role")[1]:add(awful.widget.tasklist {
-                    screen = screen_for_taglist,
+                    screen = s,
                     filter = generate_filter(t),
                     buttons = tasklist_buttons,
                     layout = {
@@ -113,16 +120,16 @@ local function get_taglist(s)
                                 id = "clienticon",
                                 widget = awful.widget.clienticon
                             },
-                            top = dpi(10),
-                            bottom = dpi(10),
+                            top = dpi(8),
+                            bottom = dpi(8),
                             widget = wibox.container.margin
                         },
                         create_callback = function(self, c, _, _)
                             self:get_children_by_id("clienticon")[1]:connect_signal('mouse::enter', function()
-                                awesome.emit_signal("bling::task_preview::visibility", screen_for_taglist, true, c)
+                                awesome.emit_signal("bling::task_preview::visibility", s, true, c)
                             end)
                             self:get_children_by_id("clienticon")[1]:connect_signal('mouse::leave', function()
-                                awesome.emit_signal("bling::task_preview::visibility", screen_for_taglist, false, c)
+                                awesome.emit_signal("bling::task_preview::visibility", s, false, c)
                             end)
                         end,
                         layout = wibox.layout.align.horizontal
@@ -147,4 +154,4 @@ local function get_taglist(s)
     return tagsklist
 end
 
-return get_taglist
+return get_tagsklist

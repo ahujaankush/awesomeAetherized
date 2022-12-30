@@ -5,7 +5,7 @@ local beautiful = require("beautiful")
 local helpers = require("helpers")
 local dpi = beautiful.xresources.apply_dpi
 local icons = require("icons")
-
+local rubato = require("modules.rubato")
 local color = x.color5;
 
 local width = dpi(50)
@@ -79,16 +79,38 @@ volume_adjust.widget = wibox.widget {
     widget = wibox.container.background
 }
 
+local animations = rubato.timed {
+    pos = 0,
+    rate = 144,
+    intro = 0,
+    outro = 0,
+    duration = 0.2,
+    easing = rubato.easing.quadratic,
+    subscribed = function(pos)
+        volume_adjust.maximum_height = pos
+    end
+}
+
+local animations_timer = gears.timer {
+    timeout = 0.2,
+	single_shot = true,
+    callback = function()
+        volume_adjust.visible = false
+        volume_bar.mouse_enter = false
+    end
+}
+
 -- create a 3 second timer to hide the volume adjust
 -- component whenever the timer is started
 local hide_volume_adjust = gears.timer {
     timeout = 3,
     autostart = true,
     callback = function()
-        volume_adjust.visible = false
-        volume_bar.mouse_enter = false
+        animations.target = 0
+        animations_timer:again()
     end
 }
+
 
 awesome.connect_signal("evil::volume", function(volume, muted)
     volume_bar.value = volume
@@ -114,6 +136,7 @@ awesome.connect_signal("evil::volume", function(volume, muted)
         hide_volume_adjust:again()
     else
         volume_adjust.visible = true
+        animations.target = height
         hide_volume_adjust:start()
     end
 

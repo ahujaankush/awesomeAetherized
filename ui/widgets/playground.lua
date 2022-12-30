@@ -8,10 +8,7 @@ local helpers = require("helpers")
 -- Button for settings shape to rectangle
 local winshapeButtonRec = wibox.widget {
     {
-        {
-            text = "Rectangle",
-            widget = wibox.widget.textbox
-        },
+        {text = "Rectangle", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -46,16 +43,12 @@ winshapeButtonRec:connect_signal("button::press", function(c)
         gears.shape.rectangle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-winshapeButtonRec:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+winshapeButtonRec:connect_signal("button::release",
+                                 function(c) c:set_bg(x.color8 .. "6D") end)
 -- Button for settings shape to circle
 local winshapeButtonCirc = wibox.widget {
     {
-        {
-            text = "Circle",
-            widget = wibox.widget.textbox
-        },
+        {text = "Circle", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -89,17 +82,13 @@ winshapeButtonCirc:connect_signal("button::press", function(c)
         gears.shape.circle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-winshapeButtonCirc:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+winshapeButtonCirc:connect_signal("button::release",
+                                  function(c) c:set_bg(x.color8 .. "6D") end)
 
 -- Button for settings shape to triangle
 local winshapeButtonTri = wibox.widget {
     {
-        {
-            text = "Triangle",
-            widget = wibox.widget.textbox
-        },
+        {text = "Triangle", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -133,9 +122,8 @@ winshapeButtonTri:connect_signal("button::press", function(c)
         gears.shape.isosceles_triangle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-winshapeButtonTri:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+winshapeButtonTri:connect_signal("button::release",
+                                 function(c) c:set_bg(x.color8 .. "6D") end)
 
 local winshapeContainer = wibox.widget {
     winshapeButtonRec,
@@ -147,8 +135,9 @@ local winshapeContainer = wibox.widget {
 }
 
 local function setBlur(strength)
-    awful.spawn.with_shell([[bash -c "sed -i 's/.*blur-strength = .*/blur-strength = ]] .. strength ..
-        [[;/g' \$HOME/.config/picom/picom.conf"]])
+    awful.spawn.with_shell(
+        [[bash -c "sed -i 's/.*blur-strength = .*/blur-strength = ]] .. strength ..
+            [[;/g' \$HOME/.config/picom/picom.conf"]])
 end
 
 blur_slider = wibox.widget {
@@ -201,18 +190,14 @@ applyBlur:connect_signal("button::press", function(c)
     setBlur(math.floor(blur_slider:get_value() / 50 * 10))
     c:set_bg(x.color8)
 end)
-applyBlur:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+applyBlur:connect_signal("button::release",
+                         function(c) c:set_bg(x.color8 .. "6D") end)
 
 -- update container
 
 local update = wibox.widget {
     {
-        {
-            text = "Rectangle",
-            widget = wibox.widget.textbox
-        },
+        {text = "Rectangle", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -246,16 +231,12 @@ update:connect_signal("button::press", function(c)
         gears.shape.rectangle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-update:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+update:connect_signal("button::release",
+                      function(c) c:set_bg(x.color8 .. "6D") end)
 
 local update = wibox.widget {
     {
-        {
-            text = "Update",
-            widget = wibox.widget.textbox
-        },
+        {text = "Update", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -289,16 +270,12 @@ update:connect_signal("button::press", function(c)
         gears.shape.rectangle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-update:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+update:connect_signal("button::release",
+                      function(c) c:set_bg(x.color8 .. "6D") end)
 
 local changelog = wibox.widget {
     {
-        {
-            text = "Changelog",
-            widget = wibox.widget.textbox
-        },
+        {text = "Changelog", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -332,16 +309,12 @@ changelog:connect_signal("button::press", function(c)
         gears.shape.rectangle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-changelog:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+changelog:connect_signal("button::release",
+                         function(c) c:set_bg(x.color8 .. "6D") end)
 
 local snapshot = wibox.widget {
     {
-        {
-            text = "Snapshot",
-            widget = wibox.widget.textbox
-        },
+        {text = "Snapshot", widget = wibox.widget.textbox},
         top = 4,
         bottom = 4,
         left = 8,
@@ -375,9 +348,8 @@ snapshot:connect_signal("button::press", function(c)
         gears.shape.rectangle(cr, width, height)
     end, c:set_bg(x.color8)
 end)
-snapshot:connect_signal("button::release", function(c)
-    c:set_bg(x.color8 .. "6D")
-end)
+snapshot:connect_signal("button::release",
+                        function(c) c:set_bg(x.color8 .. "6D") end)
 
 local updateContainer = wibox.widget {
     update,
@@ -396,9 +368,11 @@ local playground = wibox.widget {
                     {
                         {
 
-                            image = icons.getIcon("Miya-icon-theme/src/apps/scalable/3Depict.svg"),
+                            image = icons.getIcon(
+                                "Miya-icon-theme/src/apps/scalable/3Depict.svg"),
                             resize = true,
-                            clip_shape = helpers.rrect(beautiful.border_radius - 3),
+                            clip_shape = helpers.rrect(
+                                beautiful.border_radius - 3),
                             widget = wibox.widget.imagebox
                         },
                         strategy = 'exact',
@@ -407,26 +381,27 @@ local playground = wibox.widget {
                         widget = wibox.container.constraint
                     },
                     {
-                        markup = helpers.bold_text(helpers.colorize_text("A", x.color1) ..
-                            helpers.colorize_text("E", x.color2) ..
-                            helpers.colorize_text("T", x.color3) ..
-                            helpers.colorize_text("H", x.color4) ..
-                            helpers.colorize_text("E", x.color5) ..
-                            helpers.colorize_text("R", x.color6) ..
-                            helpers.colorize_text("I", x.color7) ..
-                            helpers.colorize_text("Z", x.color9) ..
-                            helpers.colorize_text("E", x.color10) ..
-                            helpers.colorize_text("D ", x.color11) ..
-                            helpers.colorize_text("P", x.color12) ..
-                            helpers.colorize_text("L", x.color13) ..
-                            helpers.colorize_text("A", x.color14) ..
-                            helpers.colorize_text("Y", x.color1) ..
-                            helpers.colorize_text("G", x.color2) ..
-                            helpers.colorize_text("R", x.color3) ..
-                            helpers.colorize_text("O", x.color4) ..
-                            helpers.colorize_text("U", x.color5) ..
-                            helpers.colorize_text("N", x.color6) ..
-                            helpers.colorize_text("D", x.color9)),
+                        markup = helpers.bold_text(
+                            helpers.colorize_text("A", x.color1) ..
+                                helpers.colorize_text("E", x.color2) ..
+                                helpers.colorize_text("T", x.color3) ..
+                                helpers.colorize_text("H", x.color4) ..
+                                helpers.colorize_text("E", x.color5) ..
+                                helpers.colorize_text("R", x.color6) ..
+                                helpers.colorize_text("I", x.color7) ..
+                                helpers.colorize_text("Z", x.color9) ..
+                                helpers.colorize_text("E", x.color10) ..
+                                helpers.colorize_text("D ", x.color11) ..
+                                helpers.colorize_text("P", x.color12) ..
+                                helpers.colorize_text("L", x.color13) ..
+                                helpers.colorize_text("A", x.color14) ..
+                                helpers.colorize_text("Y", x.color1) ..
+                                helpers.colorize_text("G", x.color2) ..
+                                helpers.colorize_text("R", x.color3) ..
+                                helpers.colorize_text("O", x.color4) ..
+                                helpers.colorize_text("U", x.color5) ..
+                                helpers.colorize_text("N", x.color6) ..
+                                helpers.colorize_text("D", x.color9)),
                         font = beautiful.font_name .. " 17",
                         align = "center",
                         widget = wibox.widget.textbox
@@ -458,9 +433,11 @@ local playground = wibox.widget {
                     {
                         {
                             {
-                                image = icons.getIcon("beautyline/apps/scalable/applications-interfacedesign.svg"),
+                                image = icons.getIcon(
+                                    "beautyline/apps/scalable/applications-interfacedesign.svg"),
                                 resize = true,
-                                clip_shape = helpers.rrect(beautiful.border_radius - 3),
+                                clip_shape = helpers.rrect(
+                                    beautiful.border_radius - 3),
                                 widget = wibox.widget.imagebox
                             },
                             strategy = 'exact',
@@ -468,12 +445,12 @@ local playground = wibox.widget {
                             width = dpi(30),
                             widget = wibox.container.constraint
                         },
-                        --{
+                        -- {
                         --    markup = helpers.bold_text(helpers.colorize_text("WinShape", x.color7)),
                         --    font = beautiful.font_name .. " 17",
                         --    align = "center",
                         --    widget = wibox.widget.textbox
-                        --},
+                        -- },
                         winshapeContainer,
                         layout = wibox.layout.fixed.horizontal,
                         spacing = dpi(15),
@@ -503,9 +480,11 @@ local playground = wibox.widget {
                         {
                             {
 
-                                image = icons.getIcon("beautyline/apps/scalable/show-background.svg"),
+                                image = icons.getIcon(
+                                    "beautyline/apps/scalable/show-background.svg"),
                                 resize = true,
-                                clip_shape = helpers.rrect(beautiful.border_radius - 3),
+                                clip_shape = helpers.rrect(
+                                    beautiful.border_radius - 3),
                                 widget = wibox.widget.imagebox
                             },
                             strategy = 'exact',
@@ -513,12 +492,12 @@ local playground = wibox.widget {
                             width = dpi(30),
                             widget = wibox.container.constraint
                         },
-                        --{
+                        -- {
                         --    markup = helpers.bold_text(helpers.colorize_text("Wawesomepaper", x.color7)),
                         --    font = beautiful.font_name .. " 17",
                         --    align = "center",
                         --    widget = wibox.widget.textbox
-                        --},
+                        -- },
                         layout = wibox.layout.fixed.horizontal,
                         spacing = dpi(15),
                         widget = wibox.container.margin
@@ -547,9 +526,11 @@ local playground = wibox.widget {
                         {
                             {
 
-                                image = icons.getIcon("Miya-icon-theme/src/apps/scalable/preferences-desktop-display.svg"),
+                                image = icons.getIcon(
+                                    "Miya-icon-theme/src/apps/scalable/preferences-desktop-display.svg"),
                                 resize = true,
-                                clip_shape = helpers.rrect(beautiful.border_radius - 3),
+                                clip_shape = helpers.rrect(
+                                    beautiful.border_radius - 3),
                                 widget = wibox.widget.imagebox
                             },
                             strategy = 'exact',
@@ -557,12 +538,12 @@ local playground = wibox.widget {
                             width = dpi(30),
                             widget = wibox.container.constraint
                         },
-                        --{
+                        -- {
                         --    markup = helpers.bold_text(helpers.colorize_text("AetherizedWriter", x.color7)),
                         --    font = beautiful.font_name .. " 17",
                         --    align = "center",
                         --    widget = wibox.widget.textbox
-                        --},
+                        -- },
                         layout = wibox.layout.fixed.horizontal,
                         spacing = dpi(15),
                         widget = wibox.container.margin
@@ -591,9 +572,11 @@ local playground = wibox.widget {
                         {
                             {
 
-                                image = icons.getIcon("beautyline/actions/scalable/document-save-all.svg"),
+                                image = icons.getIcon(
+                                    "beautyline/actions/scalable/document-save-all.svg"),
                                 resize = true,
-                                clip_shape = helpers.rrect(beautiful.border_radius - 3),
+                                clip_shape = helpers.rrect(
+                                    beautiful.border_radius - 3),
                                 widget = wibox.widget.imagebox
                             },
                             strategy = 'exact',
@@ -601,12 +584,12 @@ local playground = wibox.widget {
                             width = dpi(30),
                             widget = wibox.container.constraint
                         },
-                        --{
+                        -- {
                         --    markup = helpers.bold_text(helpers.colorize_text("WriteCFG", x.color7)),
                         --    font = beautiful.font_name .. " 17",
                         --    align = "center",
                         --    widget = wibox.widget.textbox
-                        --},
+                        -- },
                         layout = wibox.layout.fixed.horizontal,
                         spacing = dpi(15),
                         widget = wibox.container.margin
@@ -635,9 +618,11 @@ local playground = wibox.widget {
                         {
                             {
 
-                                image = icons.getIcon("candy-icons/apps/scalable/system-software-install.svg"),
+                                image = icons.getIcon(
+                                    "candy-icons/apps/scalable/system-software-install.svg"),
                                 resize = true,
-                                clip_shape = helpers.rrect(beautiful.border_radius - 3),
+                                clip_shape = helpers.rrect(
+                                    beautiful.border_radius - 3),
                                 widget = wibox.widget.imagebox
                             },
                             strategy = 'exact',
@@ -646,12 +631,12 @@ local playground = wibox.widget {
                             widget = wibox.container.constraint
                         },
                         updateContainer,
-                        --{
+                        -- {
                         --    markup = helpers.bold_text(helpers.colorize_text("Update", x.color7)),
                         --    font = beautiful.font_name .. " 17",
                         --    align = "center",
                         --    widget = wibox.widget.textbox
-                        --},
+                        -- },
                         layout = wibox.layout.fixed.horizontal,
                         spacing = dpi(15),
                         widget = wibox.container.margin
@@ -684,12 +669,12 @@ local playground = wibox.widget {
                             width = dpi(30),
                             widget = wibox.container.constraint
                         },
-                        --{
+                        -- {
                         --    markup = helpers.bold_text(helpers.colorize_text("Blurry", x.color7)),
                         --    font = beautiful.font_name .. " 17",
                         --    align = "center",
                         --    widget = wibox.widget.textbox
-                        --},
+                        -- },
                         blur_slider,
                         layout = wibox.layout.fixed.horizontal,
                         spacing = dpi(15),
@@ -719,13 +704,15 @@ local playground = wibox.widget {
         {
 
             {
-                markup = helpers.bold_text(helpers.colorize_text("By Ankush AHUJA", x.color5)),
+                markup = helpers.bold_text(
+                    helpers.colorize_text("By Ankush AHUJA", x.color5)),
                 font = beautiful.font_name .. " 6",
                 align = "left",
                 widget = wibox.widget.textbox
             },
             {
-                markup = helpers.bold_text(helpers.colorize_text("Aetherized Beta Features", x.color6)),
+                markup = helpers.bold_text(
+                    helpers.colorize_text("Aetherized Beta Features", x.color6)),
                 font = beautiful.font_name .. " 6",
                 align = "right",
                 widget = wibox.widget.textbox

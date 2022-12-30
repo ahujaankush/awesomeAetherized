@@ -8,8 +8,6 @@ local helpers = require("helpers")
 
 local rubato = require("modules.rubato")
 
-local sidebar_hidden = true
-
 -- Helper function that changes the appearance of progress bars and their icons
 local function format_progress_bar(bar)
     -- Since we will rotate the bars 90 degrees, width and height are reversed
@@ -67,14 +65,14 @@ local weather = wibox.widget{
     -- expand = "none"
 }
 
-local temperature_bar = require("ui.widgets.temperature_bar")
+local temperature_bar = require("ui.widgets.bar.temperature_bar")
 local temperature = format_progress_bar(temperature_bar)
 temperature:buttons(
     gears.table.join(
         awful.button({ }, 1, apps.temperature_monitor)
 ))
 
-local cpu_bar = require("ui.widgets.cpu_bar")
+local cpu_bar = require("ui.widgets.bar.cpu_bar")
 local cpu = format_progress_bar(cpu_bar)
 
 cpu:buttons(
@@ -83,7 +81,7 @@ cpu:buttons(
         awful.button({ }, 3, apps.process_monitor_gui)
 ))
 
-local ram_bar = require("ui.widgets.ram_bar")
+local ram_bar = require("ui.widgets.bar.ram_bar")
 local ram = format_progress_bar(ram_bar)
 
 ram:buttons(
@@ -93,7 +91,7 @@ ram:buttons(
 ))
 
 
-local brightness_bar = require("ui.widgets.brightness_bar")
+local brightness_bar = require("ui.widgets.bar.brightness_bar")
 local brightness = format_progress_bar(brightness_bar)
 
 brightness:buttons(
@@ -102,15 +100,15 @@ brightness:buttons(
         awful.button({ }, 1, apps.night_mode),
         -- Right click - Reset brightness (Set to max)
         awful.button({ }, 3, function ()
-            awful.spawn.with_shell("light -S 100")
+            helpers.set_brightness(100)
         end),
         -- Scroll up - Increase brightness
         awful.button({ }, 4, function ()
-            awful.spawn.with_shell("light -A 10")
+            helpers.brightness_control(10)
         end),
         -- Scroll down - Decrease brightness
         awful.button({ }, 5, function ()
-            awful.spawn.with_shell("light -U 10")
+            helpers.brightness_control(-10)
         end)
 ))
 
@@ -166,7 +164,7 @@ local day_of_the_week = wibox.widget {
 }
 
 -- playerctl
-local playerctl = require("ui.widgets.playerctl_sidebar")
+local playerctl = require("ui.widgets.playerctl")
 
 
 
@@ -255,7 +253,7 @@ search:buttons(gears.table.join(
     end)
 ))
 
-local volume_bar = require("ui.widgets.volume_bar")
+local volume_bar = require("ui.widgets.bar.volume_bar")
 local volume = format_progress_bar(volume_bar)
 
 volume:buttons(gears.table.join(
@@ -380,11 +378,10 @@ end
 -- rubato sidebar slide
 local slide = rubato.timed {
     pos = screen.primary.geometry.x - sidebar.width,
-    rate = 60,
     intro = 0.1,
     outro = 0,
     duration = 0.4,
-    easing = rubato.easing.linear,
+    easing = rubato.easing.quadratic,
     subscribed = function(pos) 
 		sidebar.x = screen.primary.geometry.x + pos
 	end

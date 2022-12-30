@@ -3,74 +3,101 @@ local helpers = require("helpers")
 local beautiful = require("beautiful")
 local awful = require("awful")
 local gears = require("gears")
-local color = require("modules.color")
 local rubato = require("modules.rubato")
-
-local volumeColors = {
-    color.color({ hex = x.color1 }), -- muted or 0
-    color.color({ hex = x.color3 }), -- 1-10
-    color.color({ hex = x.color4 }), -- 10-30
-}
 local currentIcon = "ﱝ"
-local currentColor = x.color1;
+local color = x.color15
+
+local volume_slider = wibox.widget {
+    forced_width = dpi(100),
+    bar_shape = gears.shape.rounded_rect,
+    bar_height = dpi(3),
+    bar_width = dpi(30),
+    bar_color = x.color0,
+    bar_active_color = color,
+    handle_color = x.color0,
+    handle_shape = gears.shape.circle,
+    handle_border_color = color,
+    handle_border_width = dpi(2),
+    value = 0,
+    minimum = 0,
+    maximum = 100,
+    widget = wibox.widget.slider
+}
+
+-- rubato sidebar slide
+local anim = rubato.timed {
+    pos = 0,
+    intro = 0.1,
+    outro = 0,
+    duration = 0.3,
+    easing = rubato.easing.quadratic,
+    subscribed = function(pos) volume_slider.forced_width = pos end
+}
+
+local timer = gears.timer {
+    timeout = 0.3,
+    single_shot = true,
+    callback = function() volume_slider.visible = false end
+}
+
+local volume_slider_hide = function()
+    anim.target = 0
+    timer:start()
+end
+
+local volume_slider_show = function()
+    volume_slider.visible = true
+    anim.target = dpi(100)
+end
+
+local volume_slider_toggle = function()
+    if volume_slider.visible then
+        volume_slider_hide()
+    else
+        volume_slider_show()
+    end
+end
+
 -- the icon itself
 local volume_icon = wibox.widget {
     widget = wibox.widget.textbox,
-    markup = helpers.colorize_text(currentIcon, volumeColors[1].hex),
+    markup = helpers.colorize_text(currentIcon, color),
     font = beautiful.font_name .. " 20",
-    resize = true
+    resize = true,
+    buttons = {
+        awful.button({ }, 1, function () volume_slider_toggle() end),
+        awful.button({ }, 3, function () helpers.set_volume(tonumber(volume_slider:get_value())) end),
+    }
 }
-
-local currState = true;
-local oldState = true;
 
 -- container with the icon
 local volume_icon_container = wibox.widget {
     {
-
         volume_icon,
+        volume_slider,
         widget = wibox.container.margin,
-        margins = dpi(12)
+        spacing = dpi(12),
+        layout = wibox.layout.fixed.horizontal
     },
-    widget = wibox.container.background
+    widget = wibox.container.margin,
+    margins = {
+        left = dpi(12),
+        top = dpi(12),
+        bottom = dpi(12)
+    }
 }
 
 -- tooltip
 local volume_icon_tooltip = awful.tooltip {};
-volume_icon_tooltip.preferred_alignments = { "middle", "front", "back" }
+volume_icon_tooltip.preferred_alignments = {"middle", "front", "back"}
 volume_icon_tooltip.mode = "outside"
 volume_icon_tooltip:add_to_object(volume_icon_container)
-volume_icon_tooltip.markup = helpers.colorize_text("0", volumeColors[1].hex)
-
--- set icon and color based on volume
+volume_icon_tooltip.markup = helpers.colorize_text("0", color)
 
 awesome.connect_signal("evil::volume", function(value, muted)
 
-    oldState = currState
-    currState = muted
-
     if muted then
-        local transition = color.transition(color.color({ hex = currentColor }), volumeColors[1], color.transition.hsl)
         currentIcon = "ﱝ"
-
-        if currState ~= oldState then
-            local transitionRubato = rubato.timed {
-                pos = 0,
-                rate = 60,
-                intro = 0.1,
-                duration = 1,
-                easing = rubato.quadratic,
-                subscribed = function(pos)
-                    currentColor = transition(pos).hex
-                    volume_icon.markup = helpers.colorize_text(currentIcon, currentColor)
-                    volume_icon_tooltip.markup = helpers.colorize_text(value, currentColor)
-
-                end
-            }
-            transitionRubato.target = 1
-        end
-
-        
     else
         if value <= 10 then
             currentIcon = ""
@@ -83,37 +110,11 @@ awesome.connect_signal("evil::volume", function(value, muted)
         else
             currentIcon = ""
         end
-        local transition = color.transition(volumeColors[2], volumeColors[3], color.transition.hsl)
-        currentColor = transition(value / 100).hex
-
-        if currState ~= oldState then
-            local umuteTransition = color.transition(volumeColors[1], color.color({ hex = currentColor }), color.transition.hsl)
-            local transitionRubato = rubato.timed {
-                pos = 0,
-                rate = 60,
-                intro = 0.1,
-                duration = 1,
-                easing = rubato.quadratic,
-                subscribed = function(pos)
-                    currentColor = umuteTransition(pos).hex
-                    volume_icon.markup = helpers.colorize_text(currentIcon, currentColor)
-                    volume_icon_tooltip.markup = helpers.colorize_text(value, currentColor)
-
-                end
-            }
-            transitionRubato.target = 1
-        end
-        volume_icon.markup = helpers.colorize_text(currentIcon, currentColor)
-        volume_icon_tooltip.markup = helpers.colorize_text(value, currentColor)
     end
+    volume_slider:set_value(value)
+    volume_icon.markup = helpers.colorize_text(currentIcon, color)
+    volume_icon_tooltip.markup = helpers.colorize_text(value, color)
 
-end)
-
-
--- toggle mute on button press
-
-volume_icon_container:connect_signal("button::press", function()
-    helpers.volume_control(0)
 end)
 
 return volume_icon_container

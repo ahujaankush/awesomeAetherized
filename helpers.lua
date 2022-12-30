@@ -7,7 +7,6 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local wibox = require("wibox")
 local icons = require("icons")
-local notifications = require("ui.notifications")
 local naughty = require("naughty")
 
 local helpers = {}
@@ -287,6 +286,28 @@ function helpers.volume_control(step)
     else
         cmd = "pamixer --increase " .. tostring(step)
     end
+    awful.spawn.with_shell(cmd)
+end
+
+function helpers.set_volume(vol)
+    local cmd = "pamixer --set-volume " .. tostring(vol)
+    
+    awful.spawn.with_shell(cmd)
+end
+
+function helpers.brightness_control(step)
+    local cmd
+    if step < 0 then
+        cmd = "light -U " .. tostring(step)
+    else
+        cmd = "light -A " .. tostring(step)
+    end
+    awful.spawn.with_shell(cmd)
+end
+
+function helpers.set_brightness(vol)
+    local cmd = "light -S " .. tostring(vol)
+    
     awful.spawn.with_shell(cmd)
 end
 

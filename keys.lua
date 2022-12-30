@@ -7,6 +7,7 @@ local decorations = require("ui.decorations")
 local menubar = require("menubar")
 local helpers = require("helpers")
 local machi = require("modules.layout-machi")
+local bling = require("modules.bling")
 local keys = {}
 
 -- Mod keys
@@ -34,7 +35,7 @@ keys.desktopbuttons = gears.table.join(awful.button({}, 1, function()
     helpers.single_double_tap(function()
     end, double_tap)
 end), -- Right click - Show app drawer
-awful.button({ }, 3, function () menu:toggle() end),
+awful.button({ }, 3, function () app_drawer_show(mouse.screen) end),
  -- Middle button - Toggle dashboard
 awful.button({}, 2, function()
     if dashboard_show then
@@ -72,27 +73,37 @@ end, {
     group = "launcher"
 }), awful.key({superkey}, "j", function()
     awful.client.focus.bydirection("down")
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus down",
     group = "client"
 }), awful.key({superkey}, "k", function()
     awful.client.focus.bydirection("up")
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus up",
     group = "client"
 }), awful.key({superkey}, "h", function()
     awful.client.focus.bydirection("left")
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus left",
     group = "client"
 }), awful.key({superkey}, "l", function()
     awful.client.focus.bydirection("right")
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus right",
     group = "client"
 }), -- Focus client by direction (arrow keys)
 awful.key({superkey}, "Down", function()
     awful.client.focus.bydirection("down")
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus down",
     group = "client"
@@ -120,11 +131,15 @@ end, {
 }), -- Focus client by index (cycle through clients)
 awful.key({superkey}, "z", function()
     awful.client.focus.byidx(1)
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus next by index",
     group = "client"
 }), awful.key({superkey, shiftkey}, "z", function()
     awful.client.focus.byidx(-1)
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end, {
     description = "focus next by index",
     group = "client"
@@ -520,7 +535,7 @@ end, {
     group = "custom"
 }), -- App drawer
 awful.key({superkey}, "a", function()
-    app_drawer_show()
+    app_drawer_show(awful.screen.focused({mouse = true}))
 end, {
     description = "App drawer",
     group = "custom"
@@ -872,8 +887,12 @@ end), awful.button({'Any'}, 3, function(c)
     c.minimized = true
 end), awful.button({'Any'}, 4, function()
     awful.client.focus.byidx(-1)
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end), awful.button({'Any'}, 5, function()
     awful.client.focus.byidx(1)
+    bling.module.flash_focus.flashfocus(client.focus)
+
 end), -- Side button up - toggle floating
 awful.button({'Any'}, 9, function(c)
     c.floating = not c.floating

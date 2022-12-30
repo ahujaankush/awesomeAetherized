@@ -33,7 +33,7 @@ theme.bg_normal   = x.background
 theme.bg_focus    = x.color0
 theme.bg_urgent   = x.color0
 theme.bg_minimize = x.color0
-theme.bg_systray  = x.background
+theme.bg_systray  = x.color0
 
 theme.fg_normal   = x.color7
 theme.fg_focus    = x.foreground
@@ -41,10 +41,10 @@ theme.fg_urgent   = x.color1
 theme.fg_minimize = x.color8
 
 -- Gaps
-theme.useless_gap   = dpi(5)
+theme.useless_gap   = dpi(8)
 -- This could be used to manually determine how far away from the
 -- screen edge the bars / notifications should be.
-theme.screen_margin = dpi(5)
+theme.screen_margin = dpi(8)
 
 -- Borders
 theme.border_width  = dpi(0)
@@ -52,7 +52,7 @@ theme.border_color  = x.background
 theme.border_normal = x.background
 theme.border_focus  = x.background
 -- Rounded corners
-theme.border_radius = dpi(5)
+theme.border_radius = dpi(8)
 
 -- Titlebars
 -- (Titlebar items can be customized in titlebars.lua)
@@ -90,7 +90,7 @@ theme.notification_icon_size = dpi(60)
 -- theme.notification_height = dpi(80)
 -- theme.notification_width = dpi(300)
 theme.notification_margin = dpi(16)
-theme.notification_opacity = 0.75
+theme.notification_opacity = 1
 theme.notification_font = theme.font_name.." 11"
 theme.notification_padding = theme.screen_margin * 2
 theme.notification_spacing = theme.screen_margin * 4
@@ -98,7 +98,7 @@ theme.notification_spacing = theme.screen_margin * 4
 theme.notification_osd_bg = x.background
 theme.notification_osd_indicator_bg = x.color0
 theme.notification_osd_fg = x.foreground
-theme.notification_osd_opacity = 0.85
+theme.notification_osd_opacity = 1
 
 
 -- Notification Center
@@ -141,7 +141,7 @@ theme.wibar_position = "top"
 theme.wibar_height = dpi(45)
 theme.wibar_fg = x.foreground
 theme.wibar_bg = x.background
-theme.wibar_opacity = 0.9
+theme.wibar_opacity = 1
 theme.wibar_border_color = x.color0
 theme.wibar_border_width = dpi(0)
 theme.wibar_border_radius = dpi(0)
@@ -206,7 +206,7 @@ theme.tasklist_shape_border_color_urgent = x.color1 .. "80"
 -- (Sidebar items can be customized in sidebar.lua)
 theme.sidebar_bg = x.background
 theme.sidebar_fg = x.color15
-theme.sidebar_opacity = 0.9
+theme.sidebar_opacity = 1
 theme.sidebar_position = "left" -- left or right
 theme.sidebar_width = dpi(300)
 theme.sidebar_x = 0
@@ -217,19 +217,18 @@ theme.sidebar_border_radius = dpi(0) --theme.border_radius
 -- Dashboard
 theme.dashboard_bg = x.color0 .. "44"
 theme.dashboard_fg = x.color15
-theme.dashboard_opacity = 0.9
+theme.dashboard_opacity = 1
 
 -- control center
-theme.control_center_opacity = 0.9
+theme.control_center_opacity = 1
 
 -- app drawer
-theme.app_drawer_opacity = 0.9
+theme.app_drawer_opacity = 1
 
 -- battery popup (wibar)
-theme.battery_popup_opacity = 0.9
-
+theme.battery_popup_opacity = 1
 -- layout list (popup)
-theme.layoutPopup_opacity = 0.9
+theme.layoutPopup_opacity = 1
 
 -- Exit screen
 theme.exit_screen_bg = x.color0 .. "44"
@@ -267,7 +266,8 @@ theme.menu_bg_focus     = x.color0
 theme.menu_fg_focus     = x.foreground
 theme.menu_border_width = dpi(10)
 theme.menu_border_color = x.background
-
+theme.menu_radius = theme.border_radius
+theme.menu_opacity = 1
 -- You can add as many variables as
 -- you wish and access them by using
 -- beautiful.variable in your rc.lua
@@ -399,26 +399,26 @@ theme.awesome_icon = theme_assets.awesome_icon(
 theme.icon_theme = os.getenv("HOME").."/.icons/oomox-aesthetic-dark/"
 
 -- Task Preview
-theme.task_preview_widget_border_radius = 12 -- Border radius of the widget (With AA)
+theme.task_preview_widget_border_radius = theme.border_radius -- Border radius of the widget (With AA)
 theme.task_preview_widget_bg = x.background -- The bg color of the widget
 theme.task_preview_widget_border_color = x.color5 -- The border color of the widget
 theme.task_preview_widget_border_width = 1 -- The border width of the widget
-theme.task_preview_widget_margin = 20 -- The margin of the widget
+theme.task_preview_widget_margin = dpi(50) -- The margin of the widget
 theme.bling_preview_bottom_margin = dpi(60)
 
 theme.fade_duration = 250
 
 -- Tag Preview
-theme.tag_preview_widget_border_radius = theme.border_radius
-theme.tag_preview_client_border_radius = theme.border_radius * 0.75
-theme.tag_preview_client_opacity = 0.6
-theme.tag_preview_client_bg = x.color0
-theme.tag_preview_client_border_color = x.background
-theme.tag_preview_client_border_width = theme.border_width
-theme.tag_preview_widget_bg = x.background
-theme.tag_preview_widget_border_color = theme.border_color
-theme.tag_preview_widget_border_width = theme.border_width * 0
-theme.tag_preview_widget_margin = dpi(10)
+theme.tag_preview_widget_border_radius = theme.border_radius        -- Border radius of the widget (With AA)
+theme.tag_preview_client_border_radius = theme.border_radius        -- Border radius of each client in the widget (With AA)
+theme.tag_preview_client_opacity = 1           -- Opacity of each client
+theme.tag_preview_client_bg = x.background       -- The bg color of each client
+theme.tag_preview_client_border_color = theme.border_color -- The border color of each client
+theme.tag_preview_client_border_width = theme.border_width         -- The border width of each client
+theme.tag_preview_widget_bg = x.background          -- The bg color of the widget
+theme.tag_preview_widget_border_color = theme.border_color -- The border color of the widget
+theme.tag_preview_widget_border_width = theme.border_radius         -- The border width of the widget
+theme.tag_preview_widget_margin = dpi(50)               -- The margin of the widget
 
 -- window switcher
 theme.window_switcher_widget_bg = x.background .. "CC" -- The bg color of the widget
@@ -483,6 +483,8 @@ theme.tabbar_color_close = x.color1        -- chnges the color of the close butt
 theme.tabbar_color_min   = x.color3        -- chnges the color of the minimize button
 theme.tabbar_color_float = x.color5        -- chnges the color of the float button
 
+theme.flash_focus_start_opacity = 0.95 -- the starting opacity
+theme.flash_focus_step = 0.01         -- the step of animation
 
 return theme
 

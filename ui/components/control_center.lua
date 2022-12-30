@@ -18,7 +18,7 @@ local notify_cont = wibox.widget {
 
         widget = wibox.container.margin
     },
-    shape = helpers.rrect(dpi(8)),
+    shape = helpers.rrect(beautiful.border_radius),
     bg = x.background,
     widget = wibox.container.background
 }
@@ -39,7 +39,7 @@ local calendar_cont = wibox.widget {
         margins = 10,
         widget = wibox.container.margin
     },
-    shape = helpers.rrect(dpi(8)),
+    shape = helpers.rrect(beautiful.border_radius),
     bg = x.background,
     minimum_width = notify_cont.width,
     widget = wibox.container.background
@@ -76,14 +76,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
         visible   = false,
         bg        = x.color0,
         fg        = x.foreground,
+        shape = helpers.rrect(beautiful.border_radius),
         opacity   = beautiful.control_center_opacity
     }
 
     s.control_center_slide = rubato.timed {
         pos = s.geometry.y - s.control_center.height,
-        intro = 0,
-        outro = 0,
-        duration = 0.3,
+        intro = 0.25,
+        clamp_position = true,
+        outro = 0.25,
+        duration = 0.5,
         easing = rubato.easing.quadratic,
         subscribed = function(pos)
             s.control_center.y = s.geometry.y + pos
@@ -91,7 +93,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     }
 
     s.control_center_timer = gears.timer {
-        timeout = 0.3,
+        timeout = 0.5,
         single_shot = true,
         callback = function()
             s.control_center.visible = false

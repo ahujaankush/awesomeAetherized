@@ -12,18 +12,9 @@ local icons = require("icons")
 local keygrabber = require("awful.keygrabber")
 
 local bling = require("modules.bling")
-local rubato = require("modules.rubato")
--- Awesome Panel -----------------------------------------------------------
 
---[[ local unclicked = gears.surface.load_uncached(
-                      gfs.get_configuration_dir() .. "icons/ghosts/awesome.png")
-
-local clicked = gears.color.recolor_image(
-                    gears.surface.load_uncached(
-                        gfs.get_configuration_dir() ..
-                            "icons/ghosts/awesome.png"), x.color8)
-
-                            --]]
+-- layout popup
+require("ui.widgets.layoutPopup")
 
 local awesome_icon = wibox.widget {
     {
@@ -56,7 +47,6 @@ awesome_icon_container:connect_signal("button::release", function()
     awesome_icon_container.bg = colors.transparent
 end)
 
--- Change cursor
 helpers.add_hover_cursor(awesome_icon_container, "hand2")
 
 -- Battery Bar Widget ---------------------------------------------------------
@@ -65,158 +55,48 @@ local battery_bar = wibox.widget {
     max_value = 100,
     value = 50,
     forced_width = dpi(100),
-    shape = helpers.rrect(beautiful.border_radius - 3),
-    bar_shape = helpers.rrect(beautiful.border_radius - 3),
+    shape = helpers.rrect(beautiful.border_radius),
+    bar_shape = helpers.rrect(beautiful.border_radius),
     color = x.color10,
-    background_color = x.color0,
+    background_color = x.color2 .. "22",
     border_width = dpi(0),
     border_color = beautiful.border_color,
     widget = wibox.widget.progressbar
 }
 
-local chargingIcon = wibox.widget {
-    {
-        widget = wibox.widget.imagebox,
-        image = icons.getIcon("elenaLinebit/battery_charging.png"),
-        resize = true
-    },
-    margins = dpi(8),
-    widget = wibox.container.margin
-}
+-- Clock Widget ---------------------------------------------------------------
 
-  local battery_bar_precentage = wibox.widget {
-    font = beautiful.font,
-    visible = true,
-    align  = 'left',
-    valign = 'center',
-    widget = wibox.widget.textbox
-  }
-  battery_bar_precentage.markup = helpers.bold_text(helpers.colorize_text("50%", x.background))
+local hourtextbox = wibox.widget.textclock("%H", 3600)
+hourtextbox.markup = helpers.colorize_text(hourtextbox.text, x.color5)
 
-  local batteryValue = 50
-  local charging = false
+hourtextbox:connect_signal("widget::redraw_needed", function()
+    hourtextbox.markup = helpers.colorize_text(hourtextbox.text, x.color5)
+end)
 
-  local function updateBatteryBar(value)
-      battery_bar.value = value
-      battery_bar.color = x.color10
+local minutetextbox = wibox.widget.textclock("%M", 60)
+minutetextbox.markup = helpers.colorize_text(minutetextbox.text, x.color4)
 
-    if (charging) then
-          battery_bar.color = x.color4
-      else
-          if value >= 90 and value <= 100 then
-              battery_bar.color = x.color10
-          elseif value >= 70 and value < 90 then
-              battery_bar.color = x.color10
-          elseif value >= 60 and value < 70 then
-              battery_bar.color = x.color10
-          elseif value >= 50 and value < 60 then
-              battery_bar.color = x.color11
-          elseif value >= 30 and value < 50 then
-              battery_bar.color = x.color11
-          elseif value >= 15 and value < 30 then
-              battery_bar.color = x.color9
-          else
-              battery_bar.color = x.color9
-          end
-      end
-    battery_bar_precentage.markup = helpers.bold_text(helpers.colorize_text(value.."%", x.background))
-  end
+minutetextbox:connect_signal("widget::redraw_needed", function()
+    minutetextbox.markup = helpers.colorize_text(minutetextbox.text, x.color4)
+end)
 
-  awesome.connect_signal("evil::battery", function(value)
-      batteryValue = value
-      updateBatteryBar(batteryValue)
-  end)
+local secondtextbox = wibox.widget.textclock("%S", 1)
+secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
 
-  awesome.connect_signal("evil::charger", function(plugged)
-      charging = plugged
-      updateBatteryBar(batteryValue)
+secondtextbox:connect_signal("widget::redraw_needed", function()
+    secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
+end)
 
-  end)
-
-  -- Tasklist Buttons -----------------------------------------------------------
-
-  local tasklist_buttons = gears.table.join(awful.button({}, 1, function(c)
-      if c == client.focus then
-          c.minimized = true
-      else
-          c:emit_signal("request::activate", "tasklist", {
-              raise = true
-          })
-      end
-  end), awful.button({}, 3, function()
-      awful.menu.client_list({
-          theme = {
-              width = 250
-          }
-      })
-  end), awful.button({}, 4, function()
-      awful.client.focus.byidx(1)
-  end), awful.button({}, 5, function()
-      awful.client.focus.byidx(-1)
-  end))
-
-  -- Clock Widget ---------------------------------------------------------------
-
-  local hourtextbox = wibox.widget.textclock("%H", 3600)
-  hourtextbox.markup = helpers.colorize_text(hourtextbox.text, x.color5)
-
-  hourtextbox:connect_signal("widget::redraw_needed", function()
-      hourtextbox.markup = helpers.colorize_text(hourtextbox.text, x.color5)
-  end)
-
-  local minutetextbox = wibox.widget.textclock("%M", 60)
-  minutetextbox.markup = helpers.colorize_text(minutetextbox.text, x.color4)
-
-  minutetextbox:connect_signal("widget::redraw_needed", function()
-      minutetextbox.markup = helpers.colorize_text(minutetextbox.text, x.color4)
-  end)
-
-  local secondtextbox = wibox.widget.textclock("%S", 1)
-  secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
-
-  secondtextbox:connect_signal("widget::redraw_needed", function()
-      secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
-  end)
+local datetooltip = awful.tooltip {};
+datetooltip.preferred_alignments = { "middle", "front", "back" }
+datetooltip.mode = "outside"
+datetooltip.markup = helpers.colorize_text(os.date("%d"), x.color13) .. "/" ..
+    helpers.colorize_text(os.date("%m"), x.color12) .. "/" ..
+    helpers.colorize_text(os.date("%y"), x.color10)
 
 
-  -- Create the Wibar -----------------------------------------------------------
-  local datetooltip = awful.tooltip {};
-  datetooltip.preferred_alignments = { "middle", "front", "back" }
-  datetooltip.mode = "outside"
-  datetooltip.markup = helpers.colorize_text(os.date("%d"), x.color13) .. "/" ..
-  helpers.colorize_text(os.date("%m"), x.color12) .. "/" ..
-  helpers.colorize_text(os.date("%y"), x.color10)
 
-  local mysystray = wibox.widget.systray()
-  mysystray.base_size = beautiful.systray_icon_size
-
-  screen.connect_signal("request::desktop_decoration", function(s)
-      
-      s.battery_bar_container = wibox.widget {
-        {
-          {
-            battery_bar,
-            {
-              battery_bar_precentage,
-              margins = {
-                left = dpi(5)
-              },
-              widget = wibox.container.margin
-            },
-          layout = wibox.layout.stack, 
-          widget = wibox.container.background
-        },
-            margins = {
-                left = dpi(10),
-                right = dpi(10),
-                top = dpi(14),
-                bottom = dpi(14)
-            },
-            widget = wibox.container.margin
-        },
-        bg = colors.transparent,
-        widget = wibox.container.background
-    }
+screen.connect_signal("request::desktop_decoration", function(s)
 
     s.clock = wibox.widget {
         screen = s,
@@ -229,22 +109,22 @@ local chargingIcon = wibox.widget {
         },
         margins = dpi(11),
         widget = wibox.container.margin
-    
+
     }
-    
+
     s.clock_container = wibox.widget {
         screen = s,
         s.clock,
         bg = colors.transparent,
         widget = wibox.container.background
     }
-    
+
 
     datetooltip:add_to_object(s.clock_container)
     -- Change cursor
     helpers.add_hover_cursor(s.clock_container, "hand2")
-    
-    
+
+
     s.clock_container:connect_signal("button::press", function()
         control_center_toggle(s)
         s.clock_container.bg = x.color0 .. "CC"
@@ -253,12 +133,12 @@ local chargingIcon = wibox.widget {
         s.clock.right = dpi(10)
         s.clock.bottom = dpi(10)
     end)
-    
+
     s.clock_container:connect_signal("button::release", function()
         s.clock_container.bg = colors.transparent
         s.clock.margins = dpi(11)
     end)
-    
+
     -- bling: task preview
     bling.widget.tag_preview.enable {
         show_client_content = true,
@@ -281,10 +161,10 @@ local chargingIcon = wibox.widget {
     }
 
     bling.widget.task_preview.enable {
-        x = 20,                    -- The x-coord of the popup
-        y = 20,                    -- The y-coord of the popup
-        height = dpi(550),              -- The height of the popup
-        width = dpi(450),               -- The width of the popup
+        x = 20, -- The x-coord of the popup
+        y = 20, -- The y-coord of the popup
+        height = dpi(550), -- The height of the popup
+        width = dpi(450), -- The width of the popup
         placement_fn = function(c)
             awful.placement.top_left(c, {
                 margins = {
@@ -324,95 +204,6 @@ local chargingIcon = wibox.widget {
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
 
-    -- Create layoutbox widget
-    s.layoutPopup = awful.popup {
-        screen = s,
-        widget = wibox.widget {  
-          awful.widget.layoutlist {
-            screen = s,
-            base_layout = wibox.layout.flex.vertical
-          },  
-          margins = dpi(5),
-          widget = wibox.container.margin
-        },
-        maximum_height = #awful.layout.layouts * dpi(50),
-        minimum_height = #awful.layout.layouts * dpi(50),
-        maximum_width = dpi(175),
-        placement = function(c)
-            awful.placement.top_right(c, {
-                margins = {
-                    top = beautiful.wibar_height + dpi(10),
-                    right = dpi(10)
-                }
-            })
-        end,
-        visible = false,
-        ontop = true,
-        opacity = beautiful.layoutPopup_opacity,
-        bg = x.background,
-        fg = x.foreground
-    }
-
-    s.layoutPopup_grabber = nil
-    s.layoutPopup_timer = gears.timer {
-      timeout = 0.15,
-      single_shot = true,
-      callback = function()
-        s.layoutPopup.visible = false
-      end
-    }
-
-
-    s.layoutPopup_fade_height = rubato.timed {
-      pos = 0,
-      rate = 60,
-      intro = 0,
-      outro = 0.05,
-      duration = 0.15,
-      easing = rubato.easing.quadratic,
-      subscribed = function(pos)
-          s.layoutPopup.maximum_height = pos
-      end
-    }
-
-    s.layoutPopup_fade_width = rubato.timed {
-      pos = 0,
-      rate = 60,
-      intro = 0,
-      outro = 0.05,
-      duration = 0.15,
-      easing = rubato.easing.quadratic,
-      subscribed = function(pos)
-          s.layoutPopup.maximum_width = pos
-      end
-    }
-  
-
-    function layoutPopup_hide(s)
-        s.layoutPopup_fade_height.target = 0
-        s.layoutPopup_fade_width.target = 0
-        s.layoutPopup_timer:start()
-        awful.keygrabber.stop(s.layoutPopup_grabber)
-
-    end
-
-    function layoutPopup_show(s)
-
-        -- naughty.notify({text = "starting the keygrabber"})
-        s.layoutPopup_grabber = awful.keygrabber.run(function(_, key, event)
-            if event == "release" then
-                return
-            end
-            -- Press Escape or q or F1 to hide itf
-            if key == 'Escape' or key == 'q' or key == 'F1' then
-                layoutPopup_hide(s)
-            end
-        end)
-        s.layoutPopup.visible = true
-        s.layoutPopup_fade_height.target = #awful.layout.layouts * dpi(50)
-        s.layoutPopup_fade_width.target = dpi(175)
-    end
-
     s.mylayoutbox = wibox.widget {
         {
             widget = awful.widget.layoutbox {
@@ -432,14 +223,6 @@ local chargingIcon = wibox.widget {
         bg = colors.transparent,
         widget = wibox.container.background
     }
-
-    function layoutPopup_toggle(s)
-        if s.layoutPopup.visible then
-            layoutPopup_hide(s)
-        else
-            layoutPopup_show(s)
-        end
-    end
 
     s.mylayoutboxContainer:connect_signal("button::press", function()
         s.mylayoutbox.top = dpi(11)
@@ -463,37 +246,8 @@ local chargingIcon = wibox.widget {
         screen = s
     })
 
-    -- Remove wibar on full screen
-    -- local function remove_wibar(c)
-    --     if c.fullscreen or c.maximized then
-    --         c.screen.mywibox.visible = false
-    --     else
-    --         c.screen.mywibox.visible = true
-    --     end
-    -- end
-
-    -- Remove wibar on full screen
-    -- local function add_wibar(c)
-    --     if c.fullscreen or c.maximized then
-    --         c.screen.mywibox.visible = true
-    --     end
-    -- end
-
-    --[[
-    -- Hide bar when a splash widget is visible
-    awesome.connect_signal("widgets::splash::visibility", function(vis)
-        screen.primary.mywibox.visible = not vis
-    end)
-    ]] --
-
-    -- client.connect_signal("property::fullscreen", remove_wibar)
-
-    -- client.connect_signal("request::unmanage", add_wibar)
-
-
     -- Create the taglist widget
-    s.mytaglist = require("ui.widgets.tagsklist")(s)
-
+    s.mytagsklist = require("ui.widgets.tagsklist")(s)
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
@@ -501,29 +255,15 @@ local chargingIcon = wibox.widget {
         {
             layout = wibox.layout.fixed.horizontal,
             awesome_icon_container,
-            s.mytaglist,
+            s.mytagsklist,
             s.mypromptbox
         },
         s.clock_container,
         {
-            {
-                mysystray,
-                top = dpi(12),
-                left = dpi(10),
-                right = dpi(10),
-                widget = wibox.container.margin
-            },
+            require("ui.widgets.systray"),
             require("ui.widgets.volume_icon"),
-            chargingIcon,
-            s.battery_bar_container,
-            {
-                s.mylayoutboxContainer,
-                -- top = dpi(9),
-                -- bottom = dpi(9),
-                -- right = dpi(11),
-                -- left = dpi(11),
-                widget = wibox.container.margin
-            },
+            require("ui.widgets.brightness_icon"),
+            s.mylayoutboxContainer,
             layout = wibox.layout.fixed.horizontal
         }
     }
