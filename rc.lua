@@ -49,6 +49,7 @@ user = {
     lock_screen_custom_password = "123",
 
     -- battery notif. will be send on the following percentage:
+    battery_threshold_ok = 60,
     battery_threshold_low = 30,
     battery_threshold_critical = 20,
 
