@@ -13,9 +13,6 @@ local sad_color = x.color1
 local ok_color = x.color3
 local charging_color = x.color4
 
--- Not great not terrible
-local ok_threshold = 60
-
 local bar_shape = function()
     return function(cr, width, height)
         gears.shape.partially_rounded_rect(cr, width, height, true, true, true, true, 9)
@@ -151,7 +148,7 @@ awesome.connect_signal("evil::battery", function(value)
     elseif value <= user.battery_threshold_low then
         color = sad_color
         mouth:set(1, frown)
-    elseif value <= ok_threshold then
+    elseif value <= user.battery_threshold_ok then
         color = ok_color
         mouth:set(1, ok)
     else
@@ -172,7 +169,7 @@ awesome.connect_signal("evil::charger", function(plugged)
         charging_icon.visible = false
         color = sad_color
         mouth:set(1, frown)
-    elseif last_value <= ok_threshold then
+    elseif last_value <= user.battery_threshold_ok then
         charging_icon.visible = false
         color = ok_color
         mouth:set(1, ok)

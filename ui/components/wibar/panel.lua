@@ -260,6 +260,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         },
         s.clock_container,
         {
+            require("ui.widgets.awesome_widgets.battery"),
             require("ui.widgets.systray"),
             require("ui.widgets.volume_icon"),
             require("ui.widgets.brightness_icon"),
