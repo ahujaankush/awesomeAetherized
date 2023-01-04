@@ -49,21 +49,6 @@ end)
 
 helpers.add_hover_cursor(awesome_icon_container, "hand2")
 
--- Battery Bar Widget ---------------------------------------------------------
-
-local battery_bar = wibox.widget {
-    max_value = 100,
-    value = 50,
-    forced_width = dpi(100),
-    shape = helpers.rrect(beautiful.border_radius),
-    bar_shape = helpers.rrect(beautiful.border_radius),
-    color = x.color10,
-    background_color = x.color2 .. "22",
-    border_width = dpi(0),
-    border_color = beautiful.border_color,
-    widget = wibox.widget.progressbar
-}
-
 -- Clock Widget ---------------------------------------------------------------
 
 local hourtextbox = wibox.widget.textclock("%H", 3600)
@@ -260,7 +245,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         },
         s.clock_container,
         {
-            require("ui.widgets.awesome_widgets.battery"),
+            require("ui.widgets.battery_bar"),
             require("ui.widgets.systray"),
             require("ui.widgets.volume_icon"),
             require("ui.widgets.brightness_icon"),

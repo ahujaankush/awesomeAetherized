@@ -360,12 +360,12 @@ end, {
     description = "(un)mute volume",
     group = "volume"
 }), awful.key({}, "XF86AudioLowerVolume", function()
-    helpers.volume_control(-5)
+    helpers.volume_control(-2)
 end, {
     description = "lower volume",
     group = "volume"
 }), awful.key({}, "XF86AudioRaiseVolume", function()
-    helpers.volume_control(5)
+    helpers.volume_control(2)
 end, {
     description = "raise volume",
     group = "volume"
@@ -376,12 +376,12 @@ end, {
     description = "(un)mute volume",
     group = "volume"
 }), awful.key({altkey}, "F2", function()
-    helpers.volume_control(-5)
+    helpers.volume_control(-2)
 end, {
     description = "lower volume",
     group = "volume"
 }), awful.key({altkey}, "F3", function()
-    helpers.volume_control(5)
+    helpers.volume_control(2)
 end, {
     description = "raise volume",
     group = "volume"

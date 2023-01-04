@@ -298,7 +298,7 @@ end
 function helpers.brightness_control(step)
     local cmd
     if step < 0 then
-        cmd = "light -U " .. tostring(step)
+        cmd = "light -U " .. tostring(step * -1)
     else
         cmd = "light -A " .. tostring(step)
     end
