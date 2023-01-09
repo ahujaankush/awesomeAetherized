@@ -240,6 +240,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         {
             layout = wibox.layout.fixed.horizontal,
             awesome_icon_container,
+            require("ui.widgets.searchbar"),
             s.mytagsklist,
             s.mypromptbox
         },

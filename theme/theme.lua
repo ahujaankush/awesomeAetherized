@@ -59,7 +59,7 @@ theme.border_radius = dpi(8)
 theme.titlebars_enabled = true
 theme.titlebar_size = dpi(35)
 theme.titlebar_title_enabled = true
-theme.titlebar_font = theme_name.." bold 9"
+theme.titlebar_font = theme_name.." 9"
 -- Window title alignment: left, right, center
 theme.titlebar_title_align = "center"
 -- Titlebar position: top, bottom, left, right
@@ -165,6 +165,8 @@ theme.systray_max_rows = 1
 --hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
 --Example:
 --theme.taglist_bg_focus = "#ff0000"
+
+theme.prompt_font = theme.font_name.." 11"
 
 theme.hotkeys_bg = x.background
 theme.hotkeys_fg = x.foreground
