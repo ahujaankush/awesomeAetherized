@@ -8,7 +8,7 @@ local empty_notifbox = require('ui.components.notif-center.build-notifbox.empty-
     icons.getIcon("elenaLinebit/calendar/google_calendar_"..tonumber(os.date("%d"))..".png"), "NO NOTIFS!", "You have no notifs!")
 local box = require("ui.components.notif-center.build-notifbox.notifbox")
 
-local width = dpi(380)
+local width = dpi(500)
 
 local remove_notifbox_empty = true
 

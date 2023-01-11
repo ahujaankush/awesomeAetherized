@@ -4,7 +4,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 
 local styles = {}
-styles.month   = { padding      = 20,
+styles.month   = { padding      = dpi(20),
     fg_color     = x.color7,
     bg_color     = x.background.."00",
     border_width = 0,
@@ -17,11 +17,11 @@ styles.focus   = { fg_color = x.color2,
 styles.header  = { fg_color = x.color4,
     bg_color = x.color1.."00",
     -- markup   = function(t) return '<b>' .. t .. '</b>' end,
-    markup   = function(t) return '<span font_desc="'..beautiful.font_name..' 22">' .. t .. '</span>' end,
+    markup   = function(t) return '<span font_desc="'..beautiful.font_name..' 26">' .. t .. '</span>' end,
 }
 styles.weekday = { fg_color = x.color5,
     bg_color = x.color1.."00",
-    padding  = 3,
+    padding  = dpi(5),
     markup   = function(t) return '<b>' .. t .. '</b>' end,
 }
 local function decorate_cell(widget, flag, date)
@@ -56,9 +56,9 @@ end
 
 calendar_widget = wibox.widget {
     date     = os.date('*t'),
-    font     = beautiful.font_name.." 13",
+    font     = beautiful.font_name.." 15",
     long_weekdays = false,
-    spacing  = dpi(3),
+    spacing  = dpi(5),
     fn_embed = decorate_cell,
     widget   = wibox.widget.calendar.month
 }

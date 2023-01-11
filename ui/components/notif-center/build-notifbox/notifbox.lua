@@ -64,7 +64,6 @@ notifbox.create = function(icon, n, width)
                                         align = "left",
                                         widget = wibox.widget.textbox
                                     },
-                                    forced_width = dpi(204),
                                     widget = wibox.container.scroll.horizontal
                                 },
                                 {
@@ -86,7 +85,7 @@ notifbox.create = function(icon, n, width)
                                     left = dpi(10),
                                     widget = wibox.container.margin
                                 },
-                                layout = wibox.layout.fixed.horizontal
+                                layout = wibox.layout.align.horizontal
                             },
                             {
                                 markup = n.message,
