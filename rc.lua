@@ -20,7 +20,7 @@ user = {
 
     -- >> User profile <<
     profile_picture = os.getenv("HOME") .. "/.face",
-
+    nickname = "pyxodan",
     -- Keyboard layouts
     keyboardLayouts = {"us", "at"},
 
@@ -42,9 +42,6 @@ user = {
         toDO = "~/Documents/toDO"
     },
 
-    -- Sidebar
-    sidebar = {hide_on_mouse_leave = true, show_on_mouse_screen_edge = true},
-
     -- lockscreen passwd. will be used with luapam is not installed
     lock_screen_custom_password = "123",
 
@@ -60,7 +57,9 @@ user = {
     -- Use "metric" for Celcius, "imperial" for Fahrenheit
     weather_units = "metric",
 
-    coronavirus_country = "austria"
+    coronavirus_country = "austria",
+    -- rate for rubato
+    animation_rate = 120,
 }
 
 -- Initialization
@@ -161,12 +160,12 @@ require("icons")
 require("ui.components.wibar")
 -- Exit screen
 require("ui.components.exit_screen.exit_screen")
--- Sidebar
-require("ui.components.sidebar")
--- Dashboard (previously called: Start screen)
+-- Dashboard
 require("ui.components.dashboard")
 -- Control Center
 require("ui.components.control_center")
+-- Dash Center
+require("ui.components.dash_center")
 -- Lock screen
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above
@@ -177,8 +176,6 @@ require("ui.components.menu.app_drawer")
 require("awful.hotkeys_popup.keys")
 -- window window
 require("ui.components.window_switcher")
--- notify center
-require("ui.components.notif-center")
 -- dropdown terminal
 require("ui.components.term_scratchpad")
 -- >> Daemons
@@ -186,8 +183,6 @@ require("ui.components.term_scratchpad")
 -- Make sure to initialize it last in order to allow all widgets to connect to
 -- their needed signals.
 require("daemon")
-
-require("ui.widgets.layoutPopup")
 
 -- ===================================================================
 

@@ -12,39 +12,48 @@ local decorations = require("ui.decorations")
 
 -- Add a titlebar
 client.connect_signal("request::titlebars", function(c)
-    awful.titlebar(c, {font = beautiful.titlebar_font, position = beautiful.titlebar_position, size = beautiful.titlebar_size}) : setup {
-        {
+	awful
+		.titlebar(c, { font = beautiful.titlebar_font, position = beautiful.titlebar_position, size = beautiful.titlebar_size })
+		:setup({
 			{
-				awful.titlebar.widget.minimizebutton(c),
-				awful.titlebar.widget.maximizedbutton(c),
-				awful.titlebar.widget.closebutton(c),
-				spacing = dpi(1),
-				layout  = wibox.layout.fixed.vertical
+				{
+					{
+						awful.titlebar.widget.minimizebutton(c),
+						awful.titlebar.widget.maximizedbutton(c),
+						awful.titlebar.widget.closebutton(c),
+						layout = wibox.layout.fixed.vertical,
+					},
+					bg = x.color0,
+					widget = wibox.container.background,
+					shape = helpers.rrect(beautiful.border_radius),
+				},
+				margins = {
+					right = dpi(5),
+					left = dpi(5),
+					top = dpi(8),
+				},
+				widget = wibox.container.margin,
 			},
-			--margins = dpi(10),
-			widget = wibox.container.margin
-		},
-		{
-			--{
-			--	{ -- Title
-			--	align  = 'center',
-			--	widget = awful.titlebar.widget.titlewidget(c)
-			--	},
-			--	layout = wibox.layout.flex.vertical
-			--},
-			widget = wibox.container.rotate,
-			--direction = "east",
-		},
-		{
+			nil,
 			{
-      
-        awful.titlebar.widget.iconwidget(c),
-        spacing = dpi(1),
-				layout  = wibox.layout.fixed.vertical
+				{
+					{
+						awful.titlebar.widget.iconwidget(c),
+						margins = dpi(4),
+						widget = wibox.container.margin,
+					},
+					bg = x.color0,
+					shape = helpers.rrect(beautiful.border_radius),
+					widget = wibox.container.background,
+				},
+				margins = {
+					left = dpi(5),
+					right = dpi(5),
+					bottom = dpi(8),
+				},
+				widget = wibox.container.margin,
 			},
-			margins = dpi(6),
-			widget = wibox.container.margin
-		},
-      layout = wibox.layout.align.vertical
-    }
+
+			layout = wibox.layout.align.vertical,
+		})
 end)

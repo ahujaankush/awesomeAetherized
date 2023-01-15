@@ -16,8 +16,8 @@ notifbox.create = function(icon, n, width)
                                                 function()
         _G.remove_notifbox(box)
     end)
-    dismiss.forced_height = dpi(14)
-    dismiss.forced_width = dpi(14)
+    dismiss.forced_height = dpi(15)
+    dismiss.forced_width = dpi(15)
 
     
 
@@ -26,6 +26,7 @@ notifbox.create = function(icon, n, width)
             {
                 {
                     {
+                      nil,
                         {
                             {
                                 image = icon,
@@ -36,8 +37,8 @@ notifbox.create = function(icon, n, width)
                             },
                             -- bg = x.color1,
                             strategy = 'exact',
-                            height = 40,
-                            width = 40,
+                            height = dpi(45),
+                            width = dpi(45),
                             widget = wibox.container.constraint
                         },
                         layout = wibox.layout.align.vertical
@@ -64,6 +65,7 @@ notifbox.create = function(icon, n, width)
                                         align = "left",
                                         widget = wibox.widget.textbox
                                     },
+                                    forced_width = dpi(230),
                                     widget = wibox.container.scroll.horizontal
                                 },
                                 {

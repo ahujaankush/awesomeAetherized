@@ -19,10 +19,10 @@ local theme = {}
 
 -- Set theme wallpaper.
 -- It won't change anything if you are using feh to set the wallpaper like I do.
-theme.wallpaper = os.getenv("HOME") .. "/Pictures/Wallpaper/5bwdct0isf3a1.jpg"
+theme.wallpaper = os.getenv("HOME") .. "/Pictures/Wallpaper/wallpaper.jpg"
 -- Set the theme font. This is the font that will be used by default in menus, bars, titlebars etc.
-theme.font_name = "CaskaydiaCove Nerd Font Mono"
-theme.font      = theme.font_name .. " 11"
+theme.font_name = "Inter Medium"
+theme.font      = theme.font_name .. " 12"
 -- theme.font          = "monospace 11"
 
 -- This is how to get other .Xresources values (beyond colors 0-15, or custom variables)
@@ -57,14 +57,14 @@ theme.border_radius = dpi(8)
 -- Titlebars
 -- (Titlebar items can be customized in titlebars.lua)
 theme.titlebars_enabled = true
-theme.titlebar_size = dpi(35)
+theme.titlebar_size = dpi(40)
 theme.titlebar_title_enabled = true
-theme.titlebar_font = theme_name.." 9"
+theme.titlebar_font = theme.font_name.." 10"
 -- Window title alignment: left, right, center
 theme.titlebar_title_align = "center"
 -- Titlebar position: top, bottom, left, right
 theme.titlebar_position = "left"
-theme.titlebar_bg = x.background.. "BF"
+theme.titlebar_bg = x.background
 -- theme.titlebar_bg_focus = x.color12
 -- theme.titlebar_bg_normal = x.color8
 theme.titlebar_fg_focus = x.color7
@@ -145,7 +145,6 @@ theme.wibar_opacity = 1
 theme.wibar_border_color = x.color0
 theme.wibar_border_width = dpi(0)
 theme.wibar_border_radius = dpi(0)
-theme.wibar_width = dpi(380)
 
 theme.prefix_fg = x.color8
 
@@ -177,7 +176,7 @@ theme.hotkeys_label_bg = x.color0
 theme.hotkeys_label_fg = x.foreground
 theme.hotkeys_font = theme.font
 --Tasklist
-theme.tasklist_font = "sans medium 8"
+theme.tasklist_font = theme.font
 theme.tasklist_disable_icon = false
 theme.tasklist_plain_task_name = true
 theme.tasklist_bg_focus = x.background
@@ -206,15 +205,12 @@ theme.tasklist_shape_border_color_urgent = x.color1 .. "80"
 
 -- Sidebar
 -- (Sidebar items can be customized in sidebar.lua)
-theme.sidebar_bg = x.background
-theme.sidebar_fg = x.color15
-theme.sidebar_opacity = 1
-theme.sidebar_position = "left" -- left or right
-theme.sidebar_width = dpi(300)
-theme.sidebar_x = 0
-theme.sidebar_y = 0
-theme.sidebar_height_multip = 1 -- this value is multiplied with the screen height
-theme.sidebar_border_radius = dpi(0) --theme.border_radius
+theme.dash_center_bg = x.background
+theme.dash_center_fg = x.color15
+theme.dash_center_opacity = 1
+theme.dash_center_position = "left" -- left or right
+theme.dash_center_width = dpi(525)
+theme.dash_center_border_radius = dpi(0) --theme.border_radius
 
 -- Dashboard
 theme.dashboard_bg = x.color0 .. "44"
@@ -235,7 +231,7 @@ theme.layoutPopup_opacity = 1
 -- Exit screen
 theme.exit_screen_bg = x.color0 .. "44"
 theme.exit_screen_fg = x.color7
-theme.exit_screen_font = "sans 20"
+theme.exit_screen_font = theme.font_name.." 20"
 theme.exit_screen_icon_size = dpi(180)
 
 -- Lock screen
@@ -246,7 +242,7 @@ theme.lock_screen_fg = x.color7
 theme.prompt_fg = x.color12
 
 -- Text Taglist (default)
-theme.taglist_font = "monospace bold 9"
+theme.taglist_font = theme.font_name.." 9"
 theme.taglist_bg_focus = colors.transparent
 theme.taglist_fg_focus = x.foreground
 theme.taglist_bg_occupied = colors.transparent

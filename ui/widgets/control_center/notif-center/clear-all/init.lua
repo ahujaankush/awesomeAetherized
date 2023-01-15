@@ -20,8 +20,8 @@ local delete_button_wrapped = wibox.widget {
     {
         delete_button,
         widget = wibox.container.background,
-        forced_height = dpi(24),
-        forced_width = dpi(24)
+        forced_height = dpi(28),
+        forced_width = dpi(28)
     },
     nil,
     expand = 'none',

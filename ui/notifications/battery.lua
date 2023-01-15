@@ -63,11 +63,11 @@ awesome.connect_signal("evil::charger", function(plugged)
         -- Avoids notifying of a full battery if it was almost full after plugging
         battery_full_already_notified = battery_current > battery_full_threshold
         message = "Plugged"
-        icon = icons.getIcon("elenaLinebit/notify_charging.png")
+        icon = icons.getIcon("elenaLinebit/battery_charging.png")
     else
         battery_full_already_notified = false
         message = "Unplugged"
-        icon = icons.getIcon("elenaLinebit/power_battery.png")
+        icon = icons.getIcon("elenaLinebit/battery.png")
     end
 
     -- Do not send a notification the first time (when AwesomeWM (re)starts)

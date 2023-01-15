@@ -1,20 +1,13 @@
 -- wibar.lua
 -- Wibar (top bar)
 local awful = require("awful")
-local gears = require("gears")
-local gfs = require("gears.filesystem")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local helpers = require("helpers")
 local icons = require("icons")
-local keygrabber = require("awful.keygrabber")
-
 local bling = require("modules.bling")
-
--- layout popup
-require("ui.widgets.layoutPopup")
 
 local awesome_icon = wibox.widget {
     {
@@ -52,34 +45,36 @@ helpers.add_hover_cursor(awesome_icon_container, "hand2")
 -- Clock Widget ---------------------------------------------------------------
 
 local hourtextbox = wibox.widget.textclock("%H", 3600)
-hourtextbox.markup = helpers.colorize_text(hourtextbox.text, x.color5)
+hourtextbox.markup = hourtextbox.text
 
 hourtextbox:connect_signal("widget::redraw_needed", function()
-    hourtextbox.markup = helpers.colorize_text(hourtextbox.text, x.color5)
+    hourtextbox.markup = hourtextbox.text
 end)
 
 local minutetextbox = wibox.widget.textclock("%M", 60)
-minutetextbox.markup = helpers.colorize_text(minutetextbox.text, x.color4)
+minutetextbox.markup = minutetextbox.text
 
 minutetextbox:connect_signal("widget::redraw_needed", function()
-    minutetextbox.markup = helpers.colorize_text(minutetextbox.text, x.color4)
+    minutetextbox.markup = minutetextbox.text
 end)
 
 local secondtextbox = wibox.widget.textclock("%S", 1)
-secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
-
+secondtextbox.markup = secondtextbox.text, x.foreground
 secondtextbox:connect_signal("widget::redraw_needed", function()
-    secondtextbox.markup = helpers.colorize_text(secondtextbox.text, x.foreground)
+    secondtextbox.markup = secondtextbox.text
 end)
 
 local datetooltip = awful.tooltip {};
 datetooltip.preferred_alignments = { "middle", "front", "back" }
 datetooltip.mode = "outside"
-datetooltip.markup = helpers.colorize_text(os.date("%d"), x.color13) .. "/" ..
-    helpers.colorize_text(os.date("%m"), x.color12) .. "/" ..
-    helpers.colorize_text(os.date("%y"), x.color10)
+datetooltip.markup = os.date("%d") .. "/" ..
+    os.date("%m") .. "/" ..
+    os.date("%y")
 
-
+local clock_sep = wibox.widget {
+  markup = ":",
+  widget = wibox.widget.textbox
+}
 
 screen.connect_signal("request::desktop_decoration", function(s)
 
@@ -87,9 +82,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
         screen = s,
         {
             hourtextbox,
+            clock_sep,
             minutetextbox,
+            clock_sep,
             secondtextbox,
-            spacing = dpi(5),
             layout = wibox.layout.fixed.horizontal
         },
         margins = dpi(11),
@@ -214,7 +210,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         s.mylayoutbox.left = dpi(11)
         s.mylayoutbox.right = dpi(9)
         s.mylayoutbox.bottom = dpi(9)
-        layoutPopup_toggle(s)
+        dash_center_toggle(s)
         s.mylayoutboxContainer.bg = x.color0 .. "CC"
     end)
 
@@ -232,7 +228,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     })
 
     -- Create the taglist widget
-    s.mytagsklist = require("ui.widgets.tagsklist")(s)
+    s.mytagsklist = require("ui.widgets.panel.tagsklist")(s)
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
@@ -240,23 +236,22 @@ screen.connect_signal("request::desktop_decoration", function(s)
         {
             layout = wibox.layout.fixed.horizontal,
             awesome_icon_container,
-            require("ui.widgets.searchbar"),
+            require("ui.widgets.panel.searchbar"),
             s.mytagsklist,
             s.mypromptbox
         },
         s.clock_container,
         {
-            require("ui.widgets.battery_bar"),
-            require("ui.widgets.systray"),
-            require("ui.widgets.volume_icon"),
-            require("ui.widgets.brightness_icon"),
+            require("ui.widgets.panel.battery_bar"),
+            require("ui.widgets.panel.systray"),
+            require("ui.widgets.panel.volume_icon"),
+            require("ui.widgets.panel.brightness_icon"),
             s.mylayoutboxContainer,
             layout = wibox.layout.fixed.horizontal
         }
     }
     awesome.connect_signal("elemental::dismiss", function()
         control_center_hide(s)
-        layoutPopup_hide(s)
     end)
 end)
 

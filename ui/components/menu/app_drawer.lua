@@ -188,9 +188,10 @@ app_drawer:buttons(gears.table.join( -- Left click - Hide app_drawer
 
 app_drawer_animation = rubato.timed({
 	pos = screen.primary.geometry.height,
-	intro = 0.2,
-	outro = 0.2,
-	duration = 0.4,
+	intro = 0.3,
+	outro = 0.3,
+	duration = 0.6,
+  rate = user.animation_rate,
 	easing = rubato.easing.quadratic,
 	subscribed = function(pos)
 		app_drawer.y = pos
@@ -198,7 +199,7 @@ app_drawer_animation = rubato.timed({
 })
 
 app_drawer_animation_timer = gears.timer({
-	timeout = 0.4,
+	timeout = 0.6,
 	single_shot = true,
 	callback = function()
 		app_drawer.visible = false

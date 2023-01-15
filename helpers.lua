@@ -280,7 +280,7 @@ end
 function helpers.volume_control(step)
     local cmd
     if step == 0 then
-        cmd = "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+        cmd = "pamixer -t"
     elseif step < 0 then
         cmd = "pamixer --decrease " .. tostring(step * -1)
     else

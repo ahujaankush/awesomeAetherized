@@ -395,13 +395,7 @@ awful.key({superkey}, "v", function()
 end, {
     description = "(un)mute microphone",
     group = "volume"
-}), -- Microphone overlay
-awful.key({superkey, shiftkey}, "v", function()
-    microphone_overlay_toggle()
-end, {
-    description = "toggle microphone overlay",
-    group = "volume"
-}), -- Screenshots
+}),
 awful.key({}, "Print", function()
     apps.screenshot("full")
 end, {
