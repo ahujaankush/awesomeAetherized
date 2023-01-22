@@ -9,14 +9,14 @@ local active_color_vol = {
     type = 'linear',
     from = {0, 0},
     to = {dpi(375)},
-    stops = {{0, x.color4}, {0.50, x.color6}}
+    stops = {{0, x.color6}, {0.50, x.color4}}
 }
 
 local active_color_bri = {
     type = 'linear',
     from = {0, 0},
     to = {dpi(375)},
-    stops = {{0, x.color3}, {0.50, x.color11}}
+    stops = {{0, x.color11}, {0.50, x.color3}}
 }
 
 ----------------------

@@ -10,21 +10,21 @@ local playerctl = bling.signal.playerctl.lib()
 local prev = wibox.widget({
 	align = "center",
 	font = "JetBrainsMono Nerd Font 16",
-	text = "",
+	text = "玲",
 	widget = wibox.widget.textbox,
 })
 
 local next = wibox.widget({
 	align = "center",
 	font = "JetBrainsMono Nerd Font 16",
-	text = "",
+	text = "怜",
 	widget = wibox.widget.textbox,
 })
 
 local play = wibox.widget({
 	align = "center",
 	font = "JetBrainsMono Nerd Font 16",
-	markup = "",
+	markup = "契",
 	widget = wibox.widget.textbox,
 })
 
@@ -51,19 +51,19 @@ local art = wibox.widget({
 	image = beautiful.player_img,
 	resize = false,
 	opacity = 0.75,
-	forced_width = beautiful.dash_center_width - dpi(40),
+  forced_width = beautiful.dash_center_width - dpi(40),
 	widget = wibox.widget.imagebox,
 })
 
-local title_widget = wibox.widget({
-	markup = helpers.bold_text("Nothing Playing"),
+local name = wibox.widget({
+	markup = "<b>Nothing Playing</b>",
 	align = "left",
 	valign = "center",
 	font = beautiful.font_name .. " 18",
 	widget = wibox.widget.textbox,
 })
 
-local artist_widget = wibox.widget({
+local artist_name = wibox.widget({
 	markup = "None",
 	align = "left",
 	valign = "center",
@@ -71,8 +71,8 @@ local artist_widget = wibox.widget({
 	widget = wibox.widget.textbox,
 })
 
-local player_widget = wibox.widget({
-	markup = "None",
+local player = wibox.widget({
+	markup = "Nothing Playing",
 	align = "left",
 	valign = "center",
 	font = beautiful.font_name .. " 10",
@@ -80,32 +80,26 @@ local player_widget = wibox.widget({
 })
 
 -- Get Song Info
-playerctl:connect_signal("metadata", function(_, title, artist, album_path, _, new, player_name)
-	if new == true and title ~= "" then
-		naughty.notify({ title = title, text = artist, image = album_path })
-		-- Set art widget
-		art:set_image(gears.surface.load_uncached(album_path))
-
-		-- Set player name, title and artist widgets
-		player_widget:set_markup_silently(helpers.colorize_text(player_name, x.foreground))
-		title_widget:set_markup_silently(helpers.colorize_text(title, x.foreground))
-		artist_widget:set_markup_silently(helpers.colorize_text(artist, x.foreground))
-	end
-end)
-
-playerctl:connect_signal("no_players", function()
-	art:set_image(beautiful.player_img)
-	player_widget:set_markup_silently("None")
-	title_widget:set_markup_silently(helpers.bold_text("Nothing Playing"))
-	artist_widget:set_markup_silently("None")
+playerctl:connect_signal("metadata", function(_, title, artist, album_path, album, new, player_name)
+	art:set_image(gears.surface.load_uncached(album_path))
+	name:set_markup_silently(helpers.colorize_text(helpers.bold_text(title), x.foreground))
+	artist_name:set_markup_silently(artist)
+  player:set_markup_silently("Now Playing • "..player_name)
+	naughty.notify({ title = title, text = artist, icon = album_path })
 end)
 
 playerctl:connect_signal("playback_status", function(_, playing, _)
 	if playing then
-		play.markup = ""
+		play:set_markup_silently(helpers.colorize_text("", beautiful.pri))
+		position.color = x.foreground
 	else
-		play.markup = ""
+		play:set_markup_silently("契")
+		position.color = x.foreground .. "66"
 	end
+end)
+
+playerctl:connect_signal("position", function(_, a, b, _)
+	position.markup = a.." - "..b
 end)
 
 return wibox.widget({
@@ -115,23 +109,23 @@ return wibox.widget({
 			{
 				{
 					{
-						player_widget,
-						title_widget,
-						artist_widget,
+            player,
+						name,
+						artist_name,
 						layout = wibox.layout.fixed.vertical,
 					},
-					nil,
+          nil,
 					{
 						{
 							prev,
 							play,
 							next,
-							spacing = dpi(6),
+              spacing = dpi(6),
 							layout = wibox.layout.fixed.horizontal,
 						},
 						nil,
 						position,
-						layout = wibox.layout.align.horizontal,
+            layout = wibox.layout.align.horizontal
 					},
 					layout = wibox.layout.align.vertical,
 				},
@@ -149,5 +143,5 @@ return wibox.widget({
 		left = dpi(20),
 		right = dpi(20),
 	},
-	forced_height = dpi(225),
+  forced_height = dpi(225),
 })

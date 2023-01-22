@@ -26,21 +26,11 @@ local volume_arcchart = wibox.widget({
 	widget = wibox.container.arcchart,
 })
 
--- container with the icon
-local volume_icon_container = wibox.widget {
-	volume_arcchart,
-	margins = {
-		top = dpi(5),
-		bottom = dpi(5),
-		left = dpi(6),
-	},
-	widget = wibox.container.margin,
-}
 -- tooltip
 local volume_icon_tooltip = awful.tooltip({})
 volume_icon_tooltip.preferred_alignments = { "middle", "front", "back" }
 volume_icon_tooltip.mode = "outside"
-volume_icon_tooltip:add_to_object(volume_icon_container)
+volume_icon_tooltip:add_to_object(volume_arcchart)
 volume_icon_tooltip.markup = helpers.colorize_text("0", color)
 
 local color1 = colorMod.color({ hex = x.color1 })
@@ -84,4 +74,4 @@ awesome.connect_signal("evil::volume", function(value, muted)
 	volume_icon_tooltip.markup = helpers.colorize_text(value, color)
 end)
 
-return volume_icon_container
+return volume_arcchart

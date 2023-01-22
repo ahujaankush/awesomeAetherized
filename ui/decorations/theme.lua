@@ -28,9 +28,7 @@ client.connect_signal("request::titlebars", function(c)
 					shape = helpers.rrect(beautiful.border_radius),
 				},
 				margins = {
-					right = dpi(5),
-					left = dpi(5),
-					top = dpi(8),
+					right = beautiful.border_width,
 				},
 				widget = wibox.container.margin,
 			},
@@ -47,9 +45,7 @@ client.connect_signal("request::titlebars", function(c)
 					widget = wibox.container.background,
 				},
 				margins = {
-					left = dpi(5),
-					right = dpi(5),
-					bottom = dpi(8),
+					right = beautiful.border_width,
 				},
 				widget = wibox.container.margin,
 			},

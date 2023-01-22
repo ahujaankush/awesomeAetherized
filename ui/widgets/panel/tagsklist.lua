@@ -75,8 +75,8 @@ local function get_tagsklist(s)
                                 widget = wibox.container.place
                             },
                             margins = {
-                                right = dpi(8),
-                                left = dpi(8)
+                                right = beautiful.wibar_elements_gap,
+                                left = beautiful.wibar_elements_gap
                             },
                             widget = wibox.container.margin
                         },
@@ -95,9 +95,7 @@ local function get_tagsklist(s)
                     shape = helpers.rrect(beautiful.border_radius)
                 },
                 margins = {
-                    left = dpi(5),
-                    top = dpi(5),
-                    bottom = dpi(5)
+                    right = beautiful.wibar_elements_gap,
                 },
                 widget = wibox.container.margin,
             },

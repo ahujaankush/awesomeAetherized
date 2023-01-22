@@ -26,22 +26,11 @@ local brightness_arcchart = wibox.widget({
 	widget = wibox.container.arcchart,
 })
 
--- container with the icon
-local brightness_icon_container = wibox.widget {
-	brightness_arcchart,
-	margins = {
-		top = dpi(5),
-		bottom = dpi(5),
-		left = dpi(6),
-	},
-	widget = wibox.container.margin,
-}
-
 -- tooltip
 local brightness_icon_tooltip = awful.tooltip({})
 brightness_icon_tooltip.preferred_alignments = { "middle", "front", "back" }
 brightness_icon_tooltip.mode = "outside"
-brightness_icon_tooltip:add_to_object(brightness_icon_container)
+brightness_icon_tooltip:add_to_object(brightness_arcchart)
 brightness_icon_tooltip.markup = helpers.colorize_text("0", color)
 
 local color1 = colorMod.color({ hex = x.color3 })
@@ -70,4 +59,4 @@ awesome.connect_signal("evil::brightness", function(value, muted)
 	brightness_icon_tooltip.markup = helpers.colorize_text(value, color)
 end)
 
-return brightness_icon_container
+return brightness_arcchart

@@ -2,12 +2,6 @@ local wibox = require("wibox")
 local gears = require("gears")
 local helpers = require("helpers")
 local beautiful = require("beautiful")
-local colorMod = require("modules.color")
-local rubato = require("modules.rubato")
-
-local active = colorMod.color({ hex = x.foreground })
-local inactive = colorMod.color({ hex = x.color7 })
-
 
 local nickname = wibox.widget({
 	markup = helpers.colorize_text(user.nickname, x.color7),
@@ -16,7 +10,7 @@ local nickname = wibox.widget({
 })
 
 local exit = wibox.widget({
-	markup = helpers.colorize_text("", inactive.hex),
+	markup = helpers.colorize_text("", x.color7),
 	font = "icomoon bold 20",
 	widget = wibox.widget.textbox,
 })
@@ -47,34 +41,19 @@ local profile_text = wibox.widget({
 	layout = wibox.layout.align.vertical,
 })
 
-local function fade(from, to)
-	local transition = colorMod.transition(from, to)
-	local transitionFunc = rubato.timed({
-		pos = 0,
-		duration = 0.2,
-		rate = user.animation_rate,
-		intro = 0,
-		outro = 0,
-		easing = rubato.easing.zero,
-		subscribed = function(pos)
-			exit:set_markup_silently(helpers.colorize_text("", transition(pos).hex))
-		end,
-	})
-	transitionFunc.target = 1
-end
-
-
 exit:connect_signal("mouse::enter", function()
-	fade(inactive, active)
+	exit:set_markup_silently(helpers.colorize_text("", x.foreground))
 end)
 
 exit:connect_signal("mouse::leave", function()
-	fade(active, inactive)
+	exit:set_markup_silently(helpers.colorize_text("", x.color7))
 end)
 
 exit:connect_signal("button::press", function()
-	exit_screen_show()
+  exit_screen_show()
 end)
+
+
 
 return wibox.widget({
 	{

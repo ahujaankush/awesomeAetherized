@@ -72,9 +72,9 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
 	s.control_center_slide = rubato.timed({
 		pos = s.geometry.y - s.control_center.height,
-		intro = 0.3,
-		outro = 0.3,
-		duration = 0.6,
+		intro = 0.25,
+		outro = 0.25,
+		duration = 0.5,
     rate = user.animation_rate,
 		easing = rubato.easing.quadratic,
 		subscribed = function(pos)
@@ -111,7 +111,7 @@ function control_center_show(s)
 		end
 	end)
 	s.control_center.visible = true
-	s.control_center_slide.target = s.geometry.y + beautiful.wibar_height + dpi(10)
+	s.control_center_slide.target = beautiful.wibar_height + beautiful.useless_gap
 	customCalendarWidget.date = os.date("*t")
 end
 
