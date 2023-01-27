@@ -6,14 +6,12 @@ local beautiful = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local helpers = require("helpers")
-local icons = require("icons")
 local bling = require("modules.bling")
 
 local awesome_icon = wibox.widget({
 	{
 		widget = wibox.widget.imagebox,
 		image = icons.getIcon("beautyline/apps/scalable/distributor-logo-nixos.png"),
-		-- image = icons.getIcon("candy-icons/apps/scalable/playonlinux.svg"),
 		resize = true,
 	},
 	margins = dpi(5),
@@ -22,22 +20,23 @@ local awesome_icon = wibox.widget({
 
 local awesome_icon_container = wibox.widget({
 	awesome_icon,
-	bg = colors.transparent,
+	bg = x.color0,
+	shape = helpers.rrect(beautiful.border_radius),
 	widget = wibox.container.background,
 })
 
 awesome_icon_container:connect_signal("button::press", function()
-	awesome_icon_container.bg = x.color0 .. "CC"
+	awesome_icon_container.bg = x.color8
 	awesome_icon.top = dpi(6)
 	awesome_icon.left = dpi(6)
 	awesome_icon.right = dpi(4)
 	awesome_icon.bottom = dpi(4)
-	dashboard_show()
+	sidebar_show()
 end)
 
 awesome_icon_container:connect_signal("button::release", function()
 	awesome_icon.margins = dpi(5)
-	awesome_icon_container.bg = colors.transparent
+	awesome_icon_container.bg = x.color0
 end)
 
 helpers.add_hover_cursor(awesome_icon_container, "hand2")
@@ -92,7 +91,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	s.clock_container = wibox.widget({
 		screen = s,
 		s.clock,
-		bg = colors.transparent,
+		bg = x.background,
 		widget = wibox.container.background,
 	})
 
@@ -102,7 +101,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
 	s.clock_container:connect_signal("button::press", function()
 		control_center_toggle(s)
-		s.clock_container.bg = x.color0 .. "CC"
+		s.clock_container.bg = x.color8
 		s.clock.top = dpi(6)
 		s.clock.left = dpi(6)
 		s.clock.right = dpi(4)
@@ -110,7 +109,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	end)
 
 	s.clock_container:connect_signal("button::release", function()
-		s.clock_container.bg = colors.transparent
+		s.clock_container.bg = x.background
 		s.clock.margins = dpi(5)
 	end)
 
@@ -193,7 +192,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	s.mylayoutboxContainer = wibox.widget({
 		screen = s,
 		s.mylayoutbox,
-		bg = colors.transparent,
+		bg = x.color0,
+		shape = helpers.rrect(beautiful.border_radius),
 		widget = wibox.container.background,
 	})
 
@@ -203,11 +203,11 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		s.mylayoutbox.right = dpi(3)
 		s.mylayoutbox.bottom = dpi(3)
 		dash_center_toggle(s)
-		s.mylayoutboxContainer.bg = x.color0 .. "CC"
+		s.mylayoutboxContainer.bg = x.color8
 	end)
 
 	s.mylayoutboxContainer:connect_signal("button::release", function()
-		s.mylayoutboxContainer.bg = colors.transparent
+		s.mylayoutboxContainer.bg = x.color0
 		s.mylayoutbox.margins = dpi(4)
 	end)
 
@@ -250,7 +250,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	})
 	awesome.connect_signal("elemental::dismiss", function()
 		control_center_hide(s)
-    dash_center_hide(s)
+		dash_center_hide(s)
 	end)
 end)
 

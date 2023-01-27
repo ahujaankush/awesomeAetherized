@@ -1,6 +1,12 @@
----@diagnostic disable: undefined-global
 -- User variables and preferences
 -- ===================================================================
+local awful = require("awful")
+require("awful.autofocus")
+
+-- Get screen geometry
+screen_width = awful.screen.focused().geometry.width
+screen_height = awful.screen.focused().geometry.height
+
 user = {
 	-- default applications
 	terminal = "kitty",
@@ -8,11 +14,11 @@ user = {
 	browser = "brave",
 	file_manager = "dolphin",
 	image_viewer = "lximage-qt",
-	editor = "code",
+	editor = "neovide",
 	code = "code",
 	nvim = "neovide",
 	email_client = "evolution",
-	music_client = "kitty -o font_size=12 --class music -e ncmpcpp",
+	music_client = "spotify-launcher",
 	office = "libreoffice",
 	-- Serach engine
 	web_search_cmd = "xdg-open https://duckduckgo.com/?q=",
@@ -25,13 +31,13 @@ user = {
 
 	-- Directories with fallback values
 	dirs = {
-		downloads = os.getenv("XDG_DOWNLOAD_DIR") or "~/Downloads",
-		documents = os.getenv("XDG_DOCUMENTS_DIR") or "~/Documents",
-		music = os.getenv("XDG_MUSIC_DIR") or "~/Music",
-		pictures = os.getenv("XDG_PICTURES_DIR") or "~/Pictures",
-		videos = os.getenv("XDG_VIDEOS_DIR") or "~/Videos",
+		downloads = os.getenv("XDG_DOWNLOAD_DIR") or os.getenv("HOME") .. "/Downloads",
+		documents = os.getenv("XDG_DOCUMENTS_DIR") or os.getenv("HOME") .. "/Documents",
+		music = os.getenv("XDG_MUSIC_DIR") or os.getenv("HOME") .. "/Music",
+		pictures = os.getenv("XDG_PICTURES_DIR") or os.getenv("HOME") .. "/Pictures",
+		videos = os.getenv("XDG_VIDEOS_DIR") or os.getenv("HOME") .. "/Videos",
 		-- directory has to exist, otherwise screenshots will not be saved
-		screenshots = os.getenv("XDG_SCREENSHOTS_DIR") or "~/Pictures/Screenshots",
+		screenshots = os.getenv("XDG_SCREENSHOTS_DIR") or os.getenv("HOME") .. "/Pictures/Screenshots",
 
 		resources = "~/Documents/resources",
 		workspace = "~/Documents/workspace",
@@ -40,6 +46,7 @@ user = {
 		toDO = "~/Documents/toDO",
 	},
 
+	sidebar = { hide_on_mouse_leave = true, show_on_mouse_screen_edge = true },
 	-- lockscreen passwd. will be used with luapam is not installed
 	lock_screen_custom_password = "123",
 
@@ -96,8 +103,6 @@ x = {
 
 -- Load AwesomeWM libraries
 local gears = require("gears")
-local awful = require("awful")
-require("awful.autofocus")
 -- Default notification library
 local naughty = require("naughty")
 
@@ -140,10 +145,32 @@ bling.module.wallpaper.setup({
 	position = "maximized",
 })
 
+-- Layouts
 -- ===================================================================
--- Get screen geometry
-screen_width = awful.screen.focused().geometry.width
-screen_height = awful.screen.focused().geometry.height
+-- Table of layouts to cover with awful.layout.inc, order matters.
+awful.layout.layouts = {
+	awful.layout.suit.floating,
+	awful.layout.suit.tile, -- awful.layout.suit.spiral,
+	awful.layout.suit.spiral.dwindle, --    awful.layout.suit.tile.top,
+	--    awful.layout.suit.fair,
+	--    awful.layout.suit.fair.horizontal,
+	--    awful.layout.suit.tile.left,
+	--    awful.layout.suit.tile.bottom,
+	--    awful.layout.suit.max.fullscreen,
+	--    awful.layout.suit.corner.nw,
+	--    awful.layout.suit.magnifier,
+	bling.layout.mstab,
+	bling.layout.centered, --    bling.layout.vertical,
+	--    bling.layout.horizontal,
+	bling.layout.equalarea,
+	bling.layout.deck,
+	--    awful.layout.suit.corner.ne,
+	--    awful.layout.suit.corner.sw,
+	--    awful.layout.suit.corner.se,
+	machi.default_layout,
+}
+
+-- ===================================================================
 
 -- flash focus
 bling.module.flash_focus.enable()
@@ -168,6 +195,11 @@ require("ui.components.dash_center")
 require("ui.components.exit_screen.lockscreen").init()
 -- App drawer
 require("ui.components.menu.app_drawer")
+-- Menu
+require("ui.components.menu.menu")
+
+-- Layout popup
+require("ui.components.layout_popup")
 -- Hotkeys overlay
 require("awful.hotkeys_popup.keys")
 -- window window
@@ -176,7 +208,8 @@ require("ui.components.window_switcher")
 require("ui.components.term_scratchpad")
 -- dropdown pavucontrol
 require("ui.components.audio_scratchpad")
-
+-- sidebar
+require("ui.components.sidebar")
 -- >> Daemons
 -- Most widgets that display system/external info depend on daemons.
 -- Make sure to initialize it last in order to allow all widgets to connect to
@@ -184,30 +217,6 @@ require("ui.components.audio_scratchpad")
 require("daemon")
 
 -- ===================================================================
-
--- Layouts
--- ===================================================================
--- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
-	awful.layout.suit.floating,
-	awful.layout.suit.tile, -- awful.layout.suit.spiral,
-	awful.layout.suit.spiral.dwindle, --    awful.layout.suit.tile.top,
-	--    awful.layout.suit.fair,
-	--    awful.layout.suit.fair.horizontal,
-	--    awful.layout.suit.tile.left,
-	--    awful.layout.suit.tile.bottom,
-	--    awful.layout.suit.max.fullscreen,
-	--    awful.layout.suit.corner.nw,
-	--    awful.layout.suit.magnifier,
-	bling.layout.mstab,
-	bling.layout.centered, --    bling.layout.vertical,
-	--    bling.layout.horizontal,
-	bling.layout.equalarea, --    bling.layout.deck,
-	--    awful.layout.suit.corner.ne,
-	--    awful.layout.suit.corner.sw,
-	--    awful.layout.suit.corner.se,
-	machi.default_layout,
-}
 
 -- Autostart
 -- ===================================================================
@@ -393,7 +402,7 @@ awful.rules.rules = {
 				"spad",
 				"TelegramDesktop",
 				"Conky",
-        "Pavucontrol",
+				"Pavucontrol",
 				"Nightly",
 				"Steam",
 				"Lutris",

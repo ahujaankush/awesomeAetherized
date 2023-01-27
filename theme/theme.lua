@@ -1,5 +1,6 @@
 local gears = require("gears")
 local theme_assets = require("beautiful.theme_assets")
+local helpers = require("helpers")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local icon_path = os.getenv("HOME") .. "/.config/awesome/icons/"
@@ -8,19 +9,14 @@ local titlebar_icon_path = os.getenv("HOME") .. "/.config/awesome/theme/titlebar
 local tip = titlebar_icon_path --alias to save time/space
 local theme = {}
 
--- Set theme wallpaper.
--- It won't change anything if you are using feh to set the wallpaper like I do.
+theme.scaling = 1
+theme.opacity = 1
+
 theme.wallpaper = os.getenv("HOME") .. "/Pictures/Wallpaper/Wallpaper"
--- image for music player
 theme.player_img = os.getenv("HOME") .. "/Pictures/Wallpaper/Player"
--- Set the theme font. This is the font that will be used by default in menus, bars, titlebars etc.
 theme.font_name = "Inter Medium"
 theme.font = theme.font_name .. " 12"
--- theme.font          = "monospace 11"
 
--- This is how to get other .Xresources values (beyond colors 0-15, or custom variables)
--- local cool_color = awesome.xrdb_get_value("", "color16")
-theme.opacity = 1
 theme.bg_dark = x.background
 theme.bg_normal = x.background
 theme.bg_focus = x.color0
@@ -33,80 +29,59 @@ theme.fg_focus = x.foreground
 theme.fg_urgent = x.color1
 theme.fg_minimize = x.color8
 
--- Gaps
-theme.useless_gap = dpi(10)
-theme.wibar_elements_gap = dpi(6)
--- This could be used to manually determine how far away from the
--- screen edge the bars / notifications should be.
-theme.screen_margin = dpi(6)
+theme.useless_gap = dpi(10) * theme.scaling
+theme.wibar_elements_gap = dpi(6) * theme.scaling
+theme.screen_margin = dpi(6) * theme.scaling
 
--- Borders
-theme.border_width = dpi(5)
+theme.border_width = dpi(5) * theme.scaling
 theme.border_color = x.background
 theme.border_normal = x.background
 theme.border_focus = x.background
--- Rounded corners
-theme.border_radius = 10
+theme.border_radius = dpi(10) * theme.scaling
 
--- Titlebars
--- (Titlebar items can be customized in titlebars.lua)
 theme.titlebars_enabled = true
-theme.titlebar_size = dpi(35)
+theme.titlebar_size = dpi(35) * theme.scaling
 theme.titlebar_title_enabled = true
 theme.titlebar_font = theme.font_name .. " 10"
--- Window title alignment: left, right, center
 theme.titlebar_title_align = "center"
--- Titlebar position: top, bottom, left, right
-theme.titlebar_position = "left"
+theme.titlebar_position = "top"
 theme.titlebar_bg = x.background
--- theme.titlebar_bg_focus = x.color12
--- theme.titlebar_bg_normal = x.color8
 theme.titlebar_fg_focus = x.color7
 theme.titlebar_fg_normal = x.color7
 theme.titlebar_fg = x.color7
-
--- Notifications
--- ============================
--- Note: Some of these options are ignored by my custom
--- notification widget_template
--- ============================
--- Position: bottom_left, bottom_right, bottom_middle,
---         top_left, top_right, top_middle
 theme.notification_position = "top_right"
-theme.notification_border_width = dpi(0)
+theme.notification_border_width = dpi(0) * theme.scaling
 theme.notification_border_radius = theme.border_radius
-theme.notification_border_color = x.color8
 theme.notification_bg = x.background
 theme.notification_fg = x.foreground
-theme.notification_crit_bg = x.background
-theme.notification_crit_fg = x.color1
-theme.notification_icon_size = dpi(60)
--- theme.notification_height = dpi(80)
--- theme.notification_width = dpi(300)
-theme.notification_margin = dpi(16)
+theme.notification_text_bg = x.color0
+theme.notification_actions_bg = x.color8
+theme.notification_height = dpi(140) * theme.scaling
+theme.notification_width = dpi(320) * theme.scaling
+theme.notification_min_height = dpi(140) * 0.66 * theme.scaling
+theme.notification_min_width = dpi(320) * 0.66 * theme.scaling
+theme.notification_image_size = theme.notification_height * 0.75 * theme.scaling
+theme.notification_image_container_max_size = theme.notification_image_size * 1.25 * theme.scaling
+theme.notification_image_container_max_size = theme.notification_image_size * 1.25 * theme.scaling
+theme.notification_margin = dpi(16) * theme.scaling
 theme.notification_opacity = theme.opacity
-theme.notification_font = theme.font_name .. " 11"
-theme.notification_padding = theme.screen_margin * 2
-theme.notification_spacing = theme.screen_margin * 4
-
+theme.notification_font = theme.font_name .. " 12"
+theme.notification_title_font = theme.font_name .. " 13"
+theme.notification_padding = theme.screen_margin * 2 * theme.scaling
+theme.notification_spacing = theme.screen_margin * 4 * theme.scaling
 theme.notification_osd_bg = x.background
 theme.notification_osd_indicator_bg = x.color0
 theme.notification_osd_fg = x.foreground
 theme.notification_osd_opacity = theme.opacity
-
--- Notification Center
--- ============================
 theme.clear_icon = icon_path .. "notif-center/clear.png"
 theme.clear_grey_icon = icon_path .. "notif-center/clear_grey.png"
 theme.delete_icon = icon_path .. "notif-center/delete.png"
 theme.delete_grey_icon = icon_path .. "notif-center/delete_grey.png"
 
--- Edge snap
 theme.snap_shape = gears.shape.rectangle
 theme.snap_bg = x.foreground
-theme.snap_border_width = dpi(3)
+theme.snap_border_width = dpi(3) * theme.scaling
 
--- Tag names
 theme.tagnames = {
 	"0",
 	"1",
@@ -120,54 +95,35 @@ theme.tagnames = {
 	"9",
 }
 
--- Widget separator
 theme.separator_text = " - "
---theme.separator_text = " :: "
---theme.separator_text = " • "
--- theme.separator_text = " •• "
 theme.separator_fg = x.color8
 
--- Wibar(s)
--- Keep in mind that these settings could be ignored by the bar theme
 theme.wibar_position = "top"
-theme.wibar_height = dpi(45)
+theme.wibar_height = dpi(45) * theme.scaling
 theme.wibar_fg = x.foreground
 theme.wibar_bg = x.background
 theme.wibar_opacity = theme.opacity
 theme.wibar_border_color = x.color0
-theme.wibar_border_width = dpi(0)
-theme.wibar_border_radius = dpi(0)
+theme.wibar_border_width = dpi(0) * theme.scaling
+theme.wibar_border_radius = dpi(0) * theme.scaling
 
 theme.prefix_fg = x.color8
 
-theme.systray_icon_spacing = dpi(10)
-theme.systray_icon_size = dpi(20)
+theme.systray_icon_spacing = dpi(10) * theme.scaling
+theme.systray_icon_size = dpi(20) * theme.scaling
 theme.systray_max_rows = 1
-
---There are other variable sets
---overriding the default one when
---defined, the sets are:
---taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
---tasklist_[bg|fg]_[focus|urgent]
---titlebar_[bg|fg]_[normal|focus]
---tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
---mouse_finder_[color|timeout|animate_timeout|radius|factor]
---prompt_[fg|bg|fg_cursor|bg_cursor|font]
---hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
---Example:
---theme.taglist_bg_focus = "#ff0000"
 
 theme.prompt_font = theme.font_name .. " 11"
 
 theme.hotkeys_bg = x.background
 theme.hotkeys_fg = x.foreground
-theme.hotkeys_border_width = dpi(2)
+theme.hotkeys_border_width = dpi(2) * theme.scaling
 theme.hotkeys_border_color = x.color5
 theme.hotkeys_modifiers_fg = x.color7
 theme.hotkeys_label_bg = x.color0
 theme.hotkeys_label_fg = x.foreground
 theme.hotkeys_font = theme.font
---Tasklist
+
 theme.tasklist_font = theme.font
 theme.tasklist_disable_icon = false
 theme.tasklist_plain_task_name = true
@@ -177,10 +133,10 @@ theme.tasklist_bg_normal = x.background
 theme.tasklist_fg_normal = x.foreground
 theme.tasklist_bg_minimize = x.background
 theme.tasklist_fg_minimize = x.color8
--- theme.tasklist_font_minimized = "sans italic 8"
+
 theme.tasklist_bg_urgent = x.background
 theme.tasklist_fg_urgent = x.color3
-theme.tasklist_spacing = dpi(10)
+theme.tasklist_spacing = dpi(10) * theme.scaling
 theme.tasklist_align = "center"
 
 theme.tasklist_shape_border_width = 2
@@ -197,34 +153,42 @@ theme.tasklist_shape_border_color_urgent = x.color1 .. "80"
 
 -- Sidebar
 -- (Sidebar items can be customized in sidebar.lua)
+theme.sidebar_bg = x.background
+theme.sidebar_fg = x.color15
+theme.sidebar_opacity = 1
+theme.sidebar_position = "left" -- left or right
+theme.sidebar_width = dpi(350)
+theme.sidebar_x = 0
+theme.sidebar_y = 0
+theme.sidebar_height_multip = 1 -- this value is multiplied with the screen height
+theme.sidebar_border_radius = dpi(0) --theme.border_radius
 theme.dash_center_bg = x.background
 theme.dash_center_fg = x.color15
 theme.dash_center_opacity = theme.opacity
 theme.dash_center_position = "left" -- left or right
-theme.dash_center_width = dpi(525)
-theme.dash_center_border_radius = dpi(0) --theme.border_radius
+theme.dash_center_width = dpi(525) * theme.scaling
+theme.dash_center_border_radius = dpi(0) * theme.scaling --theme.border_radius
 
 -- Dashboard
 theme.dashboard_bg = x.color0 .. "44"
 theme.dashboard_fg = x.color15
 theme.dashboard_opacity = theme.opacity
 
--- control center
 theme.control_center_opacity = theme.opacity
+theme.control_center_section_width = dpi(400)
+theme.control_center_section_height = dpi(625)
+theme.control_center_section_spacing = dpi(8)
+theme.control_center_element_bg = x.color0
+theme.control_center_element_spacing = dpi(8)
+theme.control_center_border_width = dpi(15)
 
--- app drawer
 theme.app_drawer_opacity = theme.opacity
 
--- layout list (popup)
-theme.layoutPopup_opacity = theme.opacity
-
--- Exit screen
 theme.exit_screen_bg = x.color0 .. "44"
 theme.exit_screen_fg = x.color7
 theme.exit_screen_font = theme.font_name .. " 20"
-theme.exit_screen_icon_size = dpi(180)
+theme.exit_screen_icon_size = dpi(180) * theme.scaling
 
--- Lock screen
 theme.lock_screen_bg = x.color0 .. "44"
 theme.lock_screen_fg = x.color7
 
@@ -242,19 +206,24 @@ theme.taglist_fg_empty = x.background
 theme.taglist_bg_urgent = colors.transparent
 theme.taglist_fg_urgent = x.color3
 theme.taglist_disable_icon = true
-theme.taglist_spacing = dpi(0)
+theme.taglist_spacing = dpi(0) * theme.scaling
 
 -- Variables set for theming the menu:
-theme.menu_height = dpi(40)
-theme.menu_width = dpi(180)
+theme.menu_height = dpi(40) * theme.scaling
+theme.menu_width = dpi(300) * theme.scaling
 theme.menu_bg_normal = x.background
 theme.menu_fg_normal = x.color7
 theme.menu_bg_focus = x.color0
 theme.menu_fg_focus = x.foreground
-theme.menu_border_width = dpi(10)
+theme.menu_spacing = dpi(5) * theme.scaling
+theme.menu_border_width = dpi(10) * theme.scaling
 theme.menu_border_color = x.background
 theme.menu_radius = theme.border_radius
 theme.menu_opacity = theme.opacity
+theme.menu_submenu_icon_font = "JetBrainsMono Nerd Font 8"
+theme.menu_text_font = theme.font_name .. " 12"
+theme.menu_icon_font = "JetBrainsMono Nerd Font 12"
+theme.menu_submenu_icon = ""
 -- You can add as many variables as
 -- you wish and access them by using
 -- beautiful.variable in your rc.lua
@@ -324,6 +293,7 @@ theme.layout_cornerse = layout_icon_path .. "cornerse.png"
 theme.layout_mstab = layout_icon_path .. "mstab.png"
 theme.layout_centered = layout_icon_path .. "centered.png"
 theme.layout_equalarea = layout_icon_path .. "equalarea.png"
+theme.layout_deck = layout_icon_path .. "deck.png"
 theme.layout_machi = layout_icon_path .. "machi.png"
 
 -- Recolor layout icons
@@ -339,6 +309,12 @@ theme.layout_machi = layout_icon_path .. "machi.png"
 -- theme.desktop_mode_text_tile = "t"
 -- theme.desktop_mode_text_max = "m"
 
+theme.layoutlist_fg_normal = x.foreground
+theme.layoutlist_bg_normal = x.color0
+theme.layoutlist_fg_selected = x.foreground
+theme.layoutlist_bg_selected = x.color8
+theme.layoutlist_shape = helpers.rrect(theme.border_radius)
+theme.layoutlist_shape_selected = helpers.rrect(theme.border_radius)
 -- Minimal tasklist widget variables
 theme.minimal_tasklist_visible_clients_color = x.color4
 theme.minimal_tasklist_visible_clients_text = ""
@@ -384,17 +360,17 @@ theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus
 theme.icon_theme = os.getenv("HOME") .. "/.icons/oomox-aesthetic-dark/"
 
 -- Task Preview
-theme.task_preview_widget_border_radius = 0 --theme.border_radius -- Border radius of the widget (With AA)
+theme.task_preview_widget_border_radius = 0 * theme.scaling --theme.border_radius -- Border radius of the widget (With AA)
 theme.task_preview_widget_bg = x.background -- The bg color of the widget
 theme.task_preview_widget_border_color = theme.border_color -- The border color of the widget
-theme.task_preview_widget_border_width = 1 -- The border width of the widget
-theme.task_preview_widget_margin = dpi(20) -- The margin of the widget
-theme.bling_preview_bottom_margin = dpi(60)
+theme.task_preview_widget_border_width = 1 * theme.scaling -- The border width of the widget
+theme.task_preview_widget_margin = dpi(20) * theme.scaling -- The margin of the widget
+theme.bling_preview_bottom_margin = dpi(60) * theme.scaling
 
 theme.fade_duration = 250
 
 -- Tag Preview
-theme.tag_preview_widget_border_radius = 0 --theme.border_radius        -- Border radius of the widget (With AA)
+theme.tag_preview_widget_border_radius = 0 * theme.scaling --theme.border_radius        -- Border radius of the widget (With AA)
 theme.tag_preview_client_border_radius = theme.border_radius -- Border radius of each client in the widget (With AA)
 theme.tag_preview_client_opacity = theme.opacity -- Opacity of each client
 theme.tag_preview_client_bg = x.background -- The bg color of each client
@@ -403,35 +379,35 @@ theme.tag_preview_client_border_width = theme.border_width -- The border width o
 theme.tag_preview_widget_bg = x.background -- The bg color of the widget
 theme.tag_preview_widget_border_color = theme.border_color -- The border color of the widget
 theme.tag_preview_widget_border_width = theme.border_width -- The border width of the widget
-theme.tag_preview_widget_margin = dpi(20) -- The margin of the widget
+theme.tag_preview_widget_margin = dpi(20) * theme.scaling -- The margin of the widget
 
 -- window switcher
 theme.window_switcher_widget_bg = x.background .. "CC" -- The bg color of the widget
-theme.window_switcher_widget_border_width = dpi(5) -- The border width of the widget
-theme.window_switcher_widget_border_radius = 0 --theme.border_radius -- The border radius of the widget
+theme.window_switcher_widget_border_width = dpi(5) * theme.scaling -- The border width of the widget
+theme.window_switcher_widget_border_radius = 0 * theme.scaling --theme.border_radius -- The border radius of the widget
 theme.window_switcher_widget_border_color = x.background -- The border color of the widget
-theme.window_switcher_clients_spacing = dpi(15) -- The space between each client item
-theme.window_switcher_client_icon_horizontal_spacing = dpi(5) -- The space between client icon and text
-theme.window_switcher_client_width = dpi(250) -- The width of one client widget
-theme.window_switcher_client_height = dpi(350) -- The height of one client widget
-theme.window_switcher_client_margins = dpi(20) -- The margin between the content and the border of the widget
-theme.window_switcher_thumbnail_margins = dpi(10) -- The margin between one client thumbnail and the rest of the widget
+theme.window_switcher_clients_spacing = dpi(15) * theme.scaling -- The space between each client item
+theme.window_switcher_client_icon_horizontal_spacing = dpi(5) * theme.scaling -- The space between client icon and text
+theme.window_switcher_client_width = dpi(250) * theme.scaling -- The width of one client widget
+theme.window_switcher_client_height = dpi(350) * theme.scaling -- The height of one client widget
+theme.window_switcher_client_margins = dpi(20) * theme.scaling -- The margin between the content and the border of the widget
+theme.window_switcher_thumbnail_margins = dpi(10) * theme.scaling -- The margin between one client thumbnail and the rest of the widget
 theme.thumbnail_scale = true -- If set to true, the thumbnails fit policy will be set to "fit" instead of "auto"
-theme.window_switcher_name_margins = dpi(10) -- The margin of one clients title to the rest of the widget
+theme.window_switcher_name_margins = dpi(10) * theme.scaling -- The margin of one clients title to the rest of the widget
 theme.window_switcher_name_valign = "center" -- How to vertically align one clients title
-theme.window_switcher_name_forced_width = dpi(200) -- The width of one title
+theme.window_switcher_name_forced_width = dpi(200) * theme.scaling -- The width of one title
 theme.window_switcher_name_font = theme.font_name .. " 11" -- The font of all titles
 theme.window_switcher_name_normal_color = x.foreground -- The color of one title if the client is unfocused
 theme.window_switcher_name_focus_color = x.color5 -- The color of one title if the client is focused
 theme.window_switcher_icon_valign = "center" -- How to vertially align the one icon
-theme.window_switcher_icon_width = dpi(50) -- Thw width of one icon
+theme.window_switcher_icon_width = dpi(50) * theme.scaling -- Thw width of one icon
 
 -- tabbed
 theme.tabbed_spawn_in_tab = true -- whether a new client should spawn into the focused tabbing container
 
 -- tabbar general
 theme.tabbar_ontop = false
-theme.tabbar_radius = 0 --theme.border_radius                -- border radius of the tabbar
+theme.tabbar_radius = 0 * theme.scaling --theme.border_radius                -- border radius of the tabbar
 theme.tabbar_style = "modern" -- style of the tabbar ("default", "boxes" or "modern")
 theme.tabbar_font = theme.font -- font of the tabbar
 theme.tabbar_size = dpi(35) -- size of the tabbar
@@ -456,7 +432,7 @@ theme.mstab_bar_padding = "default" -- how much padding there should be between 
 -- by default it will adjust based on your useless gaps.
 -- If you want a custom value. Set it to the number of pixels (int)
 theme.mstab_border_radius = theme.border_radius -- border radius of the tabbar
-theme.mstab_bar_height = dpi(35) -- height of the tabbar
+theme.mstab_bar_height = dpi(35) * theme.scaling -- height of the tabbar
 theme.mstab_tabbar_position = "bottom" -- position of the tabbar (mstab currently does not support left,right)
 theme.mstab_tabbar_style = "modern" -- style of the tabbar ("default", "boxes" or "modern")
 -- defaults to the tabbar_style so only change if you want a

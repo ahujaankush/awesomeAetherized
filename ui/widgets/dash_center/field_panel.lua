@@ -1,9 +1,9 @@
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local awful = require("awful")
 local naughty = require("naughty")
 local apps = require("apps")
 local helpers = require("helpers")
+local awful = require("awful")
 local colorMod = require("modules.color")
 local rubato = require("modules.rubato")
 
@@ -12,7 +12,7 @@ local bg_active = colorMod.color({ hex = x.color0 })
 local bg_inactive = colorMod.color({ hex = x.color0 })
 local bg_hover = colorMod.color({ hex = x.color8 })
 local fg_active = colorMod.color({ hex = x.foreground })
-local fg_inactive = colorMod.color({ hex = x.foreground })
+local fg_inactive = colorMod.color({ hex = x.color7 })
 local fg_hover = colorMod.color({ hex = x.foreground })
 
 local btn_widget = function(args)
@@ -29,9 +29,9 @@ local btn_widget = function(args)
 		self.icon_font = args.icon_font
 		self.text_font = args.text_font
 		self.icon = args.icon
-		self.icon_active = args.icon_active
-		self.icon_inactive = args.icon_inactive
-		self.text = args.text
+		self.icon_active = helpers.colorize_text(args.icon_active, self.fg_active.hex)
+		self.icon_inactive = helpers.colorize_text(args.icon_inactive, self.fg_inactive.hex)
+		self.text = helpers.colorize_text(args.text, self.fg.hex)
 		self.press_func = args.press_func
 		self.transition = colorMod.transition(self.bg, bg_active, colorMod.transition.HSLA)
 
@@ -100,7 +100,7 @@ local btn_widget = function(args)
 	btn_widget:new()
 	return btn_widget
 end
-
+local network_status = true
 local network_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
@@ -116,11 +116,21 @@ local network_btn = btn_widget({
 	icon_active = "",
 	icon_inactive = "睊",
 	text = "Network",
-	press_func = function()
-		helpers.volume_control(0)
+	press_func = function(self)
+		network_status = not network_status
+		if network_status then
+			awful.spawn.with_shell("nmcli radio wifi on")
+			self:set_icon(self.icon_active)
+			self.bg = bg_active
+		else
+			awful.spawn.with_shell("nmcli radio wifi off")
+			self:set_icon(self.icon_inactive)
+			self.bg = bg_inactive
+		end
 	end,
 })
 
+local bluetooth_status = true
 local bluetooth_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
@@ -136,10 +146,26 @@ local bluetooth_btn = btn_widget({
 	icon_active = "",
 	icon_inactive = "",
 	text = "Bluetooth",
-	press_func = function()
-		helpers.volume_control(0)
+	press_func = function(self)
+		bluetooth_status = not bluetooth_status
+		if bluetooth_status then
+			awful.spawn.with_shell("bluetoothctl power on")
+		else
+			awful.spawn.with_shell("bluetoothctl power off")
+		end
 	end,
 })
+
+awesome.connect_signal("evil::bluetooth", function(status)
+	if status then
+		bluetooth_btn:set_icon(bluetooth_btn.icon_active)
+		bluetooth_btn.bg = bg_active
+	else
+		bluetooth_btn:set_icon(bluetooth_btn.icon_inactive)
+		bluetooth_btn.bg = bg_inactive
+	end
+	bluetooth_status = status
+end)
 
 local audio_btn = btn_widget({
 	bg = bg_active,
@@ -163,10 +189,10 @@ local audio_btn = btn_widget({
 
 awesome.connect_signal("evil::volume", function(value, muted)
 	if muted then
-		audio_btn:set_icon(helpers.colorize_text(audio_btn.icon_inactive, x.color7))
+		audio_btn:set_icon(audio_btn.icon_inactive)
 		audio_btn.bg = bg_inactive
 	else
-		audio_btn:set_icon(helpers.colorize_text(audio_btn.icon_active, x.foreground))
+		audio_btn:set_icon(audio_btn.icon_active)
 		audio_btn.bg = bg_active
 	end
 end)
@@ -189,10 +215,10 @@ local notifications_btn = btn_widget({
 	press_func = function(self)
 		naughty.suspended = not naughty.suspended
 		if naughty.suspended then
-			self:set_icon(helpers.colorize_text("", x.color7))
+			self:set_icon(self.icon_inactive)
 			audio_btn.bg = bg_inactive
 		else
-			self:set_icon(helpers.colorize_text("", x.foreground))
+			self:set_icon(self.icon_active)
 			audio_btn.bg = bg_active
 		end
 	end,
@@ -214,7 +240,7 @@ local screenshot_btn = btn_widget({
 	icon_inactive = "",
 	text = "Screenshot",
 	press_func = function()
-		helpers.volume_control(0)
+		apps.screenshot("selection", 5)
 	end,
 })
 
@@ -231,18 +257,20 @@ local light_btn = btn_widget({
 	icon_font = "JetBrainsMono Nerd Font 26",
 	text_font = beautiful.font,
 	icon = "",
-	icon_active = "",
+	icon_active = "",
 	icon_inactive = "",
 	text = "Blue Light",
 	press_func = function(self)
-		if bluelight_status then
-			self:set_icon(helpers.colorize_text("", x.color7))
-			apps.night_mode("off")
-		else
-			self:set_icon(helpers.colorize_text("", x.foreground))
-			apps.night_mode("on")
-		end
 		bluelight_status = not bluelight_status
+		if bluelight_status then
+			self:set_icon(self.icon_active)
+			self.bg = bg_active
+			apps.night_mode("on")
+		else
+			self:set_icon(self.icon_inactive)
+			self.bg = bg_inactive
+			apps.night_mode("off")
+		end
 	end,
 })
 

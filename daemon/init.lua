@@ -6,11 +6,11 @@ require("daemon.battery")
 require("daemon.disk")
 
 -- User controlled
+
 require("daemon.volume")
 require("daemon.microphone")
-require("daemon.mpd")
 require("daemon.brightness")
--- require("evil.spotify")
+require("daemon.bluetooth")
 
 -- Internet access required
 -- Note: These daemons use a temp file to store the retrieved values in order

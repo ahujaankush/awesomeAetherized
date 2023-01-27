@@ -35,7 +35,7 @@ keys.desktopbuttons = gears.table.join(
 		helpers.single_double_tap(function() end, double_tap)
 	end), -- Right click - Show app drawer
 	awful.button({}, 3, function()
-		app_drawer_show(mouse.screen)
+		menu_toggle()
 	end),
 	-- Middle button - Toggle dashboard
 	awful.button({}, 2, function()
@@ -63,7 +63,7 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		description = "dropdown application",
 		group = "launcher",
 	}),
-  awful.key({ altkey, ctrlkey }, "a", function()
+	awful.key({ altkey, ctrlkey }, "a", function()
 		mouse.screen.audio_scratchpad:toggle() -- toggles the scratchpads visibility
 	end, {
 		description = "dropdown application",
@@ -249,7 +249,14 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end, {
 		description = "quit awesome",
 		group = "awesome",
-	}), -- Number of master clients
+	}), -- layout popup
+	awful.key({ superkey }, "l", function()
+		layout_popup_toggle(mouse.screen)
+	end, {
+		description = "show layout popup widget",
+		group = "layout",
+	}),
+	-- Number of master clients
 	awful.key({ superkey, altkey }, "h", function()
 		awful.tag.incnmaster(1, nil, true)
 	end, {
@@ -334,11 +341,8 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		description = "rofi launcher",
 		group = "launcher",
 	}), -- Run
-	awful.key({ superkey }, "r", function()
-		-- Not all sidebars have a prompt
-		if sidebar_activate_prompt then
-			sidebar_activate_prompt("run")
-		end
+	awful.key({ superkey, shiftkey }, "v", function()
+		microphone_overlay_toggle()
 	end, {
 		description = "activate sidebar run prompt",
 		group = "awesome",
@@ -606,7 +610,7 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		description = "spawn network dialog",
 		group = "launcher",
 	}), -- Toggle sidebar
-	awful.key({ superkey }, "grave", function()
+	awful.key({ superkey }, "\\", function()
 		sidebar_toggle()
 	end, {
 		description = "show or hide sidebar",

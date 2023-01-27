@@ -8,9 +8,14 @@ local icons = require("icons")
 local notifications = require("ui.notifications")
 
 local apps = {}
+apps.terminal = function()
+	awful.spawn(user.terminal, {
+		switchtotag = true,
+	})
+end
 
-apps.browser = function()
-	awful.spawn(user.browser, {
+apps.browser = function(url)
+	awful.spawn(url and user.browser.." "..url or user.browser, {
 		switchtotag = true,
 	})
 end
@@ -240,14 +245,7 @@ function apps.screenshot(action, delay)
 		return
 	elseif action == "gimp" then
 		awful.spawn.with_shell("cd " .. user.dirs.screenshots .. " && gimp $(ls -t | head -n1)")
-		naughty.notification({
-			message = "Opening last screenshot with GIMP",
-			icon = icon,
-			app_name = screenshot_notification_app_name,
-		})
-		return
-	end
-
+  end
 	-- Screenshot capturing actions
 	local cmd
 	local timestamp = os.date("%Y.%m.%d-%H.%M.%S")
@@ -263,26 +261,14 @@ function apps.screenshot(action, delay)
 	end
 
 	-- Configure action buttons for the notification
-	local screenshot_open = naughty.action({
-		name = "Open",
-	})
 	local screenshot_copy = naughty.action({
 		name = "Copy",
-	})
-	local screenshot_edit = naughty.action({
-		name = "Edit",
 	})
 	local screenshot_delete = naughty.action({
 		name = "Delete",
 	})
-	screenshot_open:connect_signal("invoked", function()
-		awful.spawn.with_shell("cd " .. user.dirs.screenshots .. " && " .. user.image_viewer .. " " .. filename)
-	end)
 	screenshot_copy:connect_signal("invoked", function()
 		awful.spawn.with_shell("xclip -selection clipboard -t image/png " .. filename .. " &>/dev/null")
-	end)
-	screenshot_edit:connect_signal("invoked", function()
-		awful.spawn.with_shell("gimp " .. filename .. " >/dev/null")
 	end)
 	screenshot_delete:connect_signal("invoked", function()
 		awful.spawn.with_shell("rm " .. filename)
@@ -295,14 +281,14 @@ function apps.screenshot(action, delay)
 				title = "Screenshot",
 				message = "Screenshot taken",
 				icon = icon,
-				actions = { screenshot_open, screenshot_copy, screenshot_edit, screenshot_delete },
+				actions = { screenshot_copy, screenshot_delete },
 				app_name = screenshot_notification_app_name,
 			})
 		end)
 	elseif action == "selection" then
 		cmd = "maim " .. maim_args .. " -s -o " .. filename
 		capture_notif = naughty.notification({
-			title = "Screenshot",
+			title = "Screenshot!",
 			message = "Select area to capture.",
 			icon = icon,
 			timeout = 1,
@@ -312,10 +298,10 @@ function apps.screenshot(action, delay)
 			naughty.destroy(capture_notif)
 			if exit_code == 0 then
 				naughty.notification({
-					title = "Screenshot",
+					title = "Screenshot!",
 					message = "Selection captured",
-					icon = icon,
-					actions = { screenshot_open, screenshot_copy, screenshot_edit, screenshot_delete },
+					icon = filename,
+					actions = { screenshot_copy, screenshot_delete },
 					app_name = screenshot_notification_app_name,
 				})
 			end

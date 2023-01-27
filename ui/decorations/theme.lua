@@ -18,26 +18,8 @@ client.connect_signal("request::titlebars", function(c)
 			{
 				{
 					{
-						awful.titlebar.widget.minimizebutton(c),
-						awful.titlebar.widget.maximizedbutton(c),
-						awful.titlebar.widget.closebutton(c),
-						layout = wibox.layout.fixed.vertical,
-					},
-					bg = x.color0,
-					widget = wibox.container.background,
-					shape = helpers.rrect(beautiful.border_radius),
-				},
-				margins = {
-					right = beautiful.border_width,
-				},
-				widget = wibox.container.margin,
-			},
-			nil,
-			{
-				{
-					{
 						awful.titlebar.widget.iconwidget(c),
-						margins = dpi(4),
+						margins = dpi(5),
 						widget = wibox.container.margin,
 					},
 					bg = x.color0,
@@ -45,11 +27,39 @@ client.connect_signal("request::titlebars", function(c)
 					widget = wibox.container.background,
 				},
 				margins = {
-					right = beautiful.border_width,
+					bottom = beautiful.border_width,
 				},
 				widget = wibox.container.margin,
 			},
-
-			layout = wibox.layout.align.vertical,
+			{
+				{
+					align = "left",
+					valign = "center",
+					widget = awful.titlebar.widget.titlewidget(c),
+				},
+				margins = {
+					left = dpi(10),
+					bottom = beautiful.border_width,
+				},
+				widget = wibox.container.margin,
+			},
+			{
+				{
+					{
+						awful.titlebar.widget.minimizebutton(c),
+						awful.titlebar.widget.maximizedbutton(c),
+						awful.titlebar.widget.closebutton(c),
+						layout = wibox.layout.fixed.horizontal,
+					},
+					bg = x.color0,
+					widget = wibox.container.background,
+					shape = helpers.rrect(beautiful.border_radius),
+				},
+				margins = {
+					bottom = beautiful.border_width,
+				},
+				widget = wibox.container.margin,
+			},
+			layout = wibox.layout.align.horizontal,
 		})
 end)

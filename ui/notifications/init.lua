@@ -41,6 +41,7 @@ function notifications.init()
     require("ui.notifications.brightness")
     require("ui.notifications.battery")
     require("ui.notifications.keyboardlayout")
+    require("ui.notifications.microphone")
     -- Load theme
     require("ui.notifications.notify")
 end

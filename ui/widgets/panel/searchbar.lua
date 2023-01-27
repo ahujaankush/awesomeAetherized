@@ -18,7 +18,7 @@ end
 reset_search_icon()
 
 local search_text = wibox.widget({
-	markup = helpers.colorize_text("Launch App", x.foreground),
+	markup = helpers.colorize_text("Search", x.foreground),
 	align = "center",
 	valign = "center",
 	font = beautiful.font_name .. " 11",
@@ -33,7 +33,6 @@ local search = wibox.widget({
 				search_text,
 				margins = {
 					left = dpi(5),
-					bottok = dpi(3),
 				},
 				widget = wibox.container.margin,
 			},
@@ -49,10 +48,11 @@ local search = wibox.widget({
 })
 
 local anim_w = rubato.timed({
-	pos = dpi(125),
+	pos = dpi(95),
 	duration = 0.4,
 	intro = 0.2,
 	outro = 0.2,
+  rate = user.animation_rate,
 	easing = rubato.easing.quadratic,
 	subscribed = function(pos)
 		search.forced_width = pos
@@ -73,9 +73,9 @@ function searchbar_activate_prompt(action)
 		prompt = generate_prompt_icon("", x.color4)
 	end
 	helpers.prompt(action, search_text, prompt, function()
-		search_text.markup = helpers.colorize_text("Launch App", x.foreground)
+		search_text.markup = helpers.colorize_text("Search", x.foreground)
 		search_icon.visible = true
-		anim_w.target = dpi(125)
+		anim_w.target = dpi(95)
 	end)
 end
 
