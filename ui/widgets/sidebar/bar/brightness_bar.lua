@@ -1,6 +1,5 @@
 local gears = require("gears")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
 
 -- Set colors
 local active_color = {
@@ -9,28 +8,17 @@ local active_color = {
 	to = { 200 }, -- replace with w,h later
 	stops = { { 0, x.color3 }, { 0.50, x.color11 } },
 }
-local background_color = beautiful.brightness_bar_background_color or "#222222"
 
 local brightness_bar = wibox.widget({
-	max_value = 100,
-	value = 100,
-	forced_height = dpi(10),
-	margins = {
-		top = dpi(8),
-		bottom = dpi(8),
-	},
-	forced_width = dpi(200),
+	forced_height = dpi(100),
+	forced_width = dpi(5),
 	shape = gears.shape.rounded_bar,
-	bar_shape = gears.shape.rounded_bar,
-	color = active_color,
-	background_color = background_color,
-	border_width = 0,
-	border_color = beautiful.border_color,
-	widget = wibox.widget.progressbar,
+	bg = active_color,
+	widget = wibox.container.background,
 })
 
 awesome.connect_signal("evil::brightness", function(value)
-	brightness_bar.value = value
+	brightness_bar.forced_height = dpi(value)
 end)
 
 return brightness_bar

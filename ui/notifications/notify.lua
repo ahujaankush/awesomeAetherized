@@ -5,7 +5,6 @@ local naughty = require("naughty")
 local icons = require("icons")
 local rubato = require("modules.rubato")
 local helpers = require("helpers")
-local colorMod = require("modules.color")
 -- Note: This theme does not show image notification icons
 
 -- For antialiasing

@@ -8,41 +8,26 @@ local helpers = require("helpers")
 
 local rubato = require("modules.rubato")
 
--- Helper function that changes the appearance of progress bars and their icons
-local function format_progress_bar(bar)
-	-- Since we will rotate the bars 90 degrees, width and height are reversed
-	bar.forced_width = dpi(70)
-	bar.forced_height = dpi(30)
-	bar.shape = gears.shape.rounded_bar
-	bar.bar_shape = gears.shape.rectangle
-	local w = wibox.widget({
-		bar,
-		direction = "east",
-		layout = wibox.container.rotate,
-	})
-	return w
-end
-
 -- Item configuration
 -- ==================
 local temperature_bar = require("ui.widgets.sidebar.bar.temperature_bar")
-local temperature = format_progress_bar(temperature_bar)
-temperature:buttons(gears.table.join(awful.button({}, 1, apps.temperature_monitor)))
+temperature_bar:buttons(gears.table.join(awful.button({}, 1, apps.temperature_monitor)))
 
 local cpu_bar = require("ui.widgets.sidebar.bar.cpu_bar")
-local cpu = format_progress_bar(cpu_bar)
 
-cpu:buttons(gears.table.join(awful.button({}, 1, apps.process_monitor), awful.button({}, 3, apps.process_monitor_gui)))
+cpu_bar:buttons(
+	gears.table.join(awful.button({}, 1, apps.process_monitor), awful.button({}, 3, apps.process_monitor_gui))
+)
 
 local ram_bar = require("ui.widgets.sidebar.bar.ram_bar")
-local ram = format_progress_bar(ram_bar)
 
-ram:buttons(gears.table.join(awful.button({}, 1, apps.process_monitor), awful.button({}, 3, apps.process_monitor_gui)))
+ram_bar:buttons(
+	gears.table.join(awful.button({}, 1, apps.process_monitor), awful.button({}, 3, apps.process_monitor_gui))
+)
 
 local brightness_bar = require("ui.widgets.sidebar.bar.brightness_bar")
-local brightness = format_progress_bar(brightness_bar)
 
-brightness:buttons(gears.table.join(
+brightness_bar:buttons(gears.table.join(
 	-- Left click - Toggle redshift
 	awful.button({}, 1, apps.night_mode),
 	-- Right click - Reset brightness (Set to max)
@@ -196,9 +181,8 @@ search:buttons(gears.table.join(
 ))
 
 local volume_bar = require("ui.widgets.sidebar.bar.volume_bar")
-local volume = format_progress_bar(volume_bar)
 
-volume:buttons(gears.table.join(
+volume_bar:buttons(gears.table.join(
 	-- Left click - Mute / Unmute
 	awful.button({}, 1, function()
 		helpers.volume_control(0)
@@ -301,12 +285,11 @@ awesome.connect_signal("evil::temperature", function(value)
 end)
 
 -- Add clickable mouse effects on some widgets
-helpers.add_hover_cursor(cpu, "hand1")
-helpers.add_hover_cursor(ram, "hand1")
-helpers.add_hover_cursor(temperature, "hand1")
-helpers.add_hover_cursor(volume, "hand1")
-helpers.add_hover_cursor(brightness, "hand1")
-helpers.add_hover_cursor(search, "xterm")
+helpers.add_hover_cursor(cpu_bar, "hand1")
+helpers.add_hover_cursor(ram_bar, "hand1")
+helpers.add_hover_cursor(temperature_bar, "hand1")
+helpers.add_hover_cursor(volume_bar, "hand1")
+helpers.add_hover_cursor(brightness_bar, "hand1")
 
 -- Create the sidebar
 sidebar = wibox({ visible = false, ontop = true, type = "dock", screen = screen.primary })
@@ -430,15 +413,57 @@ sidebar:setup({
 				},
 				helpers.vertical_pad(dpi(20)),
 				day_of_the_week,
-				helpers.vertical_pad(dpi(25)),
+				helpers.vertical_pad(dpi(20)),
 				{
 					nil,
 					expand = "none",
 					layout = wibox.layout.align.horizontal,
 				},
-				helpers.vertical_pad(dpi(30)),
+				helpers.vertical_pad(dpi(20)),
 				layout = wibox.layout.fixed.vertical,
 			},
+			{
+				nil,
+				{
+					{
+						nil,
+						volume_bar,
+						expand = "none",
+						layout = wibox.layout.align.vertical,
+					},
+					{
+						nil,
+						cpu_bar,
+						expand = "none",
+						layout = wibox.layout.align.vertical,
+					},
+
+					{
+						nil,
+						temperature_bar,
+						expand = "none",
+						layout = wibox.layout.align.vertical,
+					},
+					{
+						nil,
+						ram_bar,
+						expand = "none",
+						layout = wibox.layout.align.vertical,
+					},
+					{
+						nil,
+						brightness_bar,
+						expand = "none",
+						layout = wibox.layout.align.vertical,
+					},
+					spacing = dpi(20),
+					forced_height = dpi(110),
+					layout = wibox.layout.fixed.horizontal,
+				},
+				expand = "none",
+				layout = wibox.layout.align.horizontal,
+			},
+			helpers.vertical_pad(dpi(30)),
 			layout = wibox.layout.fixed.vertical,
 		},
 		{ ----------- MIDDLE GROUP -----------
@@ -451,21 +476,7 @@ sidebar:setup({
 					right = dpi(20),
 					widget = wibox.container.margin,
 				},
-				{
-					nil,
-					{
-						volume,
-						cpu,
-						temperature,
-						ram,
-						brightness,
-						spacing = dpi(5),
-						-- layout = wibox.layout.fixed.vertical
-						layout = wibox.layout.fixed.horizontal,
-					},
-					expand = "none",
-					layout = wibox.layout.align.horizontal,
-				},
+
 				helpers.vertical_pad(dpi(25)),
 				layout = wibox.layout.fixed.vertical,
 			},
@@ -476,20 +487,10 @@ sidebar:setup({
 		{ ----------- BOTTOM GROUP -----------
 			{
 				{
-					{
-						nil,
-						adaptive_tooltip,
-						expand = "none",
-						layout = wibox.layout.align.horizontal,
-					},
-					helpers.vertical_pad(dpi(30)),
-					{
-						nil,
-						search,
-						expand = "none",
-						layout = wibox.layout.align.horizontal,
-					},
-					layout = wibox.layout.fixed.vertical,
+					nil,
+					adaptive_tooltip,
+					expand = "none",
+					layout = wibox.layout.align.horizontal,
 				},
 				left = dpi(20),
 				right = dpi(20),
@@ -499,6 +500,7 @@ sidebar:setup({
 			bg = x.color0 .. "66",
 			widget = wibox.container.background,
 		},
+
 		layout = wibox.layout.align.vertical,
 	},
 	bg = beautiful.sidebar_bg or beautiful.wibar_bg or "#111111",

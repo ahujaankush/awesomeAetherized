@@ -4,7 +4,6 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
 local dpi = beautiful.xresources.apply_dpi
-local icons = require("icons")
 local rubato = require("modules.rubato")
 
 local width = dpi(50)
@@ -19,14 +18,13 @@ local active_color_1 = {
 
 local volume_icon = wibox.widget({
 	{
-		widget = wibox.widget.imagebox,
-		--       image = gears.surface(beautiful.theme_assets.awesome_icon(512,
-		--                                                                 x.color8,
-		--                                                                x.background)),
-		image = icons.getIcon("beautyline/devices/scalable/audio-headphones-symbolic.svg"),
-		resize = true,
+		widget = wibox.widget.textbox,
+		markup = helpers.colorize_text("", x.color6),
+		font = "JetBrainsMono Nerd Font 22",
+		valign = "center",
+		align = "center",
 	},
-	margins = dpi(13),
+	margins = dpi(5),
 	widget = wibox.container.margin,
 })
 

@@ -49,10 +49,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
 			layout = wibox.layout.align.vertical,
 		}),
 		placement = function(c)
-			awful.placement.top_right(c, {
+			awful.placement.bottom_right(c, {
 
 				margins = {
-					top = beautiful.useless_gap + beautiful.wibar_height,
+					bottom = beautiful.useless_gap,
 					right = beautiful.useless_gap,
 				},
 			})
@@ -69,7 +69,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		rate = user.animation_rate,
 		easing = rubato.easing.quadratic,
 		subscribed = function(pos)
-			s.layout_popup.y = s.geometry.x + pos
+			s.layout_popup.y = s.geometry.height + pos
 		end,
 	})
 	s.layout_popup_timer = gears.timer({
@@ -84,7 +84,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 end)
 
 function layout_popup_hide(s)
-	s.layout_popup_anim.target = -s.layout_popup.height
+	s.layout_popup_anim.target = 0
 	s.layout_popup_timer:start()
 	awful.keygrabber.stop(s.layout_popup_grabber)
 end
@@ -109,7 +109,7 @@ function layout_popup_show(s)
 		end
 	end)
 	s.layout_popup.visible = true
-	s.layout_popup_anim.target = beautiful.wibar_height + beautiful.useless_gap
+	s.layout_popup_anim.target = -s.layout_popup.height - beautiful.useless_gap
 end
 
 function layout_popup_toggle(s)
