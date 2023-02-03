@@ -106,7 +106,7 @@ local notifbox_box = function(notif, icon, title, message, app, _)
 		widget = wibox.container.background,
 	})
 
-	--- Put the generated template to a container
+	--- Put the generated template to a containerquadratic
 	local notifbox = wibox.widget({
 		notifbox_template,
 		shape = helpers.rrect(beautiful.border_radius),

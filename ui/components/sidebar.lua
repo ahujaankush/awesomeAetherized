@@ -95,91 +95,6 @@ local day_of_the_week = wibox.widget({
 	layout = wibox.layout.align.horizontal,
 })
 
-local search_icon = wibox.widget({
-	font = "icomoon bold 10",
-	align = "center",
-	valign = "center",
-	widget = wibox.widget.textbox(),
-})
-
-local reset_search_icon = function()
-	search_icon.markup = helpers.colorize_text("", x.color3)
-end
-reset_search_icon()
-
-local search_text = wibox.widget({
-	-- markup = helpers.colorize_text("Search", x.color8),
-	align = "center",
-	valign = "center",
-	font = beautiful.font_name .. " 9",
-	widget = wibox.widget.textbox(),
-})
-
-local search_bar = wibox.widget({
-	shape = gears.shape.rounded_bar,
-	bg = x.color0,
-	widget = wibox.container.background(),
-})
-
-local search = wibox.widget({
-	-- search_bar,
-	{
-		{
-			search_icon,
-			{
-				search_text,
-				bottom = dpi(2),
-				widget = wibox.container.margin,
-			},
-			layout = wibox.layout.fixed.horizontal,
-		},
-		left = dpi(15),
-		widget = wibox.container.margin,
-	},
-	forced_height = dpi(35),
-	forced_width = dpi(200),
-	shape = gears.shape.rounded_bar,
-	bg = x.color0,
-	widget = wibox.container.background(),
-	-- layout = wibox.layout.stack
-})
-
-local function generate_prompt_icon(icon, color)
-	return "<span font='icomoon 10' foreground='" .. color .. "'>" .. icon .. "</span> "
-end
-
-function sidebar_activate_prompt(action)
-	sidebar_show()
-	search_icon.visible = false
-	local prompt
-	if action == "run" then
-		prompt = generate_prompt_icon("", x.color2)
-	elseif action == "web_search" then
-		prompt = generate_prompt_icon("", x.color4)
-	end
-	helpers.prompt(action, search_text, prompt, function()
-		search_icon.visible = true
-		if mouse.current_wibox ~= sidebar then
-			sidebar_hide()
-		end
-	end)
-end
-
-local prompt_is_active = function()
-	-- The search icon is hidden and replaced by other icons
-	-- when the prompt is running
-	return not search_icon.visible
-end
-
-search:buttons(gears.table.join(
-	awful.button({}, 1, function()
-		sidebar_activate_prompt("run")
-	end),
-	awful.button({}, 3, function()
-		sidebar_activate_prompt("web_search")
-	end)
-))
-
 local volume_bar = require("ui.widgets.sidebar.bar.volume_bar")
 
 volume_bar:buttons(gears.table.join(
@@ -296,15 +211,15 @@ sidebar = wibox({ visible = false, ontop = true, type = "dock", screen = screen.
 sidebar.bg = "#00000000" -- For anti aliasing
 sidebar.fg = beautiful.sidebar_fg or beautiful.wibar_fg or "#FFFFFF"
 sidebar.opacity = beautiful.sidebar_opacity or 1
-sidebar.height = screen.primary.geometry.height * beautiful.sidebar_height_multip
+sidebar.height = beautiful.sidebar_height
 sidebar.width = beautiful.sidebar_width or dpi(300)
 sidebar.y = beautiful.sidebar_y or 0
 local radius = beautiful.sidebar_border_radius or 0
 if beautiful.sidebar_position == "right" then
-	awful.placement.right(sidebar)
+	awful.placement.top_right(sidebar)
 	sidebar.shape = helpers.prrect(radius, true, false, false, true)
 else
-	awful.placement.left(sidebar)
+	awful.placement.top_left(sidebar)
 	sidebar.shape = helpers.prrect(radius, false, true, true, false)
 end
 --awful.placement.maximize_vertically(sidebar, { honor_workarea = true, margins = { top = beautiful.useless_gap * 2 } })
@@ -342,11 +257,8 @@ sidebar_show = function()
 end
 
 sidebar_hide = function()
-	-- Do not hide it if prompt is active
-	if not prompt_is_active() then
-		slide.target = screen.primary.geometry.x - sidebar.width
-		sidebar.timer:start()
-	end
+	slide.target = screen.primary.geometry.x - sidebar.width
+	sidebar.timer:start()
 end
 
 sidebar_toggle = function()
@@ -394,6 +306,8 @@ if user.sidebar.show_on_mouse_screen_edge then
 		end)
 	))
 end
+
+local playground = require("ui.widgets.sidebar.playground")
 
 -- Item placement
 sidebar:setup({
@@ -470,14 +384,13 @@ sidebar:setup({
 			{
 				helpers.vertical_pad(dpi(30)),
 				{
-					top = dpi(40),
-					bottom = dpi(60),
-					left = dpi(20),
-					right = dpi(20),
+					playground,
+					margins = {
+						left = dpi(20),
+						right = dpi(20),
+					},
 					widget = wibox.container.margin,
 				},
-
-				helpers.vertical_pad(dpi(25)),
 				layout = wibox.layout.fixed.vertical,
 			},
 			shape = helpers.prrect(beautiful.sidebar_border_radius, false, true, false, false),
@@ -487,14 +400,17 @@ sidebar:setup({
 		{ ----------- BOTTOM GROUP -----------
 			{
 				{
-					nil,
-					adaptive_tooltip,
-					expand = "none",
-					layout = wibox.layout.align.horizontal,
+
+					{
+						nil,
+						adaptive_tooltip,
+						expand = "none",
+						layout = wibox.layout.align.horizontal,
+					},
+
+					layout = wibox.layout.fixed.vertical,
 				},
-				left = dpi(20),
-				right = dpi(20),
-				bottom = dpi(30),
+				margins = dpi(20),
 				widget = wibox.container.margin,
 			},
 			bg = x.color0 .. "66",

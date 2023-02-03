@@ -158,8 +158,9 @@ theme.sidebar_fg = x.color15
 theme.sidebar_opacity = 1
 theme.sidebar_position = "left" -- left or right
 theme.sidebar_width = dpi(350)
+theme.sidebar_height = screen_height
 theme.sidebar_x = 0
-theme.sidebar_y = 0
+theme.sidebar_y = theme.wibar_height
 theme.sidebar_height_multip = 1 -- this value is multiplied with the screen height
 theme.sidebar_border_radius = dpi(0) --theme.border_radius
 theme.dash_center_bg = x.background
@@ -185,7 +186,7 @@ theme.control_center_border_width = dpi(15)
 theme.app_drawer_opacity = theme.opacity
 
 theme.exit_screen_bg = x.color0 .. "44"
-theme.exit_screen_fg = x.color7
+theme.exit_screen_fg = x.color8
 theme.exit_screen_font = theme.font_name .. " 20"
 theme.exit_screen_icon_size = dpi(180) * theme.scaling
 
@@ -321,13 +322,8 @@ theme.minimal_tasklist_visible_clients_text = ""
 theme.minimal_tasklist_hidden_clients_color = x.color7
 theme.minimal_tasklist_hidden_clients_text = ""
 
--- Mpd song
-theme.mpd_song_title_color = x.color7
-theme.mpd_song_artist_color = x.color7
-theme.mpd_song_paused_color = x.color8
-
 -- Volume bar
-theme.volume_bar_active_color = x.color5
+theme.volume_bar_active_color = x.color4
 theme.volume_bar_active_background_color = x.color0
 theme.volume_bar_muted_color = x.color8
 theme.volume_bar_muted_background_color = x.color0
@@ -345,7 +341,7 @@ theme.cpu_bar_active_color = x.color2
 theme.cpu_bar_background_color = x.color0
 
 -- RAM bar
-theme.ram_bar_active_color = x.color4
+theme.ram_bar_active_color = x.color5
 theme.ram_bar_background_color = x.color0
 
 -- Brightness bar

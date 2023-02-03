@@ -28,7 +28,7 @@ local applications_entry = menu_entry({
 	text = "Applications",
 	submenu_icon = beautiful.menu_submenu_icon,
 	press_func = function()
-		awful.spawn.with_shell("rofi -show drun -config $HOME/.config/rofi/launcher.rasi")
+		app_launcher:toggle()
 	end,
 })
 

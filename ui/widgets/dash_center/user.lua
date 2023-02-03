@@ -1,5 +1,6 @@
 local wibox = require("wibox")
 local gears = require("gears")
+local awful = require("awful")
 local helpers = require("helpers")
 local beautiful = require("beautiful")
 local colorMod = require("modules.color")
@@ -8,12 +9,15 @@ local rubato = require("modules.rubato")
 local active = colorMod.color({ hex = x.foreground })
 local inactive = colorMod.color({ hex = x.color7 })
 
+local host_text = wibox.widget.textbox()
 
-local nickname = wibox.widget({
-	markup = helpers.colorize_text(user.nickname, x.color7),
-	font = beautiful.font_name .. " 12",
-	widget = wibox.widget.textbox,
-})
+awful.spawn.easy_async_with_shell("hostname", function(out)
+	-- Remove trailing whitespaces
+	out = out:gsub("^%s*(.-)%s*$", "%1")
+	host_text.markup = helpers.colorize_text("@" .. out, x.color7)
+end)
+
+host_text.font = beautiful.font_name .. " 12"
 
 local exit = wibox.widget({
 	markup = helpers.colorize_text("", inactive.hex),
@@ -34,11 +38,11 @@ local profile_text = wibox.widget({
 	nil,
 	{
 		{
-			markup = os.getenv("USER"),
+			markup = os.getenv("USER"):gsub("^%l", string.upper),
 			font = beautiful.font_name .. " 20",
 			widget = wibox.widget.textbox,
 		},
-		nickname,
+		host_text,
 		spacing = dpi(3),
 		layout = wibox.layout.fixed.vertical,
 	},
@@ -62,7 +66,6 @@ local function fade(from, to)
 	})
 	transitionFunc.target = 1
 end
-
 
 exit:connect_signal("mouse::enter", function()
 	fade(inactive, active)

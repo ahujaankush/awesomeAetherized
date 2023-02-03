@@ -34,7 +34,7 @@ volume_icon_tooltip:add_to_object(volume_arcchart)
 volume_icon_tooltip.markup = helpers.colorize_text("0", color)
 
 local color1 = colorMod.color({ hex = x.color1 })
-local color2 = colorMod.color({ hex = x.color10 })
+local color2 = colorMod.color({ hex = x.color14 })
 local transitionFunc = colorMod.transition(color1, color2)
 local currentColor = color1
 local colorCounter = 0

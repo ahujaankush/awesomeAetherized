@@ -21,7 +21,7 @@ local search_text = wibox.widget({
 	markup = helpers.colorize_text("Search", x.foreground),
 	align = "center",
 	valign = "center",
-	font = beautiful.font_name .. " 11",
+	font = beautiful.prompt_font,
 	widget = wibox.widget.textbox(),
 })
 
@@ -41,7 +41,7 @@ local search = wibox.widget({
 		left = dpi(10),
 		widget = wibox.container.margin,
 	},
-	forced_width = dpi(125),
+	forced_width = dpi(95),
 	shape = helpers.rrect(beautiful.border_radius),
 	bg = x.color0,
 	widget = wibox.container.background(),

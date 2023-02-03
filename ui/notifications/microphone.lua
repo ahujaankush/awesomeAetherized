@@ -15,6 +15,7 @@ local microphone_overlay = wibox({
 	height = dpi(50),
 	visible = false,
 	ontop = true,
+	shape = helpers.rrect(beautiful.border_radius),
 	type = "normal",
 	input_passthrough = true,
 })

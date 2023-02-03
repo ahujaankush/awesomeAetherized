@@ -75,7 +75,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		intro = 0.25,
 		outro = 0.25,
 		duration = 0.5,
-    rate = user.animation_rate,
+		rate = user.animation_rate,
 		easing = rubato.easing.quadratic,
 		subscribed = function(pos)
 			s.control_center.y = s.geometry.y + pos

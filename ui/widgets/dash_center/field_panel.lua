@@ -9,11 +9,9 @@ local rubato = require("modules.rubato")
 
 -- define colors for smooth fading
 local bg_active = colorMod.color({ hex = x.color0 })
-local bg_inactive = colorMod.color({ hex = x.color0 })
 local bg_hover = colorMod.color({ hex = x.color8 })
 local fg_active = colorMod.color({ hex = x.foreground })
 local fg_inactive = colorMod.color({ hex = x.color7 })
-local fg_hover = colorMod.color({ hex = x.foreground })
 
 local btn_widget = function(args)
 	local btn_widget = {}
@@ -21,9 +19,7 @@ local btn_widget = function(args)
 		self.bg = args.bg
 		self.bg_hover = args.bg_hover
 		self.bg_active = args.bg_active
-		self.bg_inactive = args.bg_inactive
 		self.fg = args.fg
-		self.fg_hover = args.fg_hover
 		self.fg_active = args.fg_active
 		self.fg_inactive = args.fg_inactive
 		self.icon_font = args.icon_font
@@ -64,32 +60,29 @@ local btn_widget = function(args)
 			layout = wibox.layout.fixed.vertical,
 		})
 
-		function self:fade(from, to)
-			self.transition = colorMod.transition(from, to)
-			self.transitionFunc = rubato.timed({
-				pos = 0,
-				duration = 0.2,
-				rate = user.animation_rate,
-				intro = 0,
-				outro = 0,
-				easing = rubato.easing.zero,
-				subscribed = function(pos)
-					self.inner:set_bg(self.transition(pos).hex)
-				end,
-			})
-			self.transitionFunc.target = 1
-		end
+		self.transition = colorMod.transition(self.bg, self.bg_hover)
+		self.transitionFunc = rubato.timed({
+			pos = 0,
+			duration = 0.2,
+			rate = user.animation_rate,
+			intro = 0.1,
+			outro = 0.1,
+			easing = rubato.easing.quadratic,
+			subscribed = function(pos)
+				self.inner:set_bg(self.transition(pos).hex)
+			end,
+		})
 
 		function self:set_icon(markup)
 			self.inner:get_children_by_id("icon")[1]:set_markup_silently(markup)
 		end
 
 		self.inner:connect_signal("mouse::enter", function()
-			self:fade(self.bg, self.bg_hover)
+			self.transitionFunc.target = 1
 		end)
 
 		self.inner:connect_signal("mouse::leave", function()
-			self:fade(self.bg_hover, self.bg)
+			self.transitionFunc.target = 0
 		end)
 
 		self.inner:connect_signal("button::press", function()
@@ -105,9 +98,7 @@ local network_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
 	bg_active = bg_active,
-	bg_inactive = bg_inactive,
 	fg = fg_active,
-	fg_hover = fg_hover,
 	fg_active = fg_active,
 	fg_inactive = fg_inactive,
 	icon_font = "JetBrainsMono Nerd Font 26",
@@ -121,11 +112,9 @@ local network_btn = btn_widget({
 		if network_status then
 			awful.spawn.with_shell("nmcli radio wifi on")
 			self:set_icon(self.icon_active)
-			self.bg = bg_active
 		else
 			awful.spawn.with_shell("nmcli radio wifi off")
 			self:set_icon(self.icon_inactive)
-			self.bg = bg_inactive
 		end
 	end,
 })
@@ -135,9 +124,7 @@ local bluetooth_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
 	bg_active = bg_active,
-	bg_inactive = bg_inactive,
 	fg = fg_active,
-	fg_hover = fg_hover,
 	fg_active = fg_active,
 	fg_inactive = fg_inactive,
 	icon_font = "JetBrainsMono Nerd Font 26",
@@ -159,10 +146,8 @@ local bluetooth_btn = btn_widget({
 awesome.connect_signal("evil::bluetooth", function(status)
 	if status then
 		bluetooth_btn:set_icon(bluetooth_btn.icon_active)
-		bluetooth_btn.bg = bg_active
 	else
 		bluetooth_btn:set_icon(bluetooth_btn.icon_inactive)
-		bluetooth_btn.bg = bg_inactive
 	end
 	bluetooth_status = status
 end)
@@ -171,9 +156,7 @@ local audio_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
 	bg_active = bg_active,
-	bg_inactive = bg_inactive,
 	fg = fg_active,
-	fg_hover = fg_hover,
 	fg_active = fg_active,
 	fg_inactive = fg_inactive,
 	icon_font = "JetBrainsMono Nerd Font 26",
@@ -190,7 +173,6 @@ local audio_btn = btn_widget({
 awesome.connect_signal("evil::volume", function(value, muted)
 	if muted then
 		audio_btn:set_icon(audio_btn.icon_inactive)
-		audio_btn.bg = bg_inactive
 	else
 		audio_btn:set_icon(audio_btn.icon_active)
 		audio_btn.bg = bg_active
@@ -201,9 +183,7 @@ local notifications_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
 	bg_active = bg_active,
-	bg_inactive = bg_inactive,
 	fg = fg_active,
-	fg_hover = fg_hover,
 	fg_active = fg_active,
 	fg_inactive = fg_inactive,
 	icon_font = "JetBrainsMono Nerd Font 26",
@@ -216,7 +196,6 @@ local notifications_btn = btn_widget({
 		naughty.suspended = not naughty.suspended
 		if naughty.suspended then
 			self:set_icon(self.icon_inactive)
-			audio_btn.bg = bg_inactive
 		else
 			self:set_icon(self.icon_active)
 			audio_btn.bg = bg_active
@@ -228,9 +207,7 @@ local screenshot_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
 	bg_active = bg_active,
-	bg_inactive = bg_inactive,
 	fg = fg_active,
-	fg_hover = fg_hover,
 	fg_active = fg_active,
 	fg_inactive = fg_inactive,
 	icon_font = "JetBrainsMono Nerd Font 26",
@@ -249,9 +226,7 @@ local light_btn = btn_widget({
 	bg = bg_active,
 	bg_hover = bg_hover,
 	bg_active = bg_active,
-	bg_inactive = bg_inactive,
 	fg = fg_active,
-	fg_hover = fg_hover,
 	fg_active = fg_active,
 	fg_inactive = fg_inactive,
 	icon_font = "JetBrainsMono Nerd Font 26",
@@ -268,7 +243,6 @@ local light_btn = btn_widget({
 			apps.night_mode("on")
 		else
 			self:set_icon(self.icon_inactive)
-			self.bg = bg_inactive
 			apps.night_mode("off")
 		end
 	end,

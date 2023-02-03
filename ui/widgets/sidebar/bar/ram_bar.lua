@@ -1,13 +1,12 @@
 local gears = require("gears")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
 
 -- Set colors
 local active_color = {
 	type = "linear",
 	from = { 0, 0 },
 	to = { 100 }, -- replace with w,h later
-	stops = { { 0, x.color14 }, { 0.50, x.color4 } },
+	stops = { { 0, x.color5 }, { 0.50, x.color13 } },
 }
 
 local ram_bar = wibox.widget({

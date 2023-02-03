@@ -34,6 +34,7 @@ local bright_adjust = awful.popup({
 	maximum_height = height,
 	visible = false,
 	ontop = true,
+	shape = helpers.rrect(beautiful.border_radius),
 	widget = wibox.container.background,
 	bg = "#00000000",
 	placement = function(c)
@@ -68,7 +69,6 @@ bright_ratio:adjust_ratio(2, 0.72, 0.28, 0)
 
 bright_adjust.widget = wibox.widget({
 	bright_ratio,
-	shape = helpers.rrect(beautiful.border_radius),
 	border_width = beautiful.border_width * 0,
 	border_color = beautiful.border_color,
 	bg = beautiful.notification_osd_bg,

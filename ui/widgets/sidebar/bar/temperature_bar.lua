@@ -5,7 +5,7 @@ local wibox = require("wibox")
 local active_color = {
 	type = "linear",
 	from = { 0, 0 },
-	to = { 200 }, -- replace with w,h later
+	to = { 100 }, -- replace with w,h later
 	stops = { { 0, x.color1 }, { 0.50, x.color3 } },
 }
 

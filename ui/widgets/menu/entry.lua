@@ -66,24 +66,21 @@ return function(args)
 			widget = wibox.container.background,
 		})
 
-		function self:fade(from, to)
-			self.transition = colorMod.transition(from, to)
-			self.transitionFunc = rubato.timed({
-				pos = 0,
-				duration = 0.1,
-				rate = user.animation_rate,
-				intro = 0.05,
-				outro = 0.05,
-				easing = rubato.easing.zero,
-				subscribed = function(pos)
-					self.container:set_bg(self.transition(pos).hex)
-				end,
-			})
-			self.transitionFunc.target = 1
-		end
+		self.transition = colorMod.transition(self.bg, self.bg_hover)
+		self.transitionFunc = rubato.timed({
+			pos = 0,
+			duration = 0.15,
+			rate = user.animation_rate,
+			intro = 0.075,
+			outro = 0.075,
+			easing = rubato.easing.zero,
+			subscribed = function(pos)
+				self.container:set_bg(self.transition(pos).hex)
+			end,
+		})
 
 		self.container:connect_signal("mouse::enter", function()
-			self:fade(self.bg, self.bg_hover)
+			self.transitionFunc.target = 1
 			if self.submenu_parent then
 				self.submenu:show({
 					x = self.parent_menu.menu_popup.x + beautiful.menu_width,
@@ -93,7 +90,7 @@ return function(args)
 		end)
 
 		self.container:connect_signal("mouse::leave", function()
-			self:fade(self.bg_hover, self.bg)
+			self.transitionFunc.target = 0
 			if self.submenu_parent then
 				self.submenu:hide()
 			end

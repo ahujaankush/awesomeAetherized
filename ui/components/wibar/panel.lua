@@ -91,7 +91,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	s.clock_container = wibox.widget({
 		screen = s,
 		s.clock,
-		bg = x.background,
+		bg = x.color0,
+		shape = helpers.rrect(beautiful.border_radius),
 		widget = wibox.container.background,
 	})
 
@@ -109,7 +110,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	end)
 
 	s.clock_container:connect_signal("button::release", function()
-		s.clock_container.bg = x.background
+		s.clock_container.bg = x.color0
 		s.clock.margins = dpi(5)
 	end)
 

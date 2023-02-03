@@ -2,6 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gears = require("gears")
+local helpers = require("helpers")
 local rubato = require("modules.rubato")
 
 return function(args)
@@ -51,7 +52,7 @@ return function(args)
 		))
 
 		self.timer = gears.timer({
-			timeout = 0.5,
+			timeout = 0.6,
 			single_shot = true,
 			callback = function()
 				self.menu_popup.visible = false
@@ -60,9 +61,9 @@ return function(args)
 
 		self.anim = rubato.timed({
 			pos = 0,
-			intro = 0.25,
-			outro = 0.25,
-			duration = 0.5,
+			intro = 0.3,
+			outro = 0.3,
+			duration = 0.6,
 			rate = user.animation_rate,
 			easing = rubato.easing.quadratic,
 			subscribed = function(pos)

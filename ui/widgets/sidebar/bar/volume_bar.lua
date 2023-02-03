@@ -5,8 +5,8 @@ local wibox = require("wibox")
 local active_color = {
 	type = "linear",
 	from = { 0, 0 },
-	to = { 200 }, -- replace with w,h later
-	stops = { { 0, x.color5 }, { 0.50, x.color13 } },
+	to = { 100 }, -- replace with w,h later
+	stops = { { 0, x.color4 }, { 0.50, x.color6 } },
 }
 local active_background_color = active_color or "#222222"
 local muted_background_color = "#222222"

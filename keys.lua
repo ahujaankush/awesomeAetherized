@@ -36,12 +36,6 @@ keys.desktopbuttons = gears.table.join(
 	end), -- Right click - Show app drawer
 	awful.button({}, 3, function()
 		menu_toggle()
-	end),
-	-- Middle button - Toggle dashboard
-	awful.button({}, 2, function()
-		if dashboard_show then
-			dashboard_show()
-		end
 	end), -- Scrolling - Switch tags
 	awful.button({}, 4, awful.tag.viewprev),
 	awful.button({}, 5, awful.tag.viewnext), -- Side buttons - Control volume
@@ -340,12 +334,6 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end, {
 		description = "rofi launcher",
 		group = "launcher",
-	}), -- Run
-	awful.key({ superkey, shiftkey }, "v", function()
-		microphone_overlay_toggle()
-	end, {
-		description = "activate sidebar run prompt",
-		group = "awesome",
 	}), -- awesome-run
 	awful.key({ superkey, shiftkey }, "p", function()
 		menubar.show()
@@ -562,15 +550,6 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end, {
 		description = "layout machi interactive editor",
 		group = "tag",
-	}), -- Dashboard
-	awful.key({ superkey }, "F1", function()
-		if dashboard_show then
-			dashboard_show()
-		end
-		-- rofi_show()
-	end, {
-		description = "dashboard",
-		group = "custom",
 	}), -- App drawer
 	awful.key({ superkey }, "a", function()
 		app_drawer_show(awful.screen.focused({ mouse = true }))

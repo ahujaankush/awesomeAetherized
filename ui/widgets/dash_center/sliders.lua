@@ -6,17 +6,17 @@ local currentVolIcon = "ﱝ"
 local currentBriIcon
 
 local active_color_vol = {
-    type = 'linear',
-    from = {0, 0},
-    to = {dpi(375)},
-    stops = {{0, x.color4}, {0.50, x.color6}}
+	type = "linear",
+	from = { 0, 0 },
+	to = { dpi(375) },
+	stops = { { 0, x.color4 }, { 0.50, x.color6 } },
 }
 
 local active_color_bri = {
-    type = 'linear',
-    from = {0, 0},
-    to = {dpi(375)},
-    stops = {{0, x.color3}, {0.50, x.color11}}
+	type = "linear",
+	from = { 0, 0 },
+	to = { dpi(375) },
+	stops = { { 0, x.color3 }, { 0.50, x.color11 } },
 }
 
 ----------------------
@@ -44,9 +44,9 @@ local volume_icon = wibox.widget({
 	widget = wibox.widget.textbox,
 	markup = currentVolIcon,
 	font = "JetBrainsMono Nerd Font 16",
+	forced_width = dpi(20),
 	align = "center",
 	valign = "center",
-	resize = true,
 })
 
 local volume_text = wibox.widget({
@@ -55,7 +55,6 @@ local volume_text = wibox.widget({
 	font = beautiful.font_name .. " 12",
 	align = "center",
 	valign = "center",
-	resize = true,
 })
 
 local volume_cont = wibox.widget({
@@ -92,6 +91,7 @@ local brightness_icon = wibox.widget({
 	widget = wibox.widget.textbox,
 	markup = currentBriIcon,
 	font = "JetBrainsMono Nerd Font 16",
+	forced_width = dpi(20),
 	align = "center",
 	valign = "center",
 	resize = true,

@@ -173,18 +173,16 @@ awful.layout.layouts = {
 -- ===================================================================
 
 -- flash focus
-bling.module.flash_focus.enable()
+-- bling.module.flash_focus.enable()
 
 -- icons
 require("icons")
 
--- >> Elements - Desktop components
+-- >> Elements - Desktop component
 -- Statusbar(s)
 require("ui.components.wibar")
 -- Exit screen
 require("ui.components.exit_screen.exit_screen")
--- Dashboard
-require("ui.components.dashboard")
 -- Control Center
 require("ui.components.control_center")
 -- Dash Center
@@ -197,7 +195,6 @@ require("ui.components.exit_screen.lockscreen").init()
 require("ui.components.menu.app_drawer")
 -- Menu
 require("ui.components.menu.menu")
-
 -- Layout popup
 require("ui.components.layout_popup")
 -- Hotkeys overlay

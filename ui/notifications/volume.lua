@@ -35,6 +35,7 @@ local volume_adjust = awful.popup({
 	visible = false,
 	ontop = true,
 	widget = wibox.container.background,
+	shape = helpers.rrect(beautiful.border_radius),
 	bg = "#00000000",
 	placement = function(c)
 		awful.placement.right(c, { margins = { right = 10 } })
@@ -68,7 +69,6 @@ volume_ratio:adjust_ratio(2, 0.72, 0.28, 0)
 
 volume_adjust.widget = wibox.widget({
 	volume_ratio,
-	shape = helpers.rrect(beautiful.border_radius),
 	border_width = beautiful.border_width * 0,
 	border_color = beautiful.border_color,
 	bg = beautiful.notification_osd_bg,
