@@ -28,7 +28,7 @@ local applications_entry = menu_entry({
 	text = "Applications",
 	submenu_icon = beautiful.menu_submenu_icon,
 	press_func = function()
-		app_launcher:toggle()
+		awful.spawn.with_shell("rofi -show drun -config $HOME/.config/rofi/launcher.rasi")
 	end,
 })
 
@@ -74,15 +74,6 @@ local music_entry = menu_entry({
 	submenu_icon = beautiful.menu_submenu_icon,
 	press_func = function()
 		apps.music()
-	end,
-})
-
-local dashboard_entry = menu_entry({
-	icon = helpers.colorize_text("舘", x.color10),
-	text = "Dashboard",
-	submenu_icon = beautiful.menu_submenu_icon,
-	press_func = function()
-		dashboard_show()
 	end,
 })
 
@@ -193,7 +184,6 @@ local menu = menu_popup({
 		text_entry,
 		music_entry,
 		separator(),
-		dashboard_entry,
 		controlcenter_entry,
 		dashcenter_entry,
 		appdrawer_entry,
