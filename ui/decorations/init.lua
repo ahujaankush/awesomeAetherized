@@ -94,6 +94,7 @@ decorations.button = function (c, shape, color, unfocused_color, hover_color, si
         margins = margin,
         widget = wibox.container.margin(),
     }
+    
     button_widget:buttons(gears.table.join(
         awful.button({ }, 1, function ()
             button_commands[cmd].fun(c)
