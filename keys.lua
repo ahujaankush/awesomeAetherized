@@ -3,10 +3,10 @@ local naughty = require("naughty")
 local gears = require("gears")
 local apps = require("apps")
 local decorations = require("ui.decorations")
-local menubar = require("menubar")
 local helpers = require("helpers")
 local machi = require("modules.layout-machi")
 local bling = require("modules.bling")
+local menu = require("ui.components.menu")
 local keys = {}
 
 -- Mod keys
@@ -35,7 +35,7 @@ keys.desktopbuttons = gears.table.join(
 		helpers.single_double_tap(function() end, double_tap)
 	end), -- Right click - Show app drawer
 	awful.button({}, 3, function()
-		menu_toggle()
+		menu.mainmenu:toggle()
 	end), -- Scrolling - Switch tags
 	awful.button({}, 4, awful.tag.viewprev),
 	awful.button({}, 5, awful.tag.viewnext), -- Side buttons - Control volume
@@ -50,20 +50,6 @@ keys.desktopbuttons = gears.table.join(
 
 -- {{{ Key bindings
 keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
-	-- Dropdown application
-	awful.key({ altkey, ctrlkey }, "t", function()
-		mouse.screen.term_scratchpad:toggle() -- toggles the scratchpads visibility
-	end, {
-		description = "dropdown application",
-		group = "launcher",
-	}),
-	awful.key({ altkey, ctrlkey }, "a", function()
-		mouse.screen.audio_scratchpad:toggle() -- toggles the scratchpads visibility
-	end, {
-		description = "dropdown application",
-		group = "launcher",
-	}),
-
 	awful.key({ superkey }, "j", function()
 		awful.client.focus.bydirection("down")
 		bling.module.flash_focus.flashfocus(client.focus)
@@ -101,18 +87,21 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	}),
 	awful.key({ superkey }, "Up", function()
 		awful.client.focus.bydirection("up")
+		bling.module.flash_focus.flashfocus(client.focus)
 	end, {
 		description = "focus up",
 		group = "client",
 	}),
 	awful.key({ superkey }, "Left", function()
 		awful.client.focus.bydirection("left")
+		bling.module.flash_focus.flashfocus(client.focus)
 	end, {
 		description = "focus left",
 		group = "client",
 	}),
 	awful.key({ superkey }, "Right", function()
 		awful.client.focus.bydirection("right")
+		bling.module.flash_focus.flashfocus(client.focus)
 	end, {
 		description = "focus right",
 		group = "client",
@@ -137,19 +126,19 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		description = "focus next by index",
 		group = "client",
 	}), -- Gaps
-	awful.key({ superkey, shiftkey }, "minus", function()
+	awful.key({ superkey, shiftkey }, "=", function()
 		awful.tag.incgap(5, nil)
 	end, {
 		description = "increment gaps size for the current tag",
 		group = "gaps",
 	}),
-	awful.key({ superkey }, "minus", function()
+	awful.key({ superkey, shiftkey }, "minus", function()
 		awful.tag.incgap(-5, nil)
 	end, {
 		description = "decrement gap size for the current tag",
 		group = "gaps",
 	}), -- Kill all visible clients for the current tag
-	awful.key({ superkey, altkey }, "q", function()
+	awful.key({ superkey, shiftkey }, "BackSpace", function()
 		local clients = awful.screen.focused().clients
 		for _, c in pairs(clients) do
 			c:kill()
@@ -181,26 +170,7 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end),
 	awful.key({ superkey, ctrlkey }, "l", function(c)
 		helpers.resize_dwim(client.focus, "right")
-	end), -- No need for these (single screen setup)
-	-- awful.key({ superkey, ctrlkey }, "j", function () awful.screen.focus_relative( 1) end,
-	-- {description = "focus the next screen", group = "screen"}),
-	-- awful.key({ superkey, ctrlkey }, "k", function () awful.screen.focus_relative(-1) end,
-	-- {description = "focus the previous screen", group = "screen"}),
-	-- Urgent or Undo:
-	-- Jump to urgent client or (if there is no such client) go back
-	-- to the last tag
-	awful.key({ superkey }, "u", function()
-		uc = awful.client.urgent.get()
-		-- If there is no urgent client, go back to last tag
-		if uc == nil then
-			awful.tag.history.restore()
-		else
-			awful.client.urgent.jumpto()
-		end
-	end, {
-		description = "jump to urgent client",
-		group = "client",
-	}),
+	end),
 	awful.key({ superkey }, "x", function()
 		awful.tag.history.restore()
 	end, {
@@ -244,12 +214,6 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		description = "quit awesome",
 		group = "awesome",
 	}), -- layout popup
-	awful.key({ superkey }, "l", function()
-		layout_popup_toggle(mouse.screen)
-	end, {
-		description = "show layout popup widget",
-		group = "layout",
-	}),
 	-- Number of master clients
 	awful.key({ superkey, altkey }, "h", function()
 		awful.tag.incnmaster(1, nil, true)
@@ -321,36 +285,14 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		description = "restore minimized",
 		group = "client",
 	}),
-	awful.key({ superkey, shiftkey }, "d", function()
-		awful.spawn.with_shell(
-			"dmenu_run -p 'run:' -b -sb '" .. x.color13 .. "' -nb '" .. x.background .. "' -sf '" .. x.background .. "'"
-		)
-	end, {
-		description = "dmenu launcher",
-		group = "launcher",
-	}),
 	awful.key({ superkey }, "d", function()
-		awful.spawn.with_shell("rofi -show drun -theme .config/rofi/launcher.rasi")
+		awful.spawn.with_shell("~/.config/rofi/launchers/type-6/launcher.sh")
 	end, {
 		description = "rofi launcher",
 		group = "launcher",
 	}), -- awesome-run
-	awful.key({ superkey, shiftkey }, "p", function()
-		menubar.show()
-	end, {
-		description = "activate sidebar web search prompt",
-		group = "awesome",
-	}), -- Web search
-	awful.key({ superkey }, "g", function()
-		-- Not all sidebars have a prompt
-		if sidebar_activate_prompt then
-			sidebar_activate_prompt("web_search")
-		end
-	end, {
-		description = "activate sidebar web search prompt",
-		group = "awesome",
-	}), -- Dismiss notifications and elements that connect to the dismiss signal
-	awful.key({ ctrlkey }, "space", function()
+	-- Dismiss notifications and elements that connect to the dismiss signal
+	awful.key({ superkey, ctrlkey }, "d", function()
 		awesome.emit_signal("elemental::dismiss")
 		naughty.destroy_all_notifications()
 	end, {
@@ -504,23 +446,7 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end, {
 		description = "scratchpad",
 		group = "launcher",
-	}), -- Max layout
-	-- Single tap: Set max layout
-	-- Double tap: Also disable floating for ALL visible clients in the tag
-	-- awful.key({superkey}, "w", function()
-	--     awful.layout.set(awful.layout.suit.max)
-	--     helpers.single_double_tap(nil, function()
-	--         local clients = awful.screen.focused().clients
-	--         for _, c in pairs(clients) do
-	--             c.floating = false
-	--         end
-	--     end)
-	-- end, {
-	--     description = "set max layout",
-	--     group = "tag"
-	-- }), -- Tiling
-	-- Single tap: Set tiled layout
-	-- Double tap: Also disable floating for ALL visible clients in the tag
+	}),
 	awful.key({ superkey }, "s", function()
 		awful.layout.set(awful.layout.suit.tile)
 		helpers.single_double_tap(nil, function()
@@ -550,19 +476,8 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end, {
 		description = "layout machi interactive editor",
 		group = "tag",
-	}), -- App drawer
-	awful.key({ superkey }, "a", function()
-		app_drawer_show(awful.screen.focused({ mouse = true }))
-	end, {
-		description = "App drawer",
-		group = "custom",
-	}), -- Pomodoro timer
-	awful.key({ superkey }, "slash", function()
-		awful.spawn.with_shell("pomodoro")
-	end, {
-		description = "pomodoro",
-		group = "launcher",
-	}), -- Spawn file manager
+	}),
+	-- Spawn file manager
 	awful.key({ superkey }, "F2", apps.file_manager, {
 		description = "file manager",
 		group = "launcher",
@@ -588,14 +503,9 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 	end, {
 		description = "spawn network dialog",
 		group = "launcher",
-	}), -- Toggle sidebar
-	awful.key({ superkey }, "\\", function()
-		sidebar_toggle()
-	end, {
-		description = "show or hide sidebar",
-		group = "awesome",
-	}), -- Toggle wibar(s)
-	awful.key({ superkey }, "b", function()
+	}),
+	-- Toggle wibar(s)
+  awful.key({ superkey }, "b", function()
 		wibars_toggle()
 	end, {
 		description = "show or hide wibar(s)",
@@ -667,31 +577,8 @@ keys.clientkeys = gears.table.join( -- Move to edge or swap by direction
 		helpers.single_double_tap(nil, function()
 			helpers.float_and_resize(c, screen_width * 0.65, screen_height * 0.9)
 		end)
-	end), -- Relative move client
-	awful.key({ superkey, shiftkey, ctrlkey }, "j", function(c)
-		c:relative_move(0, dpi(20), 0, 0)
 	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "k", function(c)
-		c:relative_move(0, dpi(-20), 0, 0)
-	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "h", function(c)
-		c:relative_move(dpi(-20), 0, 0, 0)
-	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "l", function(c)
-		c:relative_move(dpi(20), 0, 0, 0)
-	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "Down", function(c)
-		c:relative_move(0, dpi(20), 0, 0)
-	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "Up", function(c)
-		c:relative_move(0, dpi(-20), 0, 0)
-	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "Left", function(c)
-		c:relative_move(dpi(-20), 0, 0, 0)
-	end),
-	awful.key({ superkey, shiftkey, ctrlkey }, "Right", function(c)
-		c:relative_move(dpi(20), 0, 0, 0)
-	end), -- Toggle titlebars (for focused client only)
+-- Toggle titlebars (for focused client only)
 	awful.key({ superkey }, "t", function(c)
 		decorations.cycle(c)
 	end, {
@@ -744,12 +631,7 @@ keys.clientkeys = gears.table.join( -- Move to edge or swap by direction
 		description = "close",
 		group = "client",
 	}),
-	awful.key({ altkey }, "F4", function(c)
-		c:kill()
-	end, {
-		description = "close",
-		group = "client",
-	}), -- Toggle floating
+-- Toggle floating
 	awful.key({ superkey, ctrlkey }, "space", function(c)
 		local layout_is_floating = (awful.layout.get(mouse.screen) == awful.layout.suit.floating)
 		if not layout_is_floating then

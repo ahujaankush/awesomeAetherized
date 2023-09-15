@@ -1,10 +1,6 @@
-local gears = require("gears")
 local awful = require("awful")
-local wibox = require("wibox")
 local naughty = require("naughty")
-local beautiful = require("beautiful")
 local helpers = require("helpers")
-local icons = require("icons")
 local notifications = require("ui.notifications")
 
 local apps = {}
@@ -15,7 +11,7 @@ apps.terminal = function()
 end
 
 apps.browser = function(url)
-	awful.spawn(url and user.browser.." "..url or user.browser, {
+	awful.spawn(url and user.browser .. " " .. url or user.browser, {
 		switchtotag = true,
 	})
 end
@@ -124,7 +120,7 @@ apps.night_mode = function(arg)
 				title = "Night mode",
 				message = "Deactivated!",
 				app_name = "night_mode",
-				icon = icons.getIcon("elenaLinebit/redshift.png"),
+				icon = icondir,
 			}, night_mode_notif)
 		elseif arg == "on" then
 			awful.spawn.with_shell("redshift -l 0:0 -t 3700:3700 -r")
@@ -132,7 +128,7 @@ apps.night_mode = function(arg)
 				title = "Night mode",
 				message = "Activated!",
 				app_name = "night_mode",
-				icon = icons.getIcon("elenaLinebit/redshift.png"),
+				icon = icondir,
 			}, night_mode_notif)
 		else
 			local cmd =
@@ -143,7 +139,7 @@ apps.night_mode = function(arg)
 					title = "Night mode",
 					message = message,
 					app_name = "night_mode",
-					icon = icons.getIcon("elenaLinebit/redshift.png"),
+					icon = icondir,
 				}, night_mode_notif)
 			end)
 		end
@@ -160,7 +156,7 @@ apps.screenkey = function()
 			title = "Screenkey",
 			message = message,
 			app_name = "screenkey",
-			icon = icons.getIcon("elenaLinebit/keyboard.png"),
+			icon = icondir,
 		}, screenkey_notif)
 	end)
 end
@@ -245,13 +241,13 @@ function apps.screenshot(action, delay)
 		return
 	elseif action == "gimp" then
 		awful.spawn.with_shell("cd " .. user.dirs.screenshots .. " && gimp $(ls -t | head -n1)")
-  end
+	end
 	-- Screenshot capturing actions
 	local cmd
 	local timestamp = os.date("%Y.%m.%d-%H.%M.%S")
 	local filename = user.dirs.screenshots .. "/" .. timestamp .. ".screenshot.png"
 	local maim_args = "-u -b 3 -m 5"
-	local icon = icons.getIcon("beautyline/apps/scalable/accessories-screenshot.svg")
+	local icon = icondir
 
 	local prefix
 	if delay then

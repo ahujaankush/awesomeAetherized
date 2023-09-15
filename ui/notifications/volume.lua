@@ -35,10 +35,9 @@ local volume_adjust = awful.popup({
 	visible = false,
 	ontop = true,
 	widget = wibox.container.background,
-	shape = helpers.rrect(beautiful.border_radius),
 	bg = "#00000000",
 	placement = function(c)
-		awful.placement.right(c, { margins = { right = 10 } })
+		awful.placement.right(c, { margins = { right = dpi(10) } })
 	end,
 })
 

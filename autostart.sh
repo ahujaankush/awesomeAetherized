@@ -6,3 +6,4 @@ firewall-applet &
 picom &
 xfce4-power-manager -d &
 xsetroot -cursor_name left_ptr &
+$HOME/.screenlayout/dual.sh &

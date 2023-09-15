@@ -12,8 +12,8 @@ local theme = {}
 theme.scaling = 1
 theme.opacity = 1
 
-theme.wallpaper = os.getenv("HOME") .. "/Pictures/Wallpaper/Wallpaper"
-theme.player_img = os.getenv("HOME") .. "/Pictures/Wallpaper/Player"
+theme.wallpaper = os.getenv("HOME") .. "/.config/awesome/Wallpaper.png"
+theme.player_img = theme.wallpaper
 theme.font_name = "Inter Medium"
 theme.font = theme.font_name .. " 12"
 
@@ -37,7 +37,7 @@ theme.border_width = dpi(5) * theme.scaling
 theme.border_color = x.background
 theme.border_normal = x.background
 theme.border_focus = x.background
-theme.border_radius = dpi(10) * theme.scaling
+theme.border_radius = dpi(8) * theme.scaling
 
 theme.titlebars_enabled = true
 theme.titlebar_size = dpi(35) * theme.scaling
@@ -49,6 +49,7 @@ theme.titlebar_bg = x.background
 theme.titlebar_fg_focus = x.color7
 theme.titlebar_fg_normal = x.color7
 theme.titlebar_fg = x.color7
+
 theme.notification_position = "top_right"
 theme.notification_border_width = dpi(0) * theme.scaling
 theme.notification_border_radius = theme.border_radius
@@ -127,29 +128,29 @@ theme.hotkeys_font = theme.font
 theme.tasklist_font = theme.font
 theme.tasklist_disable_icon = false
 theme.tasklist_plain_task_name = true
-theme.tasklist_bg_focus = x.background
+theme.tasklist_bg_focus = x.color8
 theme.tasklist_fg_focus = x.foreground
-theme.tasklist_bg_normal = x.background
+theme.tasklist_bg_normal = x.color0
 theme.tasklist_fg_normal = x.foreground
 theme.tasklist_bg_minimize = x.background
 theme.tasklist_fg_minimize = x.color8
-
+theme.tasklist_shape = helpers.rrect(theme.border_radius)
 theme.tasklist_bg_urgent = x.background
 theme.tasklist_fg_urgent = x.color3
-theme.tasklist_spacing = dpi(10) * theme.scaling
+theme.tasklist_spacing = dpi(5) * theme.scaling
 theme.tasklist_align = "center"
 
-theme.tasklist_shape_border_width = 2
+theme.tasklist_shape_border_width = 0
 theme.tasklist_shape_border_color = x.color4 .. "85"
 
-theme.tasklist_shape_border_width_focus = 2
+theme.tasklist_shape_border_width_focus = 0
 theme.tasklist_shape_border_color_focus = x.color4
 
-theme.tasklist_shape_border_width_minimized = 2
+theme.tasklist_shape_border_width_minimized = 0
 theme.tasklist_shape_border_color_minimized = x.color2 .. "50"
 
-theme.tasklist_shape_border_width_urgent = 2
-theme.tasklist_shape_border_color_urgent = x.color1 .. "80"
+theme.tasklist_shape_border_width_urgent = 0
+theme.tasklist_shape_border_color_urgent = x.color0 .. "80"
 
 -- Sidebar
 -- (Sidebar items can be customized in sidebar.lua)
@@ -197,17 +198,18 @@ theme.lock_screen_fg = x.color7
 theme.prompt_fg = x.color12
 
 -- Text Taglist (default)
-theme.taglist_font = theme.font_name .. " 9"
-theme.taglist_bg_focus = colors.transparent
+theme.taglist_bg = x.background .. "00"
+theme.taglist_bg_focus = x.color4
 theme.taglist_fg_focus = x.foreground
-theme.taglist_bg_occupied = colors.transparent
-theme.taglist_fg_occupied = x.color8
-theme.taglist_bg_empty = colors.transparent
-theme.taglist_fg_empty = x.background
-theme.taglist_bg_urgent = colors.transparent
-theme.taglist_fg_urgent = x.color3
-theme.taglist_disable_icon = true
+theme.taglist_bg_urgent = x.color1
+theme.taglist_fg_urgent = x.foreground
+theme.taglist_bg_occupied = x.foreground .. "cc"
+theme.taglist_fg_occupied = x.foreground
+theme.taglist_bg_empty = x.foreground .. "33"
+theme.taglist_fg_empty = x.foreground
 theme.taglist_spacing = dpi(0) * theme.scaling
+theme.taglist_disable_icon = true
+theme.taglist_font = theme.font_name .. " 9"
 
 -- Variables set for theming the menu:
 theme.menu_height = dpi(40) * theme.scaling

@@ -8,13 +8,14 @@ screen_width = awful.screen.focused().geometry.width
 screen_height = awful.screen.focused().geometry.height
 
 user = {
+	name = "Ankush Ahuja",
 	-- default applications
 	terminal = "kitty",
 	floating_terminal = "kitty",
-	browser = "brave",
+	browser = "firefox",
 	file_manager = "dolphin",
 	image_viewer = "lximage-qt",
-	editor = "neovide",
+	editor = "kitty -e nvim",
 	code = "code",
 	nvim = "neovide",
 	email_client = "evolution",
@@ -72,37 +73,34 @@ user = {
 
 -- Theme handling library
 local beautiful = require("beautiful")
-local xrdb = beautiful.xresources.get_current_theme()
 -- Make dpi function global
 dpi = beautiful.xresources.apply_dpi
 
--- global variable, transparent background
-colors = { transparent = "00000000" }
 -- Make xresources colors global
 x = {
 	--           xrdb variable
-	background = xrdb.background,
-	foreground = xrdb.foreground,
-	color0 = xrdb.color0,
-	color1 = xrdb.color1,
-	color2 = xrdb.color2,
-	color3 = xrdb.color3,
-	color4 = xrdb.color4,
-	color5 = xrdb.color5,
-	color6 = xrdb.color6,
-	color7 = xrdb.color7,
-	color8 = xrdb.color8,
-	color9 = xrdb.color9,
-	color10 = xrdb.color10,
-	color11 = xrdb.color11,
-	color12 = xrdb.color12,
-	color13 = xrdb.color13,
-	color14 = xrdb.color14,
-	color15 = xrdb.color15,
-}
-
--- Load AwesomeWM libraries
+	background = "#0e1319",
+	foreground = "#dddddd",
+	color0 = "#171b21",
+	color1 = "#f7467b",
+	color2 = "#18cfa6",
+	color3 = "#ff8a30",
+	color4 = "#2798e4",
+	color5 = "#9554ff",
+	color6 = "#2BCAFC",
+	color7 = "#696c72",
+	color8 = "#2d373e",
+	color9 = "#ff62c1",
+	color10 = "#66ffc1",
+	color11 = "#ffc857",
+	color12 = "#53befc",
+	color13 = "#be7bfa",
+	color14 = "#2bfcfc",
+	color15 = "#ffffff",
+} -- Load AwesomeWM libraries
 local gears = require("gears")
+icondir = gears.filesystem.get_configuration_dir() .. "icons/"
+
 -- Default notification library
 local naughty = require("naughty")
 
@@ -163,7 +161,7 @@ awful.layout.layouts = {
 	bling.layout.centered, --    bling.layout.vertical,
 	--    bling.layout.horizontal,
 	bling.layout.equalarea,
-	bling.layout.deck,
+	-- bling.layout.deck,
 	--    awful.layout.suit.corner.ne,
 	--    awful.layout.suit.corner.sw,
 	--    awful.layout.suit.corner.se,
@@ -175,15 +173,12 @@ awful.layout.layouts = {
 -- flash focus
 -- bling.module.flash_focus.enable()
 
--- icons
-require("icons")
-
 -- >> Elements - Desktop component
 -- Statusbar(s)
 require("ui.components.wibar")
 -- Exit screen
 require("ui.components.exit_screen.exit_screen")
--- Control Center
+-- Dashboard
 require("ui.components.control_center")
 -- Dash Center
 require("ui.components.dash_center")
@@ -191,22 +186,12 @@ require("ui.components.dash_center")
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above
 require("ui.components.exit_screen.lockscreen").init()
--- App drawer
-require("ui.components.menu.app_drawer")
 -- Menu
-require("ui.components.menu.menu")
--- Layout popup
-require("ui.components.layout_popup")
+require("ui.components.menu")
 -- Hotkeys overlay
 require("awful.hotkeys_popup.keys")
 -- window window
 require("ui.components.window_switcher")
--- dropdown terminal
-require("ui.components.term_scratchpad")
--- dropdown pavucontrol
-require("ui.components.audio_scratchpad")
--- sidebar
-require("ui.components.sidebar")
 -- >> Daemons
 -- Most widgets that display system/external info depend on daemons.
 -- Make sure to initialize it last in order to allow all widgets to connect to

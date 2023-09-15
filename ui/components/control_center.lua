@@ -1,62 +1,49 @@
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
-local helpers = require("helpers")
-local gears = require("gears")
-local rubato = require("modules.rubato")
+local profile = require("ui.widgets.control_center.profile")
+local stats = require("ui.widgets.control_center.stats")
+local search = require("ui.widgets.control_center.search")
+local music = require("ui.widgets.control_center.music")
+local taw = require("ui.widgets.control_center.taw")
+local notifbox = require("ui.widgets.control_center.notifs.box")
 
-local notify_cont = wibox.widget({
-	require("ui.widgets.control_center.notif-center"),
-	forced_width = dpi(400),
-	forced_height = dpi(625),
-	widget = wibox.container.margin,
-})
-
-local customCalendarWidget = require("ui.widgets.control_center.calendar")
-customCalendarWidget.spacing = dpi(16)
-
-local calendar_cont = wibox.widget({
-	{
-		require("ui.widgets.control_center.user"),
-		require("ui.widgets.control_center.weather"),
-		spacing = dpi(7.5),
-		layout = wibox.layout.fixed.vertical,
-	},
-
-	{
+awful.screen.connect_for_each_screen(function(s)
+	local main = wibox.widget({
 		{
-			nil,
-			customCalendarWidget,
-			expand = "none",
-			forced_width = dpi(400),
-			forced_height = dpi(475),
-			layout = wibox.layout.align.horizontal,
+			profile,
+			{
+				taw,
+				stats,
+				spacing = 16,
+				layout = wibox.layout.fixed.horizontal,
+			},
+			music,
+			spacing = 20,
+			layout = wibox.layout.fixed.vertical,
 		},
-		bg = x.color0,
-		widget = wibox.container.background,
-		shape = helpers.rrect(beautiful.border_radius),
-	},
-	spacing = dpi(7.5),
-	layout = wibox.layout.fixed.vertical,
-})
-
-local control_center_setup = wibox.widget({
-	{
-		calendar_cont,
-		notify_cont,
-		spacing = dpi(7.5),
+		notifbox,
+		spacing = 20,
+		visible = true,
 		layout = wibox.layout.fixed.horizontal,
-		widget = wibox.container.background,
-		bg = x.background,
-	},
-	margins = dpi(15),
-	widget = wibox.container.margin,
-})
+	})
 
-screen.connect_signal("request::desktop_decoration", function(s)
-	s.control_center = awful.popup({
+	s.dashboard = awful.popup({
 		screen = s,
-		widget = control_center_setup,
+		widget = {
+			{
+				{
+					nil,
+					search,
+					layout = wibox.layout.align.horizontal,
+				},
+				main,
+				layout = wibox.layout.fixed.vertical,
+				spacing = 20,
+			},
+			margins = dpi(25),
+			widget = wibox.container.margin,
+		},
 		placement = function(c)
 			awful.placement.top(c, {
 				margins = {
@@ -66,59 +53,24 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		end,
 		ontop = true,
 		visible = false,
+		bg = x.background,
 		fg = x.foreground,
-		opacity = beautiful.control_center_opacity,
+		opacity = beautiful.dash_center_opacity,
 	})
-
-	s.control_center_slide = rubato.timed({
-		pos = s.geometry.y - s.control_center.height,
-		intro = 0.25,
-		outro = 0.25,
-		duration = 0.5,
-		rate = user.animation_rate,
-		easing = rubato.easing.quadratic,
-		subscribed = function(pos)
-			s.control_center.y = s.geometry.y + pos
-		end,
-	})
-
-	s.control_center_timer = gears.timer({
-		timeout = 0.6,
-		single_shot = true,
-		callback = function()
-			s.control_center.visible = false
-		end,
-	})
-
-	s.control_center_grabber = nil
 end)
 
-function control_center_hide(s)
-	s.control_center_slide.target = s.geometry.y - s.control_center.height
-	s.control_center_timer:start()
-	awful.keygrabber.stop(s.control_center_grabber)
+function dashboard_hide(s)
+	s.dashboard.visible = false
 end
 
-function control_center_show(s)
-	-- naughty.notify({text = "starting the keygrabber"})
-	s.control_center_grabber = awful.keygrabber.run(function(_, key, event)
-		if event == "release" then
-			return
-		end
-		-- Press Escape or q or F1 to hide itf
-		if key == "Escape" or key == "q" or key == "F1" then
-			control_center_hide(s)
-		end
-	end)
-	s.control_center.visible = true
-	s.control_center_slide.target = beautiful.wibar_height + beautiful.useless_gap
-	customCalendarWidget.date = os.date("*t")
+function dashboard_show(s)
+	s.dashboard.visible = true
 end
 
-function control_center_toggle(s)
-	if s.control_center.visible then
-		control_center_hide(s)
+function dashboard_toggle(s)
+	if s.dashboard.visible then
+		dashboard_hide(s)
 	else
-		control_center_show(s)
+		dashboard_show(s)
 	end
 end

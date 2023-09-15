@@ -6,7 +6,7 @@ local beautiful = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local wibox = require("wibox")
-local icons = require("icons")
+local cairo = require("lgi").cairo
 local naughty = require("naughty")
 
 local helpers = {}
@@ -351,7 +351,7 @@ function helpers.prompt(action, textbox, prompt, callback)
                 naughty.notify {
                     title = "Searching the web for",
                     text = input,
-                    icon = icons.getIcon("/Miya-icon-theme/src/apps/scalable/web-browser.svg"),
+                    icon = icondir .. "", 
                     urgency = "low"
                 }
             end
@@ -509,6 +509,32 @@ function helpers.remote_watch(command, interval, output_file, callback)
     }
 end
 
+
+function helpers.cropSurface(ratio, surf)
+  local old_w, old_h = gears.surface.get_size(surf)
+  local old_ratio = old_w / old_h
+  if old_ratio == ratio then return surf end
+
+  local new_h = old_h
+  local new_w = old_w
+  local offset_h, offset_w = 0, 0
+  -- quick mafs
+  if (old_ratio < ratio) then
+    new_h = math.ceil(old_w * (1 / ratio))
+    offset_h = math.ceil((old_h - new_h) / 2)
+  else
+    new_w = math.ceil(old_h * ratio)
+    offset_w = math.ceil((old_w - new_w) / 2)
+  end
+
+  local out_surf = cairo.ImageSurface(cairo.Format.ARGB32, new_w, new_h)
+  local cr = cairo.Context(out_surf)
+  cr:set_source_surface(surf, -offset_w, -offset_h)
+  cr.operator = cairo.Operator.SOURCE
+  cr:paint()
+
+  return out_surf
+end
 -- The directory of the currently executed lua script
 -- Requires the `debug` library to be available in the build of Lua that is running
 function helpers.this_dir()

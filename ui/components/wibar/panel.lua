@@ -5,13 +5,14 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local gcolor = require("gears.color")
 local helpers = require("helpers")
 local bling = require("modules.bling")
 
 local awesome_icon = wibox.widget({
 	{
 		widget = wibox.widget.imagebox,
-		image = icons.getIcon("beautyline/apps/scalable/distributor-logo-nixos.png"),
+		image = gcolor.recolor_image(icondir .. "desk/awesomewm.svg", x.color5),
 		resize = true,
 	},
 	margins = dpi(5),
@@ -31,7 +32,6 @@ awesome_icon_container:connect_signal("button::press", function()
 	awesome_icon.left = dpi(6)
 	awesome_icon.right = dpi(4)
 	awesome_icon.bottom = dpi(4)
-	sidebar_show()
 end)
 
 awesome_icon_container:connect_signal("button::release", function()
@@ -58,7 +58,7 @@ minutetextbox:connect_signal("widget::redraw_needed", function()
 end)
 
 local secondtextbox = wibox.widget.textclock("%S", 1)
-secondtextbox.markup = secondtextbox.text, x.foreground
+secondtextbox.markup = secondtextbox.text
 secondtextbox:connect_signal("widget::redraw_needed", function()
 	secondtextbox.markup = secondtextbox.text
 end)
@@ -101,7 +101,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	helpers.add_hover_cursor(s.clock_container, "hand2")
 
 	s.clock_container:connect_signal("button::press", function()
-		control_center_toggle(s)
+		dash_center_toggle(s)
 		s.clock_container.bg = x.color8
 		s.clock.top = dpi(6)
 		s.clock.left = dpi(6)
@@ -175,8 +175,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	})
 
 	-- Create a promptbox for each screen
-	s.mypromptbox = awful.widget.prompt()
-
 	s.mylayoutbox = wibox.widget({
 		{
 			widget = awful.widget.layoutbox({
@@ -203,7 +201,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		s.mylayoutbox.left = dpi(5)
 		s.mylayoutbox.right = dpi(3)
 		s.mylayoutbox.bottom = dpi(3)
-		dash_center_toggle(s)
 		s.mylayoutboxContainer.bg = x.color8
 	end)
 
@@ -214,6 +211,71 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
 	helpers.add_hover_cursor(s.mylayoutboxContainer, "hand2")
 
+	s.mytasklist = awful.widget.tasklist({
+		screen = s,
+		filter = awful.widget.tasklist.filter.currenttags,
+		buttons = awful.util.table.join(
+			awful.button({}, 1, function(c)
+				if c == client.focus then
+					c.minimized = true
+				else
+					-- Without this, the following
+					-- :isvisible() makes no sense
+					c.minimized = false
+					if not c:isvisible() and c.first_tag then
+						c.first_tag:view_only()
+					end
+					-- This will also un-minimize
+					-- the client, if needed
+					client.focus = c
+					c:raise()
+				end
+			end),
+			awful.button({}, 2, function(c)
+				c.kill(c)
+			end),
+			awful.button({}, 4, function()
+				awful.client.focus.byidx(1)
+			end),
+			awful.button({}, 5, function()
+				awful.client.focus.byidx(-1)
+			end)
+		),
+		layout = {
+			spacing = 2,
+			layout = wibox.layout.fixed.horizontal,
+		},
+		-- Notice that there is *NO* wibox.wibox prefix, it is a template,
+		-- not a widget instance.
+		widget_template = {
+			{
+				{
+					{
+						id = "clienticon",
+						widget = awful.widget.clienticon,
+					},
+					margins = 5,
+					widget = wibox.container.margin,
+				},
+				id = "background_role",
+				widget = wibox.container.background,
+			},
+			nil,
+			create_callback = function(self, c, index, objects) --luacheck: no unused args
+				self:get_children_by_id("clienticon")[1].client = c
+
+				-- BLING: Toggle the popup on hover and disable it off hover
+				self:connect_signal("mouse::enter", function()
+					awesome.emit_signal("bling::task_preview::visibility", s, true, c)
+				end)
+				self:connect_signal("mouse::leave", function()
+					awesome.emit_signal("bling::task_preview::visibility", s, false, c)
+				end)
+			end,
+			layout = wibox.layout.align.vertical,
+		},
+	})
+
 	-- Create the wibox
 	s.mywibox = awful.wibar({
 		position = beautiful.wibar_position,
@@ -221,7 +283,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	})
 
 	-- Create the taglist widget
-	s.mytagsklist = require("ui.widgets.panel.tagsklist")(s)
+	s.mytaglist = require("ui.widgets.panel.taglist")(s)
 	-- Add widgets to the wibox
 	s.mywibox:setup({
 		{
@@ -229,18 +291,15 @@ screen.connect_signal("request::desktop_decoration", function(s)
 			expand = "none",
 			{
 				awesome_icon_container,
-				require("ui.widgets.panel.searchbar"),
-				s.mytagsklist,
-				s.mypromptbox,
+				require("ui.widgets.panel.music"),
+				s.mytasklist,
 				layout = wibox.layout.fixed.horizontal,
 				spacing = beautiful.wibar_elements_gap,
 			},
-			s.clock_container,
+			s.mytaglist,
 			{
-				require("ui.widgets.panel.battery_bar"),
 				require("ui.widgets.panel.systray"),
-				require("ui.widgets.panel.volume_icon"),
-				require("ui.widgets.panel.brightness_icon"),
+				s.clock_container,
 				s.mylayoutboxContainer,
 				spacing = beautiful.wibar_elements_gap,
 				layout = wibox.layout.fixed.horizontal,
@@ -250,7 +309,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
 		margins = beautiful.wibar_elements_gap,
 	})
 	awesome.connect_signal("elemental::dismiss", function()
-		control_center_hide(s)
 		dash_center_hide(s)
 	end)
 end)

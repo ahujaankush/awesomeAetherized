@@ -2,7 +2,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gears = require("gears")
 
-local currentVolIcon = "ﱝ"
+local currentVolIcon = "ﱝ "
 local currentBriIcon
 
 local active_color_vol = {
@@ -117,18 +117,18 @@ local brightness_cont = wibox.widget({
 
 awesome.connect_signal("evil::volume", function(value, muted)
 	if muted then
-		currentVolIcon = "ﱝ"
+		currentVolIcon = "ﱝ "
 	else
 		if value <= 10 then
-			currentVolIcon = ""
+			currentVolIcon = " "
 		elseif value <= 30 then
-			currentVolIcon = ""
+			currentVolIcon = " "
 		elseif value <= 60 then
-			currentVolIcon = "墳"
+			currentVolIcon = "墳 "
 		elseif value <= 90 then
-			currentVolIcon = ""
+			currentVolIcon = " "
 		else
-			currentVolIcon = ""
+			currentVolIcon = " "
 		end
 	end
 	volume_text.markup = tostring(value) .. "%"
@@ -138,16 +138,16 @@ end)
 
 awesome.connect_signal("evil::brightness", function(value, muted)
 	if muted then
-		currentBriIcon = ""
+		currentBriIcon = " "
 	else
 		if value <= 30 then
-			currentBriIcon = ""
+			currentBriIcon = " "
 		elseif value <= 50 then
-			currentBriIcon = ""
+			currentBriIcon = " "
 		elseif value <= 80 then
-			currentBriIcon = ""
+			currentBriIcon = " "
 		else
-			currentBriIcon = ""
+			currentBriIcon = " "
 		end
 	end
 	brightness_text.markup = tostring(value) .. "%"

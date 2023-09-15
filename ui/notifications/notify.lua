@@ -2,30 +2,25 @@ local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local icons = require("icons")
 local rubato = require("modules.rubato")
 local helpers = require("helpers")
--- Note: This theme does not show image notification icons
-
--- For antialiasing
--- The real background color is set in the widget_template
 
 local color = {
 	type = "linear",
 	from = { 0, 0 },
 	to = { beautiful.notification_image_size * 1.65 }, -- replace with w,h later
-	stops = { { 0, x.color6 }, { 0.5, x.color5 } },
+	stops = { { 0, x.color10 }, {0.5, x.color13} },
 }
 
 local app_config = {
 	["NetworkManager"] = {
-		icon = icons.getIcon("beautyline/devices/scalable/network-wireless.svg"),
+		icon = icondir 
 	},
 	["NetworkManager Applet"] = {
-		icon = icons.getIcon("beautyline/devices/scalable/network-wireless.svg"),
+		icon = icondir
 	},
 	["blueman"] = {
-		icon = icons.getIcon("beautyline/apps/scalable/bluetooth.svg"),
+		icon = icondir
 	},
 }
 
@@ -35,7 +30,7 @@ naughty.connect_signal("request::display", function(n)
 	if app_config[n.app_name] then
 		n.icon = app_config[n.app_name].icon
 	elseif n.icon == nil then
-		n.icon = icons.getIcon("beautyline/apps/scalable/preferences-desktop-notification.svg")
+		n.icon = icondir
 	end
 
 	-- Basics
@@ -128,7 +123,6 @@ naughty.connect_signal("request::display", function(n)
 	local widget = naughty.layout.box({
 		notification = n,
 		cursor = "hand2",
-		shape = helpers.rrect(beautiful.notification_border_radius),
 		widget_template = {
 			{
 				{
@@ -189,7 +183,6 @@ naughty.connect_signal("request::display", function(n)
 								widget = wibox.container.margin,
 							},
 							bg = x.color0,
-							shape = helpers.rrect(beautiful.notification_border_radius),
 							widget = wibox.container.background,
 						},
 						strategy = "min",

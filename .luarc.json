@@ -6,7 +6,8 @@
     "mousegrabber",
     "root",
     "screen",
-    "tag"
+    "tag",
+        "x"
   ],
   "workspace.library": [
     "~/.local/share/awesome-emmylua/lua"

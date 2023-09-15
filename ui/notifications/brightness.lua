@@ -34,7 +34,6 @@ local bright_adjust = awful.popup({
 	maximum_height = height,
 	visible = false,
 	ontop = true,
-	shape = helpers.rrect(beautiful.border_radius),
 	widget = wibox.container.background,
 	bg = "#00000000",
 	placement = function(c)
