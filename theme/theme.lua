@@ -34,9 +34,9 @@ theme.wibar_elements_gap = dpi(6) * theme.scaling
 theme.screen_margin = dpi(6) * theme.scaling
 
 theme.border_width = dpi(5) * theme.scaling
-theme.border_color = x.background
-theme.border_normal = x.background
-theme.border_focus = x.background
+theme.border_color = x.color0
+theme.border_normal = x.color0
+theme.border_focus = x.color0
 theme.border_radius = dpi(8) * theme.scaling
 
 theme.titlebars_enabled = true
@@ -45,9 +45,9 @@ theme.titlebar_title_enabled = true
 theme.titlebar_font = theme.font_name .. " 10"
 theme.titlebar_title_align = "center"
 theme.titlebar_position = "top"
-theme.titlebar_bg = x.background
-theme.titlebar_fg_focus = x.color7
-theme.titlebar_fg_normal = x.color7
+theme.titlebar_bg = x.color0
+theme.titlebar_fg_focus = x.foreground
+theme.titlebar_fg_normal = x.foreground
 theme.titlebar_fg = x.color7
 
 theme.notification_position = "top_right"
@@ -168,7 +168,7 @@ theme.dash_center_bg = x.background
 theme.dash_center_fg = x.color15
 theme.dash_center_opacity = theme.opacity
 theme.dash_center_position = "left" -- left or right
-theme.dash_center_width = dpi(525) * theme.scaling
+theme.dash_center_width = dpi(480) * theme.scaling
 theme.dash_center_border_radius = dpi(0) * theme.scaling --theme.border_radius
 
 -- Dashboard

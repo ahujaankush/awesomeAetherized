@@ -286,7 +286,7 @@ keys.globalkeys = gears.table.join( -- Focus client by direction (hjkl keys)
 		group = "client",
 	}),
 	awful.key({ superkey }, "d", function()
-		awful.spawn.with_shell("~/.config/rofi/launchers/type-6/launcher.sh")
+		awful.spawn.with_shell("rofi -show combi")
 	end, {
 		description = "rofi launcher",
 		group = "launcher",

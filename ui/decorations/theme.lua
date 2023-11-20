@@ -8,7 +8,7 @@ local color = require("modules.color")
 
 -- This decoration theme will round clients according to your theme's
 -- border_radius value
--- require("ui.decorations").enable_rounding()
+require("ui.decorations").enable_rounding()
 
 local createButton = function(c, coln, colh, fn)
 	local btn = wibox.widget({
@@ -78,7 +78,7 @@ client.connect_signal("request::titlebars", function(c)
 						margins = dpi(2),
 						widget = wibox.container.margin,
 					},
-					bg = x.color0,
+					bg = x.color8,
 					shape = helpers.rrect(beautiful.border_radius),
 					widget = wibox.container.background,
 				},
@@ -115,7 +115,7 @@ client.connect_signal("request::titlebars", function(c)
 						widget = wibox.container.place,
 						halign = "center",
 					},
-					bg = x.color0,
+					bg = x.color8,
 					shape = helpers.rrect(beautiful.border_radius),
 					widget = wibox.container.background,
 				},

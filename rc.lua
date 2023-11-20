@@ -180,8 +180,8 @@ require("ui.components.wibar")
 require("ui.components.exit_screen.exit_screen")
 -- Dashboard
 require("ui.components.control_center")
--- Dash Center
-require("ui.components.dash_center")
+-- Sidebar
+require("ui.components.sidebar")
 -- Lock screen
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above

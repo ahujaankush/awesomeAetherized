@@ -35,10 +35,11 @@ local bright_adjust = awful.popup({
 	visible = false,
 	ontop = true,
 	widget = wibox.container.background,
-	bg = "#00000000",
+	bg = x.background,
 	placement = function(c)
 		awful.placement.right(c, { margins = { right = 10 } })
 	end,
+	shape = helpers.rrect(beautiful.border_radius),
 })
 
 local bright_bar = wibox.widget({
